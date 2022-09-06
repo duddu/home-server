@@ -57,22 +57,25 @@ spec:
     volumeMounts:
     - mountPath: /etc/ssl/certs/davidedoronzo_myddns_me.pem-chain
       name: ssl-certs-davidedoronzo_myddns_me.pem-chain
+      readOnly: true
     - mountPath: /etc/ssl/private/davidedoronzo_myddns_me.key
       name: ssl-private-davidedoronzo_myddns_me.key
+      readOnly: true
     - mountPath: /etc/apache2/.htpasswd
       name: apache2-.htpasswd
+      readOnly: true
   hostname: home-server
   restartPolicy: Always
   volumes:
   - hostPath:
-      path: /Users/duddu/Projects/home-server/ssl/certs/davidedoronzo_myddns_me.pem-chain
+      path: /Users/duddu/Projects/podman-home-server-pod/ssl/certs/davidedoronzo_myddns_me.pem-chain
       type: File
     name: ssl-certs-davidedoronzo_myddns_me.pem-chain
   - hostPath:
-      path: /Users/duddu/Projects/home-server/ssl/private/davidedoronzo_myddns_me.key
+      path: /Users/duddu/Projects/podman-home-server-pod/ssl/private/davidedoronzo_myddns_me.key
       type: File
     name: ssl-private-davidedoronzo_myddns_me.key
   - hostPath:
-      path: /Users/duddu/Projects/home-server/apache2/.htpasswd
+      path: /Users/duddu/Projects/podman-home-server-pod/apache2/.htpasswd
       type: File
     name: apache2-.htpasswd
