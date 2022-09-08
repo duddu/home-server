@@ -20,4 +20,4 @@ jobs:
           known_hosts: ${{ secrets.KNOWN_HOSTS }}
 
       - name: Deploy over SSH
-        run: ssh ${{ secrets.SERVER_HOST }} "zsh -c 'export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin" && git clone git@github.com:${{ github.repository }}.git .asdf && cd .asdf && cat ssl/certs/davidedoronzo_myddns_me.csr && ./home-server-pod-start.sh'"
+        run: ssh ${{ secrets.SERVER_HOST }} "zsh -c 'export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin" && git clone git@github.com:${{ github.repository }}.git .asdf && cd .asdf && git-crypt unlock && ./home-server-pod-start.sh'"
