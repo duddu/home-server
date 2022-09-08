@@ -19,13 +19,10 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           known_hosts: ${{ secrets.KNOWN_HOSTS }}
 
-      - name: SSH into home server
-        run: ssh -tt ${{ secrets.SERVER_HOST }} && cd ~ && ls -la
-
-      - uses: actions/checkout@v3
-
-      - name: Unlock encrypted files
-        run: cd git-crypt unlock
-
-      - name: Start home-server pod
-        run: ./home-server-pod-start.sh
+      - name: Deploy over SSH
+        run: ssh -tt ${{ secrets.SERVER_HOST }} "
+          ls -la
+          git clone ${{ github.repositoryUrl }}
+          git-crypt unlock
+          ./home-server-pod-start.sh
+        "
