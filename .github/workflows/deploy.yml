@@ -20,7 +20,7 @@ jobs:
           known_hosts: ${{ secrets.KNOWN_HOSTS }}
 
       - name: SSH into home server
-        run: ssh ${{ SERVER_HOST }}
+        run: ssh ${{ secrets.SERVER_HOST }}
 
       - uses: actions/checkout@v3
 
