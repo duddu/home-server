@@ -20,9 +20,4 @@ jobs:
           known_hosts: ${{ secrets.KNOWN_HOSTS }}
 
       - name: Deploy over SSH
-        run: ssh -tt ${{ secrets.SERVER_HOST }} "
-          ls -la
-          git clone ${{ github.repositoryUrl }}
-          git-crypt unlock
-          ./home-server-pod-start.sh
-        "
+        run: ssh ${{ secrets.SERVER_HOST }} "ls -la && git clone ${{ github.repositoryUrl }} && git-crypt unlock && ./home-server-pod-start.sh"
