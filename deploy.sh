@@ -8,4 +8,4 @@ git-crypt unlock
 HOME=/Users/duddu ./home-server-pod-start.sh || CODE=1
 rm -rf ~/.tmp/_asdf
 
-exit ($CODE || 0)
+exit ${CODE:-default}
