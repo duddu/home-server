@@ -6,4 +6,4 @@ rm -rf ~/.home-server
 git clone git@github.com:duddu/podman-home-server-pod.git ~/.home-server
 cd ~/.home-server
 git-crypt unlock
-HOME=/Users/duddu ./home-server-pod-start.sh
+HOME=/Users/duddddu ./home-server-pod-start.sh
