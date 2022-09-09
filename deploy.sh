@@ -2,10 +2,8 @@
 
 export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 
-git clone git@github.com:duddu/podman-home-server-pod.git ~/.tmp/_asdf
-cd ~/.tmp/_asdf
+rm -rf ~/.home-server
+git clone git@github.com:duddu/podman-home-server-pod.git ~/.home-server
+cd ~/.home-server
 git-crypt unlock
-HOME=/Users/duddu ./home-server-pod-start.sh || CODE=1
-rm -rf ~/.tmp/_asdf
-
-exit ${CODE:-default}
+HOME=/Users/duddu ./home-server-pod-start.sh
