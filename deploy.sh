@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 
 rm -rf ~/.home-server
