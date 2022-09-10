@@ -2,12 +2,13 @@
 
 set -e
 
+cd "${0%/*}"
 cd ..
 
 VM=home-server-vm
 VM_CPUS=1
 VM_RAM=1024
-MANIFEST=home-server-manifest.yaml
+MANIFEST=./home-server-manifest.yaml
 
 (podman machine list | grep -q $VM &&
   echo "⏭ Virtual machine ${VM} already exists") ||
