@@ -13,13 +13,13 @@ MANIFEST=home-server-manifest.yaml
 (podman machine list | grep -q $VM &&
   echo "⏭ Virtual machine ${VM} already exists") ||
   (echo "⏳ Creating virtual machine ${VM}..." &&
-    podman machine init --noout $VM --cpus=$VM_CPUS --memory=$VM_RAM &&
+    podman --noout machine init $VM --cpus=$VM_CPUS --memory=$VM_RAM &&
     echo "✅ Virtual machine ${VM} created successfully")
 
 (podman machine inspect $VM | grep -q '"State": "running"' &&
   echo "⏭ Virtual machine ${VM} is already running") ||
   (echo "⏳ Starting virtual machine ${VM}..." &&
-    podman machine start --noout $VM &&
+    podman --noout machine start $VM &&
     echo "🚀 Virtual machine ${VM} started successfully")
 
 echo "⏳ Tearing down pod home-server if running..."
