@@ -23,4 +23,4 @@ jobs:
         env:
           SSH_HOST: ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}
           SCRIPT_URL: "https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/scripts/home-server-deploy.sh"
-        run: ssh $SSH_HOST 'bash <(curl -s ${SCRIPT_URL})'
+        run: ssh $SSH_HOST "bash <(curl -s ${SCRIPT_URL})"
