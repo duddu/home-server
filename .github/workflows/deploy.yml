@@ -23,4 +23,4 @@ jobs:
           known_hosts: ${{ secrets.KNOWN_HOSTS }}
 
       - name: Start home server over SSH
-        run: ssh ${{ secrets.SERVER_HOST }} . scripts/home-server-deploy.sh
+        run: ssh ${{ secrets.SERVER_HOST }} . ./scripts/home-server-deploy.sh
