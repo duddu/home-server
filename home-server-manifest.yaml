@@ -68,14 +68,14 @@ spec:
   restartPolicy: Always
   volumes:
   - hostPath:
-      path: /etc/ssl/certs/davidedoronzo_myddns_me.pem-chain
+      path: $PWD/ssl/certs/davidedoronzo_myddns_me.pem-chain
       type: File
     name: ssl-certs-davidedoronzo_myddns_me.pem-chain
   - hostPath:
-      path: /etc/ssl/private/davidedoronzo_myddns_me.key
+      path: $PWD/ssl/private/davidedoronzo_myddns_me.key
       type: File
     name: ssl-private-davidedoronzo_myddns_me.key
   - hostPath:
-      path: /etc/apache2/.htpasswd
+      path: $PWD/apache2/.htpasswd
       type: File
     name: apache2-.htpasswd
