@@ -7,13 +7,13 @@ cd "${0%/*}"
 VM=home-server-vm
 VM_CPUS=1
 VM_RAM=1024
-MANIFEST=$PWD/home-server-manifest.yaml
-VOLUME_DIR=$(builtin cd ..; pwd)
+PARENT_DIR=$(builtin cd ..; pwd)
+MANIFEST=$PARENT_DIR/home-server-manifest.yaml
 
 (podman machine list | grep -q $VM &&
   echo "⏭ Virtual machine ${VM} already exists") ||
   (echo "⏳ Creating virtual machine ${VM}..." &&
-    podman machine init $VM --cpus=$VM_CPUS --memory=$VM_RAM -v $VOLUME_DIR:$VOLUME_DIR &&
+    podman machine init $VM --cpus=$VM_CPUS --memory=$VM_RAM -v $PARENT_DIR:$PARENT_DIR &&
     echo "✅ Virtual machine ${VM} created successfully")
 
 (podman machine inspect $VM | grep -q '"State": "running"' &&
