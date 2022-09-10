@@ -10,7 +10,7 @@ MANIFEST=$PWD/home-server-manifest.yaml
 (podman machine list | grep -q $VM &&
   echo "⏭ Virtual machine ${VM} already exists") ||
   (echo "⏳ Creating virtual machine ${VM}..." &&
-    podman machine init $VM --cpus=$VM_CPUS --memory=$VM_RAM &&
+    podman machine init $VM --cpus=$VM_CPUS --memory=$VM_RAM -v $PWD:$PWD &&
     echo "✅ Virtual machine ${VM} created successfully")
 
 (podman machine inspect $VM | grep -q '"State": "running"' &&
