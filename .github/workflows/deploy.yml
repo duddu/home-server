@@ -13,9 +13,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    #   - name: Checkout
-    #     uses: actions/checkout@v2.4.2
-
       - name: Install SSH Key
         uses: shimataro/ssh-key-action@v2.3.1
         with:
@@ -23,5 +20,4 @@ jobs:
           known_hosts: ${{ secrets.KNOWN_HOSTS }}
 
       - name: Start home server over SSH
-        # run: ssh ${{ secrets.SERVER_HOST }} 'bash -s' < ./scripts/home-server-deploy.sh
-        run: ssh ${{ secrets.SERVER_HOST }} 'bash <(curl -s https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/scripts/home-server-deploy.sh)'
+        run: ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} 'bash <(curl -s https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/scripts/home-server-deploy.sh)'
