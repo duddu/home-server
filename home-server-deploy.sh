@@ -2,8 +2,6 @@
 
 set -e
 
-cd "${0%/*}"
-
 export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 CLONE_DIR="~/.home-server"
 
