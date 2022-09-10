@@ -13,8 +13,8 @@ MANIFEST=../home-server-manifest.yaml
   echo "⏭ Virtual machine ${VM} already exists") ||
   (echo "⏳ Creating virtual machine ${VM}..." &&
     podman machine init $VM --cpus=$VM_CPUS --memory=$VM_RAM \
-      -v $(builtin cd ..; pwd):/etc:ro \
-      -v /Users/duddu/.ssh:/Users/duddu/.ssh &&
+      # -v $(builtin cd ..; pwd):/etc:ro \
+      -v /Users/duddu:/Users/duddu &&
     echo "✅ Virtual machine ${VM} created successfully")
 
 (podman machine inspect $VM | grep -q '"State": "running"' &&
