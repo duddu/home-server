@@ -20,10 +20,10 @@ MANIFEST=$PWD/home-server-manifest.yaml
     echo "🚀 Virtual machine ${VM} started successfully")
 
 echo "⏳ Tearing down pod home-server if running..."
-(envsubst < $MANIFEST | podman play kube -q --down - &&
+(envsubst < $MANIFEST | podman play kube -q --down - &> /dev/null &&
   echo "✅ Torn down pod home-server") ||
   echo "⏭ Pod home-server is not running"
 
 echo "⏳ Starting pod home-server..."
-envsubst < $MANIFEST | podman play kube -q - &&
+envsubst < $MANIFEST | podman play kube -q - 1> /dev/null &&
   echo "🚀 Pod home-server started successfully"
