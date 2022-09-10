@@ -13,11 +13,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2.4.2
+
       - name: Install SSH Key
         uses: shimataro/ssh-key-action@v2.3.1
         with:
           key: ${{ secrets.SSH_KEY }}
           known_hosts: ${{ secrets.KNOWN_HOSTS }}
 
-      - name: Deploy over SSH
-        run: ssh ${{ secrets.SERVER_HOST }} "zsh -c 'export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin" && git clone git@github.com:${{ github.repository }}.git /tmp/${{ github.run_id }} && cd /tmp/${{ github.run_id }} && git-crypt unlock && HOME=/Users/duddu ./home-server-pod-start.sh' && rm -rf /tmp/${{ github.run_id }}"
+      - name: Start home server over SSH
+        run: ssh ${{ secrets.SERVER_HOST }} 'sh -c' < ./deploy.sh
