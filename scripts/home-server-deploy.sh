@@ -9,4 +9,4 @@ rm -rf $CLONE_DIR
 git clone --depth 1 git@github.com:duddu/podman-home-server-pod.git $CLONE_DIR
 cd $CLONE_DIR
 git-crypt unlock
-HOME=/Users/duddu bash ./scripts/home-server-pod-start.sh
+bash ./scripts/home-server-pod-start.sh
