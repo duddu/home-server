@@ -24,6 +24,7 @@ spec:
   containers:
   - image: docker.io/duddu/rust-home-server-api:latest
     name: rust-home-server-api
+    imagePullPolicy: Always
     ports:
     - containerPort: 8000
       hostPort: 8000
@@ -42,6 +43,7 @@ spec:
     - daemon off;
     image: docker.io/duddu/nginx-home-server-proxy:latest
     name: nginx-home-server-proxy
+    imagePullPolicy: Always
     ports:
     - containerPort: 443
       hostPort: 4433
