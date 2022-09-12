@@ -19,8 +19,8 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           known_hosts: ${{ secrets.KNOWN_HOSTS }}
 
-      - name: Start home server over SSH
-        env:
-          SSH_HOST: ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}
-          SCRIPT_URL: "https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/scripts/home-server-deploy.sh"
-        run: ssh $SSH_HOST "bash <(curl -s ${SCRIPT_URL})"
+      - name: Start home-server over SSH
+        run: ssh ${{ secrets.SSH_HOST }} "bash <(curl -s https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/scripts/home-server-deploy.sh)"
+
+      - name: E2E Health Check
+        run: curl --fail ${{ secrets.HTTPS_HOST }}/health || exit 1
