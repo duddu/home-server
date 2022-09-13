@@ -1,0 +1,4 @@
+.dockerignore
+Dockerfile
+apache2/
+ssl/

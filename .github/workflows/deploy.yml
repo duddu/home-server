@@ -1,4 +1,4 @@
-name: Deploy
+name: Start Home Server
 
 on:
   push:
