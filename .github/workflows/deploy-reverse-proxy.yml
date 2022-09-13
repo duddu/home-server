@@ -1,0 +1,14 @@
+name: Deploy Reverse Proxy
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'packages/nginx-reverse-proxy/**'
+jobs:
+  trigger-home-server-deploy:
+    needs: docker-build-and-push
+    uses: ./.github/workflows/workflows/docker-image.yml
+    with:
+      package: nginx-reverse-proxy
+      image_name: nginx-home-server-proxy

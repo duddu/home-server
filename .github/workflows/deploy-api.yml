@@ -1,0 +1,14 @@
+name: Deploy API
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'packages/rust-api/**'
+jobs:
+  trigger-home-server-deploy:
+    needs: docker-build-and-push
+    uses: ./.github/workflows/workflows/docker-image.yml
+    with:
+      package: rust-api
+      image_name: rust-home-server-api
