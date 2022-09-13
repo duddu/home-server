@@ -24,3 +24,4 @@ jobs:
   trigger-home-server-deploy:
     needs: docker-build-and-push
     uses: ./.github/workflows/deploy-home-server.yml
+    secrets: inherit
