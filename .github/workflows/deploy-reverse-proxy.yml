@@ -6,8 +6,7 @@ on:
     paths:
       - 'packages/nginx-reverse-proxy/**'
 jobs:
-  trigger-home-server-deploy:
-    needs: docker-build-and-push
+  trigger-docker-image-ci:
     uses: ./.github/workflows/docker-image.yml
     with:
       package: nginx-reverse-proxy
