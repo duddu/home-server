@@ -4,6 +4,8 @@ on:
     branches:
       - main
     paths-ignore:
+      - '.vscode/**'
+      - 'bin/**'
       - 'packages/**'
   workflow_call:
   workflow_dispatch:
