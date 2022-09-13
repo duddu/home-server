@@ -16,11 +16,11 @@ jobs:
     - uses: satackey/action-docker-layer-caching@v0.0.11
       continue-on-error: true
     - name: Build the Docker image
-      run: docker build packages/${{ inputs.package }} --file packages/${{ inputs.package }}/Dockerfile --tag ${{ github.repository_owner }}/${{ inputs.image_name }}:latest
+      run: docker build packages/${{ inputs.package }} --file packages/${{ inputs.package }}/Dockerfile --tag ghcr.io/${{ github.repository_owner }}/${{ inputs.image_name }}:latest
     - name: Docker Login
       run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
     - name: Push the Docker image
-      run: docker push ${{ github.repository_owner }}/${{ inputs.image_name }}:latest
+      run: docker push ghcr.io/${{ github.repository_owner }}/${{ inputs.image_name }}:latest
   trigger-home-server-deploy:
     needs: docker-build-and-push
     uses: ./.github/workflows/deploy-home-server.yml
