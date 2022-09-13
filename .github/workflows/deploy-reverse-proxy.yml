@@ -8,6 +8,7 @@ on:
 jobs:
   trigger-docker-image-ci:
     uses: ./.github/workflows/docker-image.yml
+    secrets: inherit
     with:
       package: nginx-reverse-proxy
       image_name: nginx-home-server-proxy

@@ -8,6 +8,7 @@ on:
 jobs:
   trigger-docker-image-ci:
     uses: ./.github/workflows/docker-image.yml
+    secrets: inherit
     with:
       package: rust-api
       image_name: rust-home-server-api

@@ -24,8 +24,4 @@ jobs:
   trigger-home-server-deploy:
     needs: docker-build-and-push
     uses: ./.github/workflows/deploy-home-server.yml
-    secrets:
-      HTTPS_HOST: ${{ secrets.HTTPS_HOST }}
-      KNOWN_HOSTS: ${{ secrets.KNOWN_HOSTS }}
-      SSH_HOST: ${{ secrets.SSH_HOST }}
-      SSH_KEY: ${{ secrets.SSH_KEY }}
+    secrets: inherit
