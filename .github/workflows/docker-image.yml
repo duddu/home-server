@@ -25,3 +25,6 @@ jobs:
     needs: docker-build-and-push
     uses: ./.github/workflows/deploy-home-server.yml
     secrets: inherit
+    with:
+      key: ${{ secrets.SSH_KEY }}
+      known_hosts: ${{ secrets.KNOWN_HOSTS }}
