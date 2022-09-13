@@ -60,6 +60,9 @@ spec:
     - mountPath: /etc/ssl/certs/davidedoronzo_myddns_me.pem-chain
       name: ssl-certs-davidedoronzo_myddns_me.pem-chain
       readOnly: true
+    - mountPath: /etc/ssl/certs/davidedoronzo_myddns_me.pem
+      name: ssl-certs-davidedoronzo_myddns_me.pem
+      readOnly: true
     - mountPath: /etc/ssl/private/davidedoronzo_myddns_me.key
       name: ssl-private-davidedoronzo_myddns_me.key
       readOnly: true
@@ -73,6 +76,10 @@ spec:
       path: $PWD/packages/nginx-reverse-proxy/ssl/certs/davidedoronzo_myddns_me.pem-chain
       type: File
     name: ssl-certs-davidedoronzo_myddns_me.pem-chain
+  - hostPath:
+      path: $PWD/packages/nginx-reverse-proxy/ssl/certs/davidedoronzo_myddns_me.pem
+      type: File
+    name: ssl-certs-davidedoronzo_myddns_me.pem
   - hostPath:
       path: $PWD/packages/nginx-reverse-proxy/ssl/private/davidedoronzo_myddns_me.key
       type: File
