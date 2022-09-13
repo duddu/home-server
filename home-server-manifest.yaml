@@ -2,28 +2,28 @@ apiVersion: v1
 kind: Pod
 metadata:
   annotations:
-    io.kubernetes.cri-o.ContainerType/nginx-home-server-proxy: container
-    io.kubernetes.cri-o.ContainerType/rust-home-server-api: container
-    io.kubernetes.cri-o.SandboxID/nginx-home-server-proxy: baa86e67b0c9f5f902e8801d48d73f04b3742cf18ba378185ed06866070cfe3
-    io.kubernetes.cri-o.SandboxID/rust-home-server-api: baa86e67b0c9f5f902e8801d48d73f04b3742cf18ba378185ed06866070cfe3
-    io.kubernetes.cri-o.TTY/nginx-home-server-proxy: "true"
-    io.kubernetes.cri-o.TTY/rust-home-server-api: "true"
-    io.podman.annotations.autoremove/nginx-home-server-proxy: "TRUE"
-    io.podman.annotations.autoremove/rust-home-server-api: "TRUE"
-    io.podman.annotations.init/nginx-home-server-proxy: "FALSE"
-    io.podman.annotations.init/rust-home-server-api: "FALSE"
-    io.podman.annotations.privileged/nginx-home-server-proxy: "FALSE"
-    io.podman.annotations.privileged/rust-home-server-api: "FALSE"
-    io.podman.annotations.publish-all/nginx-home-server-proxy: "FALSE"
-    io.podman.annotations.publish-all/rust-home-server-api: "FALSE"
+    io.kubernetes.cri-o.ContainerType/home-server-nginx-reverse-proxy: container
+    io.kubernetes.cri-o.ContainerType/home-server-rust-api: container
+    io.kubernetes.cri-o.SandboxID/home-server-nginx-reverse-proxy: baa86e67b0c9f5f902e8801d48d73f04b3742cf18ba378185ed06866070cfe3
+    io.kubernetes.cri-o.SandboxID/home-server-rust-api: baa86e67b0c9f5f902e8801d48d73f04b3742cf18ba378185ed06866070cfe3
+    io.kubernetes.cri-o.TTY/home-server-nginx-reverse-proxy: "true"
+    io.kubernetes.cri-o.TTY/home-server-rust-api: "true"
+    io.podman.annotations.autoremove/home-server-nginx-reverse-proxy: "TRUE"
+    io.podman.annotations.autoremove/home-server-rust-api: "TRUE"
+    io.podman.annotations.init/home-server-nginx-reverse-proxy: "FALSE"
+    io.podman.annotations.init/home-server-rust-api: "FALSE"
+    io.podman.annotations.privileged/home-server-nginx-reverse-proxy: "FALSE"
+    io.podman.annotations.privileged/home-server-rust-api: "FALSE"
+    io.podman.annotations.publish-all/home-server-nginx-reverse-proxy: "FALSE"
+    io.podman.annotations.publish-all/home-server-rust-api: "FALSE"
   creationTimestamp: "2022-09-06T02:43:42Z"
   labels:
     app: home-server
   name: home-server
 spec:
   containers:
-  - image: docker.io/duddu/rust-home-server-api:latest
-    name: rust-home-server-api
+  - image: ghcr.io/duddu/home-server-rust-api:latest
+    name: home-server-rust-api
     imagePullPolicy: Always
     ports:
     - containerPort: 8000
@@ -41,8 +41,8 @@ spec:
     - nginx
     - -g
     - daemon off;
-    image: docker.io/duddu/nginx-home-server-proxy:latest
-    name: nginx-home-server-proxy
+    image: ghcr.io/duddu/home-server-nginx-reverse-proxy:latest
+    name: home-server-nginx-reverse-proxy
     imagePullPolicy: Always
     ports:
     - containerPort: 443

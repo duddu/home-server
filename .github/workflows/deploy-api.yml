@@ -11,4 +11,3 @@ jobs:
     secrets: inherit
     with:
       package: rust-api
-      image_name: rust-home-server-api

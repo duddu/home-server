@@ -5,22 +5,22 @@ on:
       package:
         required: true
         type: string
-      image_name:
-        required: true
-        type: string
 jobs:
   docker-build-and-push:
     runs-on: ubuntu-latest
+    env:
+      IMAGE: ghcr.io/${{ github.repository_owner }}/home-server-${{ inputs.package }}:latest
+      PACKAGE_DIR: packages/${{ inputs.package }}
     steps:
     - uses: actions/checkout@v3
     - uses: satackey/action-docker-layer-caching@v0.0.11
       continue-on-error: true
     - name: Build the Docker image
-      run: docker build packages/${{ inputs.package }} --file packages/${{ inputs.package }}/Dockerfile --tag ghcr.io/${{ github.repository_owner }}/${{ inputs.image_name }}:latest
+      run: docker build ${{ env.PACKAGE_DIR }} --file ${{ env.PACKAGE_DIR }}/Dockerfile --tag ${{ env.IMAGE }}
     - name: Docker Login
       run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
     - name: Push the Docker image
-      run: docker push ghcr.io/${{ github.repository_owner }}/${{ inputs.image_name }}:latest
+      run: docker push ${{ env.IMAGE }}
   trigger-home-server-deploy:
     needs: docker-build-and-push
     uses: ./.github/workflows/deploy-home-server.yml
