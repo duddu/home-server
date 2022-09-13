@@ -8,7 +8,7 @@ on:
 jobs:
   trigger-home-server-deploy:
     needs: docker-build-and-push
-    uses: ./.github/workflows/workflows/docker-image.yml
+    uses: ./.github/workflows/docker-image.yml
     with:
       package: rust-api
       image_name: rust-home-server-api

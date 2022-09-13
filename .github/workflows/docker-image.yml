@@ -27,4 +27,4 @@ jobs:
       run: docker push duddu/${{ inputs.image_name }}:latest
   trigger-home-server-deploy:
     needs: docker-build-and-push
-    uses: ./.github/workflows/workflows/deploy-home-server.yml
+    uses: ./.github/workflows/deploy-home-server.yml
