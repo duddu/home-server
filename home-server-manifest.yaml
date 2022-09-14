@@ -60,7 +60,7 @@ spec:
     - mountPath: /etc/ssl/certs/davidedoronzo_myddns_me.pem-chain
       name: ssl-certs-davidedoronzo_myddns_me.pem-chain
       readOnly: true
-    - mountPath: /etc/ssl/certs/ca.pem
+    - mountPath: /etc/ssl/cert.pem
       name: ca.pem
       readOnly: false
     - mountPath: /etc/ssl/private/davidedoronzo_myddns_me.key
