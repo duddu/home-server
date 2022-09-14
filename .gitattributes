@@ -1,2 +1,1 @@
-packages/nginx-reverse-proxy/apache2/** filter=git-crypt diff=git-crypt
 packages/nginx-reverse-proxy/ssl/** filter=git-crypt diff=git-crypt

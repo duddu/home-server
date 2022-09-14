@@ -60,14 +60,11 @@ spec:
     - mountPath: /etc/ssl/certs/davidedoronzo_myddns_me.pem-chain
       name: ssl-certs-davidedoronzo_myddns_me.pem-chain
       readOnly: true
-    - mountPath: /etc/ssl/certs/ca.pem
-      name: ca.pem
-      readOnly: false
     - mountPath: /etc/ssl/private/davidedoronzo_myddns_me.key
       name: ssl-private-davidedoronzo_myddns_me.key
       readOnly: true
-    - mountPath: /etc/apache2/.htpasswd
-      name: apache2-.htpasswd
+    - mountPath: /etc/ssl/certs/davidedoronzo-ca.pem
+      name: ssl-certs-davidedoronzo-ca.pem
       readOnly: true
   hostname: home-server
   restartPolicy: Always
@@ -77,14 +74,10 @@ spec:
       type: File
     name: ssl-certs-davidedoronzo_myddns_me.pem-chain
   - hostPath:
-      path: $PWD/packages/nginx-reverse-proxy/ssl/certs/ca.pem
-      type: File
-    name: ca.pem
-  - hostPath:
       path: $PWD/packages/nginx-reverse-proxy/ssl/private/davidedoronzo_myddns_me.key
       type: File
     name: ssl-private-davidedoronzo_myddns_me.key
   - hostPath:
-      path: $PWD/packages/nginx-reverse-proxy/apache2/.htpasswd
+      path: $PWD/packages/nginx-reverse-proxy/ssl/certs/davidedoronzo-ca.pem
       type: File
-    name: apache2-.htpasswd
+    name: ssl-certs-davidedoronzo-ca.pem
