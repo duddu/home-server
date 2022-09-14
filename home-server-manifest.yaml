@@ -62,7 +62,7 @@ spec:
       readOnly: true
     - mountPath: /etc/ssl/certs/davidedoronzo-ca.crt
       name: davidedoronzo-ca.crt
-      readOnly: true
+      readOnly: false
     - mountPath: /etc/ssl/private/davidedoronzo_myddns_me.key
       name: ssl-private-davidedoronzo_myddns_me.key
       readOnly: true
