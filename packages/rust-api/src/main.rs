@@ -5,11 +5,15 @@ use std::{env, net::{TcpStream, ToSocketAddrs}, time::Duration};
 
 const SSH_PORT: u16 = 22;
 const SMB_PORT: u16 = 445;
+const ARD_PORT: u16 = 3283;
+const VNC_PORT: u16 = 5900;
 const PLEX_PORT: u16 = 32400;
 
 const PORTS: [u16; 3] = [
     SSH_PORT,
     SMB_PORT,
+    ARD_PORT,
+    VNC_PORT,
     PLEX_PORT
 ];
 
@@ -17,6 +21,8 @@ const fn get_port_description(port: u16) -> &'static str {
     match port {
         SSH_PORT => "SSH",
         SMB_PORT => "Samba",
+        ARD_PORT => "Apple Remote Desktop",
+        VNC_PORT => "Screen Sharing",
         PLEX_PORT => "Plex Server",
         _ => "",
     }
