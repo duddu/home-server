@@ -25,12 +25,12 @@ jobs:
   e2e-health-check:
     runs-on: ubuntu-latest
     needs: start-home-server-pod
-    env:
-      SSL_CLIENT_CERT_PATH: ${{ runner.temp }}/client.pem
-      HTTPS_HOST: ${{ secrets.HTTPS_HOST }}
     steps:
       - name: Prepare SSL client certificate
-        run: echo "${{ secrets.SSL_CLIENT_CERTIFICATE }}" > ${{ env.SSL_CLIENT_CERT_PATH }}
+        run: echo "${{ secrets.SSL_CLIENT_CERTIFICATE }}" > ${{ runner.temp }}/client.pem
       - name: Run e2e Health Check
-        run: bash ${{ env.SCRIPTS_PATH }}/home-server-health-check.sh
+        run:
+          HTTPS_HOST=${{ secrets.HTTPS_HOST }}
+          SSL_CLIENT_CERT_PATH=${{ runner.temp }}/client.pem
+          bash ${{ env.SCRIPTS_PATH }}/home-server-health-check.sh
         
