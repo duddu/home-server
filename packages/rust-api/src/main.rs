@@ -9,7 +9,7 @@ const ARD_PORT: u16 = 3283;
 const VNC_PORT: u16 = 5900;
 const PLEX_PORT: u16 = 32400;
 
-const PORTS: [u16; 3] = [
+const PORTS: [u16; 5] = [
     SSH_PORT,
     SMB_PORT,
     ARD_PORT,
