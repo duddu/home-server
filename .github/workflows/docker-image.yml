@@ -13,8 +13,6 @@ jobs:
       PACKAGE_DIR: packages/${{ inputs.package }}
     steps:
     - uses: actions/checkout@v3
-    - uses: satackey/action-docker-layer-caching@v0.0.11
-      continue-on-error: true
     - name: Build the Docker image
       run: docker build ${{ env.PACKAGE_DIR }} --file ${{ env.PACKAGE_DIR }}/Dockerfile --tag ${{ env.IMAGE }}
     - name: Docker Login
