@@ -1,13 +1,15 @@
-use rocket::serde::{json::Json, Serialize};
+use rocket::serde::{json::Json, Deserialize, Serialize};
 
-#[derive(Serialize)]
+#[cfg(test)] mod test;
+
+#[derive(Debug, PartialEq, Serialize, Deserialize)]
 #[serde(crate = "rocket::serde")]
 pub struct VersionInfo {
     name: String,
     version: String,
 }
 
-#[get("/")]
+#[get("/version")]
 pub fn get_version() -> Json<VersionInfo> {
     Json(VersionInfo {
         name: env!("CARGO_PKG_NAME").to_string(),

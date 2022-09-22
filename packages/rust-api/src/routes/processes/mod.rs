@@ -1,6 +1,8 @@
 use futures::stream::{self, StreamExt};
-use rocket::serde::{json::Json, Serialize};
+use rocket::serde::{json::Json, Deserialize, Serialize};
 use std::{env, net::{TcpStream, ToSocketAddrs}, time::Duration};
+
+#[cfg(test)] mod test;
 
 const SSH_PORT: u16 = 22;
 const SMB_PORT: u16 = 445;
@@ -31,19 +33,18 @@ const ENV_KEY_HOST: &str = "CONTAINERS_HOST";
 const CONNECTION_TIMEOUT: Duration = Duration::from_secs(1);
 const CONCURRENT_LIMIT: usize = 100;
 
-#[derive(Clone)]
-#[derive(Serialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 #[serde(crate = "rocket::serde")]
 pub struct Process {
-    name: String,
+    name: &'static str,
     port: u16,
     running: bool,
 }
 
-#[get("/")]
+#[get("/processes")]
 pub async fn get_processes() -> Json<Vec<Process>> {
     let mut processes = PORTS.map(|port| Process {
-        name: get_port_description(port).to_string(),
+        name: get_port_description(port),
         port,
         running: false,
     });
