@@ -2,9 +2,10 @@ FROM rust:1.63.0-buster as builder
 
 WORKDIR /app
 ADD . ./
+RUN cargo test
 RUN cargo build --release
 
-FROM debian:buster-slim
+FROM debian:buster-slim as production
 ARG APP=/usr/src/app
 
 RUN apt-get update \
