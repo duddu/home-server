@@ -7,6 +7,7 @@ on:
       - 'packages/nginx-reverse-proxy/**'
 jobs:
   trigger-docker-image-ci:
+    name: Trigger Docker image CI
     uses: ./.github/workflows/docker-image.yml
     secrets: inherit
     with:

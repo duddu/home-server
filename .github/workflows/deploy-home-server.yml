@@ -13,6 +13,7 @@ env:
   SCRIPTS_PATH: https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/scripts
 jobs:
   start-home-server-pod:
+    name: Start Home Server pod
     runs-on: ubuntu-latest
     steps:
       - name: Install SSH Key
@@ -23,6 +24,7 @@ jobs:
       - name: Start home-server over SSH
         run: ssh ${{ secrets.SSH_HOST }} "bash <(curl -s ${{ env.SCRIPTS_PATH }}/home-server-deploy.sh)"
   e2e-health-check:
+    name: Run e2e health check
     runs-on: ubuntu-latest
     needs: start-home-server-pod
     steps:

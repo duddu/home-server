@@ -7,6 +7,7 @@ on:
         type: string
 jobs:
   docker-build-and-push:
+    name: Image build and push
     runs-on: ubuntu-latest
     env:
       IMAGE: ghcr.io/${{ github.repository_owner }}/home-server-${{ inputs.package }}:latest
