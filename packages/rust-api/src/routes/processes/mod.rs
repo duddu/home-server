@@ -4,30 +4,13 @@ use std::{env, net::{TcpStream, ToSocketAddrs}, time::Duration};
 
 #[cfg(test)] mod test;
 
-const SSH_PORT: u16 = 22;
-const SMB_PORT: u16 = 445;
-const ARD_PORT: u16 = 3283;
-const VNC_PORT: u16 = 5900;
-const PLEX_PORT: u16 = 32400;
-
-const PORTS: [u16; 5] = [
-    SSH_PORT,
-    SMB_PORT,
-    ARD_PORT,
-    VNC_PORT,
-    PLEX_PORT
+const PROCESSES: [Process; 5] = [
+    Process::new(22,    "SSH"),
+    Process::new(445,   "Samba"),
+    Process::new(3283,  "Apple Remote Desktop"),
+    Process::new(5900,  "Screen Sharing"),
+    Process::new(32400, "Plex Server"),
 ];
-
-const fn get_port_description(port: u16) -> &'static str {
-    match port {
-        SSH_PORT => "SSH",
-        SMB_PORT => "Samba",
-        ARD_PORT => "Apple Remote Desktop",
-        VNC_PORT => "Screen Sharing",
-        PLEX_PORT => "Plex Server",
-        _ => "",
-    }
-}
 
 const ENV_KEY_HOST: &str = "CONTAINERS_HOST";
 const CONNECTION_TIMEOUT: Duration = Duration::from_secs(1);
@@ -41,13 +24,23 @@ pub struct Process {
     running: bool,
 }
 
+impl Process {
+    const fn new (port: u16, name: &'static str) -> Process {
+        Process {
+            name,
+            port,
+            running: false,
+        }
+    }
+
+    fn set_running (&mut self) -> () {
+        self.running = true;
+    }
+}
+
 #[get("/processes")]
 pub async fn get_processes() -> Json<Vec<Process>> {
-    let mut processes = PORTS.map(|port| Process {
-        name: get_port_description(port),
-        port,
-        running: false,
-    });
+    let mut processes = PROCESSES.to_vec();
     let processes_iter = stream::iter(&mut processes);
 
     processes_iter.for_each_concurrent(CONCURRENT_LIMIT, |process| async move {
@@ -55,11 +48,11 @@ pub async fn get_processes() -> Json<Vec<Process>> {
         let host_addrs = (host, process.port).to_socket_addrs().unwrap();
         for host_addr in host_addrs {
             if let Ok(_stream) = TcpStream::connect_timeout(&host_addr, CONNECTION_TIMEOUT) {
-                process.running = true;
+                process.set_running();
                 break;
             }    
         }
     }).await;
 
-    Json(processes.to_vec())
+    Json(processes)
 }
