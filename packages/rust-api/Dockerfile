@@ -25,7 +25,7 @@ RUN groupadd $APP_USER \
     && useradd -g $APP_USER $APP_USER \
     && mkdir -p ${APP}
 
-COPY --from=builder /app/target/release/rust-home-server-api ${APP}/rust-home-server-api
+COPY --from=builder /app/target/release/home-server-rust-api ${APP}/home-server-rust-api
 
 RUN chown -R $APP_USER:$APP_USER ${APP}
 
@@ -34,4 +34,4 @@ WORKDIR ${APP}
 
 HEALTHCHECK CMD curl --fail http://localhost:8000/health || exit 1
 
-CMD ["./rust-home-server-api"]
+CMD ["./home-server-rust-api"]
