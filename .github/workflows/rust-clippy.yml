@@ -42,6 +42,10 @@ jobs:
           tee rust-clippy-results.sarif | 
           sarif-fmt
         continue-on-error: true
+      - name: Fix sarif artifactLocation URIs
+        run: 
+          sed -i 's/"src\//"packages\/rust-api\/src\//g'
+          rust-clippy-results.sarif
       - name: Upload analysis results to GitHub
         uses: github/codeql-action/upload-sarif@v2
         with:
