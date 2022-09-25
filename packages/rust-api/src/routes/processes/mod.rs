@@ -16,7 +16,7 @@ const ENV_KEY_HOST: &str = "CONTAINERS_HOST";
 const CONNECTION_TIMEOUT: Duration = Duration::from_secs(1);
 const CONCURRENT_LIMIT: usize = 100;
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(crate = "rocket::serde")]
 pub struct Process {
     name: &'static str,
@@ -33,7 +33,7 @@ impl Process {
         }
     }
 
-    fn set_running (&mut self) -> () {
+    fn set_running (&mut self) {
         self.running = true;
     }
 }

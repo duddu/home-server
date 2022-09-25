@@ -2,7 +2,7 @@ use rocket::serde::{json::Json, Deserialize, Serialize};
 
 #[cfg(test)] mod test;
 
-#[derive(Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(crate = "rocket::serde")]
 pub struct VersionInfo {
     name: String,
