@@ -21,6 +21,7 @@ jobs:
     - name: Push the Docker image
       run: docker push ${{ env.IMAGE }}
   trigger-home-server-deploy:
+    name: Trigger Home Server deploy
     needs: docker-build-and-push
     uses: ./.github/workflows/deploy-home-server.yml
     secrets: inherit
