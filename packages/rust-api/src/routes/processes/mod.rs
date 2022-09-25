@@ -12,7 +12,7 @@ const PROCESSES: [Process; 5] = [
     Process::new(32400, "Plex Server"),
 ];
 
-const ENV_KEY_HOST: &str = "CONTAINERS_HOST";
+const ENV_KEY_HOST: &str = "MACHINE_LOCALHOST";
 const CONNECTION_TIMEOUT: Duration = Duration::from_secs(1);
 const CONCURRENT_LIMIT: usize = 100;
 

@@ -19,7 +19,7 @@ ENV TZ=Etc/UTC \
     ROCKET_ADDRESS=0.0.0.0 \
     ROCKET_LOG_LEVEL=normal \
     ROCKET_PORT=8000 \
-    CONTAINERS_HOST=host.containers.internal
+    MACHINE_LOCALHOST=host.containers.internal
 
 RUN groupadd $APP_USER \
     && useradd -g $APP_USER $APP_USER \
