@@ -10,16 +10,18 @@ jobs:
     name: Image build and push
     runs-on: ubuntu-latest
     env:
-      IMAGE: ghcr.io/${{ github.repository_owner }}/home-server-${{ inputs.package }}:latest
+      IMAGE: ghcr.io/${{ github.repository_owner }}/home-server-${{ inputs.package }}
       PACKAGE_DIR: packages/${{ inputs.package }}
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: docker build ${{ env.PACKAGE_DIR }} --file ${{ env.PACKAGE_DIR }}/Dockerfile --tag ${{ env.IMAGE }}
+      run:
+        export TAG=$(cat ${{ env.PACKAGE_DIR }}/VERSION) ;
+        docker build ${{ env.PACKAGE_DIR }} -f ${{ env.PACKAGE_DIR }}/Dockerfile -t ${{ env.IMAGE }}:latest -t ${{ env.IMAGE }}:${TAG}
     - name: Docker Login
       run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
     - name: Push the Docker image
-      run: docker push ${{ env.IMAGE }}
+      run: docker push --all-tags ${{ env.IMAGE }}
   trigger-home-server-deploy:
     name: Trigger Home Server deploy
     needs: docker-build-and-push

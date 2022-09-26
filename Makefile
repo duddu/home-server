@@ -1,0 +1,9 @@
+TOPTARGETS := bump
+
+SUBDIRS := $(wildcard packages/*/.)
+
+$(TOPTARGETS): $(SUBDIRS)
+$(SUBDIRS):
+	$(MAKE) -C $@ $(MAKECMDGOALS)
+
+.PHONY: $(TOPTARGETS) $(SUBDIRS)
