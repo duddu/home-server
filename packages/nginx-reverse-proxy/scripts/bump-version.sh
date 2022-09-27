@@ -7,7 +7,7 @@ set -u
 cd "${0%/*}"
 cd ..
 
-current_version=$(grep -oe '"version":"[^"]*' nginx.conf | cut -c12-)
+current_version=$(cat VERSION)
 new_version=$(semver bump $1 $current_version)
 sed -i '' -E "s/\"version\":\"${current_version}\"/\"version\":\"${new_version}\"/g" nginx.conf
 printf "${new_version}" > VERSION
