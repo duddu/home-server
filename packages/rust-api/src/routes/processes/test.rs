@@ -4,10 +4,10 @@ use crate::rocket;
 mod integration_test {
     use super::rocket;
     use rocket::local::blocking::Client;
-    use rocket::http::{ContentType, uri::Origin, Status};
+    use rocket::http::{ContentType, Status};
     use rocket::serde::json::serde_json;
     use std::env;
-    use crate::{BASE_PATH, routes::processes::{self, Process}};
+    use crate::routes::processes::{self, Process};
 
     #[test]
     fn get() {      
@@ -42,9 +42,7 @@ mod integration_test {
         env::set_var(processes::ENV_KEY_HOST, "127.0.0.2");
 
         let client = Client::tracked(rocket()).expect("valid rocket instance");
-        let path = BASE_PATH.to_owned() + &uri!(processes::get_processes).to_string();
-        let uri = Origin::parse(&path).expect("valid URI");
-        let response = client.get(uri).dispatch();
+        let response = client.get(uri!(processes::get_processes)).dispatch();
 
         assert_eq!(response.status(), Status::Ok);
         assert_eq!(response.content_type().unwrap(), ContentType::JSON);
