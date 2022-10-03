@@ -45,8 +45,8 @@ spec:
     name: home-server-nginx-reverse-proxy
     imagePullPolicy: Always
     ports:
-    - containerPort: 443
-      hostPort: 4433
+    - containerPort: 8443
+      hostPort: 8433
     resources: {}
     securityContext:
       capabilities:
@@ -57,13 +57,13 @@ spec:
     stdin: true
     tty: true
     volumeMounts:
-    - mountPath: /etc/ssl/certs/davidedoronzo_myddns_me.pem-chain
+    - mountPath: /usr/share/nginx/ssl/certs/davidedoronzo_myddns_me.pem-chain
       name: ssl-certs-davidedoronzo_myddns_me.pem-chain
       readOnly: true
-    - mountPath: /etc/ssl/private/davidedoronzo_myddns_me.key
+    - mountPath: /usr/share/nginx/ssl/private/davidedoronzo_myddns_me.key
       name: ssl-private-davidedoronzo_myddns_me.key
       readOnly: true
-    - mountPath: /etc/ssl/certs/davidedoronzo-ca.pem
+    - mountPath: /usr/share/nginx/ssl/certs/davidedoronzo-ca.pem
       name: ssl-certs-davidedoronzo-ca.pem
       readOnly: true
   hostname: home-server
