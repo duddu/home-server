@@ -23,7 +23,7 @@ metadata:
 spec:
   containers:
   - image: ghcr.io/duddu/home-server-rust-api:latest
-    name: home-server-rust-api
+    name: rust-api
     imagePullPolicy: Always
     ports:
     - containerPort: 8000
@@ -42,7 +42,7 @@ spec:
     - -g
     - daemon off;
     image: ghcr.io/duddu/home-server-nginx-reverse-proxy:latest
-    name: home-server-nginx-reverse-proxy
+    name: nginx-reverse-proxy
     imagePullPolicy: Always
     ports:
     - containerPort: 8443
