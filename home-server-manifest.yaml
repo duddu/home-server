@@ -47,6 +47,8 @@ spec:
     ports:
     - containerPort: 8443
       hostPort: 8433
+    - containerPort: 8080
+      hostPort: 8080
     resources: {}
     securityContext:
       capabilities:
