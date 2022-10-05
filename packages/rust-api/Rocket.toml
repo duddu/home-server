@@ -1,4 +1,9 @@
 [default]
 address = "0.0.0.0"
-log_level = "debug"
 port = 8000
+
+[debug]
+log_level = "debug"
+
+[release]
+log_level = "normal"
