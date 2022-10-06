@@ -1,4 +1,2 @@
-.dockerignore
-Dockerfile
-scripts/
-ssl/
+*
+!nginx.conf
