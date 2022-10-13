@@ -10,4 +10,8 @@ rm -rf $CLONE_DIR
 git clone --depth 1 git@github.com:duddu/home-server.git $CLONE_DIR
 cd $CLONE_DIR
 git-crypt unlock
+if [ "$1" = "--machine-rm" ]
+then
+    bash ./scripts/home-server-machine-rm.sh
+fi
 bash ./scripts/home-server-pod-start.sh
