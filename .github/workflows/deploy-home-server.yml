@@ -9,6 +9,8 @@ on:
       - 'packages/**'
   workflow_call:
   workflow_dispatch:
+concurrency:
+  group: ${{ github.workflow }}
 env:
   SCRIPTS_PATH: https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/scripts
 jobs:
