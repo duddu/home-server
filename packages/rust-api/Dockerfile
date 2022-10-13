@@ -14,9 +14,6 @@ WORKDIR ${APP_DIR}
 EXPOSE 8000
 
 ENV TZ=Europe/London \
-    ROCKET_ADDRESS=0.0.0.0 \
-    ROCKET_LOG_LEVEL=normal \
-    ROCKET_PORT=8000 \
     MACHINE_LOCALHOST=host.containers.internal
 
 RUN groupadd ${APP_USER} && \
@@ -25,7 +22,7 @@ RUN groupadd ${APP_USER} && \
 
 HEALTHCHECK CMD curl --fail http://localhost:8000/health || exit 1
 
-COPY --from=builder --chown=${APP_USER}:${APP_USER} /app/target/release/home-server-rust-api ${APP_DIR}/
+COPY --from=builder --chown=${APP_USER}:${APP_USER} /app/Rocket.toml /app/target/release/home-server-rust-api ${APP_DIR}/
 USER ${APP_USER}
 
 CMD ["./home-server-rust-api"]
