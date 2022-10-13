@@ -13,8 +13,7 @@ WORKDIR ${APP_DIR}
 
 EXPOSE 8000
 
-ENV TZ=Europe/London \
-    MACHINE_LOCALHOST=host.containers.internal
+ENV TZ=Europe/London
 
 RUN groupadd ${APP_USER} && \
     useradd -g ${APP_USER} ${APP_USER} && \

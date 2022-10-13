@@ -1,6 +1,7 @@
 use futures::stream::{self, StreamExt};
-use rocket::serde::{json::Json, Deserialize, Serialize};
-use std::{env, net::{TcpStream, ToSocketAddrs}, time::Duration};
+use rocket::{serde::{json::Json, Deserialize, Serialize}, State};
+use std::{net::{TcpStream, ToSocketAddrs}, time::Duration};
+use crate::Config;
 
 #[cfg(test)] mod test;
 
@@ -12,7 +13,6 @@ const PROCESSES: [Process; 5] = [
     Process::new(32400, "Plex Server"),
 ];
 
-const ENV_KEY_HOST: &str = "MACHINE_LOCALHOST";
 const CONNECTION_TIMEOUT: Duration = Duration::from_secs(1);
 const CONCURRENT_LIMIT: usize = 100;
 
@@ -39,12 +39,12 @@ impl Process {
 }
 
 #[get("/processes")]
-pub async fn get_processes() -> Json<Vec<Process>> {
+pub async fn get_processes(config: &State<Config>) -> Json<Vec<Process>> {
     let mut processes = PROCESSES.to_vec();
     let processes_iter = stream::iter(&mut processes);
+    let host = config.machine_localhost.as_str();
 
     processes_iter.for_each_concurrent(CONCURRENT_LIMIT, |process| async move {
-        let host = env::var(ENV_KEY_HOST).unwrap();
         let host_addrs = (host, process.port).to_socket_addrs().unwrap();
         for host_addr in host_addrs {
             if let Ok(_stream) = TcpStream::connect_timeout(&host_addr, CONNECTION_TIMEOUT) {

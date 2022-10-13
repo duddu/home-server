@@ -39,7 +39,7 @@ mod integration_test {
             }
         ];
 
-        env::set_var(processes::ENV_KEY_HOST, "127.0.0.2");
+        env::set_var("ROCKET_MACHINE_LOCALHOST", "127.0.0.2");
 
         let client = Client::tracked(rocket()).expect("valid rocket instance");
         let response = client.get(uri!(processes::get_processes)).dispatch();

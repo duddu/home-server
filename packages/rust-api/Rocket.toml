@@ -4,6 +4,8 @@ port = 8000
 
 [debug]
 log_level = "debug"
+machine_localhost = "localhost"
 
 [release]
 log_level = "normal"
+machine_localhost = "host.containers.internal"
