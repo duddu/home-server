@@ -22,7 +22,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           known_hosts: ${{ secrets.KNOWN_HOSTS }}
       - name: Start home-server over SSH
-        run: ssh ${{ secrets.SSH_HOST }} "bash <(curl -s ${{ env.SCRIPTS_PATH }}/home-server-deploy.sh)"
+        run: ssh ${{ secrets.SSH_HOST }} "COMMIT_SHA=${{ github.sha }} bash <(curl -s ${{ env.SCRIPTS_PATH }}/home-server-deploy.sh)"
   e2e-health-check:
     name: Run e2e health check
     runs-on: ubuntu-latest
