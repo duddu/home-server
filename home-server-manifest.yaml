@@ -22,7 +22,7 @@ metadata:
   name: home-server
 spec:
   containers:
-  - image: ghcr.io/duddu/home-server-rust-api:latest
+  - image: ghcr.io/duddu/home-server-rust-api:0.8.0
     name: rust-api
     imagePullPolicy: Always
     ports:

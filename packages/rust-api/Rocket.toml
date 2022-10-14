@@ -1,7 +1,7 @@
 [default]
 address = "0.0.0.0"
 port = 8000
-ident = "home-server-rust-api/0.7.0"
+ident = "home-server-rust-api/0.8.0"
 
 [debug]
 log_level = "debug"
