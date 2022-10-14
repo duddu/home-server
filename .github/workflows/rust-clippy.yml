@@ -4,12 +4,14 @@ on:
     branches:
       - main
     paths:
-      - 'packages/rust-api/**'
+      - 'packages/rust-api/src/**'
+      - '**.toml'
   pull_request:
     branches:
       - main
     paths:
-      - 'packages/rust-api/**'
+      - 'packages/rust-api/src/**'
+      - '**.toml'
 defaults:
   run:
     shell: bash

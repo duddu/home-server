@@ -5,7 +5,7 @@ on:
       - main
     paths:
       - '.git-crypt/**'
-      - '.github/**'
+      - '.github/workflows/deploy-home-server.yml'
       - 'scripts/**'
       - '.gitattributes'
   workflow_call:
