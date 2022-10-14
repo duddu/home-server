@@ -3,10 +3,11 @@ on:
   push:
     branches:
       - main
-    paths-ignore:
-      - '.vscode/**'
-      - 'bin/**'
-      - 'packages/**'
+    paths:
+      - '.git-crypt/**'
+      - '.github/**'
+      - 'scripts/**'
+      - '.gitattributes'
   workflow_call:
   workflow_dispatch:
 concurrency:
