@@ -7,7 +7,7 @@ export HOME="/Users/duddu"
 CLONE_DIR="${HOME}/.home-server"
 
 rm -rf $CLONE_DIR
-git clone --depth=20 --filter=blob:none --no-checkout git@github.com:duddu/home-server.git $CLONE_DIR
+git clone -q --no-checkout --depth=20 --filter=blob:none git@github.com:duddu/home-server.git $CLONE_DIR
 cd $CLONE_DIR
 git sparse-checkout set --no-cone \
     .git-crypt \
