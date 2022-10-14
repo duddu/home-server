@@ -22,3 +22,5 @@ RUN touch /var/run/nginx.pid && \
 USER nginx
 
 ENTRYPOINT ["/usr/share/nginx/docker-entrypoint.sh"]
+
+CMD ["nginx"]
