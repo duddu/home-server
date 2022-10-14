@@ -70,6 +70,9 @@ spec:
     - mountPath: /usr/share/nginx/ssl/certs/davidedoronzo-ca.pem
       name: ssl-certs-davidedoronzo-ca.pem
       readOnly: true
+    - mountPath: /usr/share/nginx/ssl/certs/dhparam.pem
+      name: ssl-certs-dhparam.pem
+      readOnly: true
   hostname: home-server
   restartPolicy: Always
   volumes:
@@ -85,3 +88,7 @@ spec:
       path: $PWD/packages/nginx-reverse-proxy/ssl/certs/davidedoronzo-ca.pem
       type: File
     name: ssl-certs-davidedoronzo-ca.pem
+  - hostPath:
+      path: $PWD/packages/nginx-reverse-proxy/ssl/certs/dhparam.pem
+      type: File
+    name: ssl-certs-dhparam.pem
