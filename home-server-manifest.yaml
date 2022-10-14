@@ -57,34 +57,13 @@ spec:
     stdin: true
     tty: true
     volumeMounts:
-    - mountPath: /usr/share/nginx/ssl/certs/davidedoronzo_myddns_me.pem-chain
-      name: ssl-certs-davidedoronzo_myddns_me.pem-chain
-      readOnly: true
-    - mountPath: /usr/share/nginx/ssl/private/davidedoronzo_myddns_me.key
-      name: ssl-private-davidedoronzo_myddns_me.key
-      readOnly: true
-    - mountPath: /usr/share/nginx/ssl/certs/davidedoronzo-ca.pem
-      name: ssl-certs-davidedoronzo-ca.pem
-      readOnly: true
-    - mountPath: /usr/share/nginx/ssl/certs/dhparam.pem
-      name: ssl-certs-dhparam.pem
+    - mountPath: /usr/share/nginx/ssl
+      name: nginx-reverse-proxy_ssl
       readOnly: true
   hostname: home-server
   restartPolicy: Always
   volumes:
   - hostPath:
-      path: $PWD/packages/nginx-reverse-proxy/ssl/certs/davidedoronzo_myddns_me.pem-chain
-      type: File
-    name: ssl-certs-davidedoronzo_myddns_me.pem-chain
-  - hostPath:
-      path: $PWD/packages/nginx-reverse-proxy/ssl/private/davidedoronzo_myddns_me.key
-      type: File
-    name: ssl-private-davidedoronzo_myddns_me.key
-  - hostPath:
-      path: $PWD/packages/nginx-reverse-proxy/ssl/certs/davidedoronzo-ca.pem
-      type: File
-    name: ssl-certs-davidedoronzo-ca.pem
-  - hostPath:
-      path: $PWD/packages/nginx-reverse-proxy/ssl/certs/dhparam.pem
-      type: File
-    name: ssl-certs-dhparam.pem
+      path: $PWD/packages/nginx-reverse-proxy/ssl
+      type: Directory
+    name: nginx-reverse-proxy_ssl
