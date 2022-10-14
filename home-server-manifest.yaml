@@ -25,6 +25,9 @@ spec:
   - image: ghcr.io/duddu/home-server-rust-api:latest
     name: rust-api
     imagePullPolicy: Always
+    ports:
+    - containerPort: 8889
+      hostPort: 8889
     resources: {}
     securityContext:
       capabilities:

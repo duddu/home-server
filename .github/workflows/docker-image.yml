@@ -17,7 +17,7 @@ jobs:
     - name: Build the Docker image
       run:
         export TAG=$(cat ${{ env.PACKAGE_DIR }}/VERSION) ;
-        docker build ${{ env.PACKAGE_DIR }} -f ${{ env.PACKAGE_DIR }}/Dockerfile -t ${{ env.IMAGE }}:latest -t ${{ env.IMAGE }}:${TAG}
+        docker buildx build -f ${{ env.PACKAGE_DIR }}/Dockerfile -t ${{ env.IMAGE }}:latest -t ${{ env.IMAGE }}:${TAG} ${{ env.PACKAGE_DIR }}
     - name: Docker Login
       run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
     - name: Push the Docker image

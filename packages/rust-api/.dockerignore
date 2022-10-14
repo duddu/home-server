@@ -1,5 +1,6 @@
 *
-!src/
 !Cargo.lock
 !Cargo.toml
 !Rocket.toml
+!scripts/docker-entrypoint.sh
+!src/
