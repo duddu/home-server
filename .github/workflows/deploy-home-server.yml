@@ -34,7 +34,7 @@ jobs:
         run:
           if [ "${{ inputs.removeMachine }}" = "true" ]; then ARGS=--machine-rm; fi;
           ssh ${{ secrets.SSH_USER }}@${{ secrets.DOMAIN_NAME }}
-          "SSH_USER=${{ secrets.SSH_USER }} COMMIT_SHA=${{ github.sha }} bash <(curl -s ${{ env.SCRIPTS_PATH }}/home-server-deploy.sh) $ARGS"
+          "USER=${{ secrets.SSH_USER }} COMMIT_SHA=${{ github.sha }} bash <(curl -s ${{ env.SCRIPTS_PATH }}/home-server-deploy.sh) $ARGS"
   e2e-health-check:
     name: Run e2e health check
     runs-on: ubuntu-latest
