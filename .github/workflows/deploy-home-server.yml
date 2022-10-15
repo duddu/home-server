@@ -25,7 +25,9 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           known_hosts: ${{ secrets.KNOWN_HOSTS }}
       - name: Start home-server over SSH
-        run: ssh ${{ secrets.SSH_HOST }} "COMMIT_SHA=${{ github.sha }} bash <(curl -s ${{ env.SCRIPTS_PATH }}/home-server-deploy.sh)"
+        run:
+          ssh ${{ secrets.SSH_USER }}@${{ secrets.DOMAIN_NAME }}
+          "SSH_USER=${{ secrets.SSH_USER }} COMMIT_SHA=${{ github.sha }} bash <(curl -s ${{ env.SCRIPTS_PATH }}/home-server-deploy.sh)"
   e2e-health-check:
     name: Run e2e health check
     runs-on: ubuntu-latest
@@ -35,6 +37,6 @@ jobs:
         run: echo "${{ secrets.SSL_CLIENT_CERTIFICATE }}" > ${{ runner.temp }}/client.pem
       - name: Execute health check script
         run:
-          HTTPS_HOST=${{ secrets.HTTPS_HOST }}
+          DOMAIN_NAME=${{ secrets.DOMAIN_NAME }}
           SSL_CLIENT_CERT_PATH=${{ runner.temp }}/client.pem
           bash <(curl -s ${{ env.SCRIPTS_PATH }}/home-server-health-check.sh)

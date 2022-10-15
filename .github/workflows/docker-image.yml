@@ -16,8 +16,12 @@ jobs:
     - uses: actions/checkout@v3
     - name: Build the Docker image
       run:
-        export TAG=$(cat ${{ env.PACKAGE_DIR }}/VERSION) ;
-        docker buildx build -f ${{ env.PACKAGE_DIR }}/Dockerfile -t ${{ env.IMAGE }}:latest -t ${{ env.IMAGE }}:${TAG} ${{ env.PACKAGE_DIR }}
+        docker buildx build
+          -f ${{ env.PACKAGE_DIR }}/Dockerfile
+          -t ${{ env.IMAGE }}:latest
+          -t ${{ env.IMAGE }}:$(cat ${{ env.PACKAGE_DIR }}/VERSION)
+          --build-arg DOMAIN_NAME=${{ secrets.DOMAIN_NAME }}
+          ${{ env.PACKAGE_DIR }}
     - name: Docker Login
       run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
     - name: Push the Docker image

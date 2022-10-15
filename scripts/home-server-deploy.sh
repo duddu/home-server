@@ -3,7 +3,7 @@
 set -e
 
 export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
-export HOME="/Users/duddu"
+export HOME="/Users/${SSH_USER}"
 CLONE_DIR="${HOME}/.home-server"
 
 rm -rf $CLONE_DIR
