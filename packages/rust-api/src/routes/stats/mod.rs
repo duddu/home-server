@@ -5,7 +5,7 @@ use systemstat::{System, Platform};
 
 const BYTES_IN_MB: u64 = 1048576;
 
-#[derive(Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(crate = "rocket::serde")]
 pub struct Stats {
     ram_free_mb: u64,
