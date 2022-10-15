@@ -6,9 +6,9 @@ export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 export HOME="/Users/${SSH_USER}"
 CLONE_DIR="${HOME}/.home-server"
 
-rm -rf $CLONE_DIR
-git clone -q --no-checkout --depth=20 --filter=blob:none git@github.com:duddu/home-server.git $CLONE_DIR
+rm -rf $CLONE_DIR/{*,.git*}
 cd $CLONE_DIR
+git clone -q --no-checkout --depth=20 --filter=blob:none git@github.com:duddu/home-server.git .
 git sparse-checkout set --no-cone \
     .git-crypt \
     .gitattributes \

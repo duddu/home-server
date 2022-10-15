@@ -64,6 +64,6 @@ spec:
   restartPolicy: Always
   volumes:
   - hostPath:
-      path: $PWD/packages/nginx-reverse-proxy/ssl
+      path: /var/home/core/.home-server/packages/nginx-reverse-proxy/ssl
       type: Directory
     name: nginx-reverse-proxy_ssl
