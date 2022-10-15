@@ -10,6 +10,12 @@ on:
       - '.gitattributes'
   workflow_call:
   workflow_dispatch:
+    inputs:
+      removeMachine:
+        description: 'Remove virtual machine before restarting the pod'
+        required: true
+        default: false 
+        type: boolean
 concurrency:
   group: ${{ github.workflow }}
 env:
@@ -26,8 +32,9 @@ jobs:
           known_hosts: ${{ secrets.KNOWN_HOSTS }}
       - name: Start home-server over SSH
         run:
+          if [ "${{ inputs.removeMachine }}" = "true" ]; then ARGS=--machine-rm; fi;
           ssh ${{ secrets.SSH_USER }}@${{ secrets.DOMAIN_NAME }}
-          "SSH_USER=${{ secrets.SSH_USER }} COMMIT_SHA=${{ github.sha }} bash <(curl -s ${{ env.SCRIPTS_PATH }}/home-server-deploy.sh)"
+          "SSH_USER=${{ secrets.SSH_USER }} COMMIT_SHA=${{ github.sha }} bash <(curl -s ${{ env.SCRIPTS_PATH }}/home-server-deploy.sh) $ARGS"
   e2e-health-check:
     name: Run e2e health check
     runs-on: ubuntu-latest
