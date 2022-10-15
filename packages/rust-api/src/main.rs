@@ -7,6 +7,7 @@ mod routes;
 #[serde(crate = "rocket::serde")]
 pub struct Config {
     machine_localhost: String,
+    domain_name: String,
 }
 
 #[launch]

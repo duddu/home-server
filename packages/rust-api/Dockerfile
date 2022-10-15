@@ -17,6 +17,7 @@ ARG APP_DIR=/usr/src/app
 ARG APP_USER=rusty
 ARG TAG
 ARG COMMIT
+ARG DOMAIN_NAME
 LABEL org.opencontainers.image.authors="Davide Doronzo"
 LABEL org.opencontainers.image.url="https://github.com/duddu/home-server/pkgs/container/home-server-rust-api"
 LABEL org.opencontainers.image.version="${TAG}"
@@ -30,7 +31,8 @@ WORKDIR ${APP_DIR}
 
 EXPOSE 8000
 
-ENV TZ=Europe/London
+ENV TZ=Europe/London \
+    ROCKET_DOMAIN_NAME=${DOMAIN_NAME}
 
 RUN groupadd ${APP_USER} && \
     useradd -g ${APP_USER} ${APP_USER} && \

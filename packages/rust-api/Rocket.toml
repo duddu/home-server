@@ -1,12 +1,13 @@
 [default]
 address = "0.0.0.0"
 port = 8000
-ident = "home-server-rust-api/0.9.2"
+ident = "home-server-rust-api/0.10.0"
 
 [debug]
 log_level = "debug"
 cli_colors = true
 machine_localhost = "localhost"
+domain_name = "localhost"
 
 [release]
 log_level = "normal"
