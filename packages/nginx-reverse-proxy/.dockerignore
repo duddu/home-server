@@ -1,3 +1,4 @@
 *
 !nginx.conf
 !scripts/docker-entrypoint.sh
+!ssl/test/

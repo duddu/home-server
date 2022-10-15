@@ -36,7 +36,7 @@ jobs:
           ssh ${{ secrets.SSH_USER }}@${{ secrets.DOMAIN_NAME }}
           "USER=${{ secrets.SSH_USER }} COMMIT_SHA=${{ github.sha }} bash <(curl -s ${{ env.SCRIPTS_PATH }}/home-server-deploy.sh) $ARGS"
   e2e-health-check:
-    name: Run e2e health check
+    name: Run e2e health checks
     runs-on: ubuntu-latest
     needs: start-home-server-pod
     steps:

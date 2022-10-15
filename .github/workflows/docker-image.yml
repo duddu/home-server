@@ -24,6 +24,8 @@ jobs:
           --build-arg TAG=${TAG}
           --build-arg COMMIT="$(git log -n 1 --oneline)"
           --build-arg DOMAIN_NAME=${{ secrets.DOMAIN_NAME }}
+          --add-host "home-server:127.0.0.1"
+          --add-host "tplinkwifi.net:127.0.0.1"
           ${{ env.PACKAGE_DIR }}
     - name: Docker Login
       run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
