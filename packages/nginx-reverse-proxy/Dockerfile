@@ -1,6 +1,6 @@
 #syntax=docker/dockerfile:1.4
 
-FROM nginx:1.23.1-alpine
+FROM nginx:1.23-alpine
 ARG DOMAIN_NAME
 
 ENV TZ=Europe/London

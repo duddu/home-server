@@ -1,6 +1,6 @@
 #syntax=docker/dockerfile:1.4
 
-FROM rust:1.63.0-buster as builder
+FROM rust:1.64-bullseye as builder
 
 WORKDIR /app
 
@@ -12,7 +12,7 @@ ADD . ./
 RUN cargo build --release
 RUN cargo test --release
 
-FROM debian:buster-slim as production
+FROM debian:11.5-slim as production
 ARG APP_DIR=/usr/src/app
 ARG APP_USER=rusty
 
