@@ -21,191 +21,6 @@
 					<true/>
 					<key>Types</key>
 					<array>
-						<string>com.apple.cocoa.url</string>
-					</array>
-				</dict>
-				<key>AMActionVersion</key>
-				<string>2.0.1</string>
-				<key>AMApplication</key>
-				<array>
-					<string>Safari</string>
-				</array>
-				<key>AMParameterProperties</key>
-				<dict>
-					<key>URLlist</key>
-					<dict/>
-				</dict>
-				<key>AMProvides</key>
-				<dict>
-					<key>Container</key>
-					<string>List</string>
-					<key>Types</key>
-					<array>
-						<string>com.apple.cocoa.url</string>
-					</array>
-				</dict>
-				<key>ActionBundlePath</key>
-				<string>/System/Library/Automator/Get Specified URLs.action</string>
-				<key>ActionName</key>
-				<string>Get Specified URLs</string>
-				<key>ActionParameters</key>
-				<dict>
-					<key>URLlist</key>
-					<array>
-						<array>
-							<true/>
-							<string></string>
-							<string>https://raw.githubusercontent.com/duddu/podman-home-server-pod/main/scripts/home-server-deploy.sh</string>
-						</array>
-					</array>
-				</dict>
-				<key>BundleIdentifier</key>
-				<string>com.apple.Automator.URLList</string>
-				<key>CFBundleVersion</key>
-				<string>2.0.1</string>
-				<key>CanShowSelectedItemsWhenRun</key>
-				<true/>
-				<key>CanShowWhenRun</key>
-				<true/>
-				<key>Category</key>
-				<array>
-					<string>AMCategoryInternet</string>
-				</array>
-				<key>Class Name</key>
-				<string>AMURLListAction</string>
-				<key>InputUUID</key>
-				<string>2A2BD167-3D6E-41DC-8E07-99FDA5EFA18D</string>
-				<key>Keywords</key>
-				<array>
-					<string>Web</string>
-					<string>URL</string>
-					<string>Library</string>
-				</array>
-				<key>OutputUUID</key>
-				<string>8CAC6585-1263-4B3A-B134-14463285FF17</string>
-				<key>UUID</key>
-				<string>48347160-9181-442B-9ECD-87D3420709DB</string>
-				<key>UnlocalizedApplications</key>
-				<array>
-					<string>Safari</string>
-				</array>
-				<key>arguments</key>
-				<dict>
-					<key>0</key>
-					<dict>
-						<key>default value</key>
-						<array/>
-						<key>name</key>
-						<string>URLlist</string>
-						<key>required</key>
-						<string>0</string>
-						<key>type</key>
-						<string>0</string>
-						<key>uuid</key>
-						<string>0</string>
-					</dict>
-				</dict>
-				<key>isViewVisible</key>
-				<integer>1</integer>
-				<key>location</key>
-				<string>301.500000:295.000000</string>
-				<key>nibPath</key>
-				<string>/System/Library/Automator/Get Specified URLs.action/Contents/Resources/Base.lproj/main.nib</string>
-			</dict>
-			<key>isViewVisible</key>
-			<integer>1</integer>
-		</dict>
-		<dict>
-			<key>action</key>
-			<dict>
-				<key>AMAccepts</key>
-				<dict>
-					<key>Container</key>
-					<string>List</string>
-					<key>Types</key>
-					<array>
-						<string>com.apple.cocoa.url</string>
-					</array>
-				</dict>
-				<key>AMActionVersion</key>
-				<string>2.0</string>
-				<key>AMApplication</key>
-				<array>
-					<string>Safari</string>
-				</array>
-				<key>AMParameterProperties</key>
-				<dict/>
-				<key>AMProvides</key>
-				<dict>
-					<key>Container</key>
-					<string>List</string>
-					<key>Types</key>
-					<array>
-						<string>com.apple.cocoa.attributed-string</string>
-					</array>
-				</dict>
-				<key>ActionBundlePath</key>
-				<string>/System/Library/Automator/Get Text from Webpage.action</string>
-				<key>ActionName</key>
-				<string>Get Text from Web Page</string>
-				<key>ActionParameters</key>
-				<dict/>
-				<key>BundleIdentifier</key>
-				<string>com.apple.Automator.GetWebpageText</string>
-				<key>CFBundleVersion</key>
-				<string>2.0</string>
-				<key>CanShowSelectedItemsWhenRun</key>
-				<true/>
-				<key>CanShowWhenRun</key>
-				<false/>
-				<key>Category</key>
-				<array>
-					<string>AMCategoryInternet</string>
-				</array>
-				<key>Class Name</key>
-				<string>AMGetTextFromWebpageAction</string>
-				<key>InputUUID</key>
-				<string>3E67CA66-FB93-40A6-8F6D-9D40BBF08796</string>
-				<key>Keywords</key>
-				<array>
-					<string>Text</string>
-					<string>Web</string>
-					<string>Download</string>
-					<string>Get</string>
-					<string>Summary</string>
-					<string>RSS</string>
-				</array>
-				<key>OutputUUID</key>
-				<string>B6E85D9F-5BF1-4EC0-8EE9-0A3007F59407</string>
-				<key>UUID</key>
-				<string>2EA66900-A649-4DDF-859E-18AE59F0B85F</string>
-				<key>UnlocalizedApplications</key>
-				<array>
-					<string>Safari</string>
-				</array>
-				<key>arguments</key>
-				<dict/>
-				<key>isViewVisible</key>
-				<integer>1</integer>
-				<key>location</key>
-				<string>301.500000:395.000000</string>
-				<key>nibPath</key>
-				<string>/System/Library/Automator/Get Text from Webpage.action/Contents/Resources/Base.lproj/GetWebpageText.nib</string>
-			</dict>
-			<key>isViewVisible</key>
-			<integer>1</integer>
-		</dict>
-		<dict>
-			<key>action</key>
-			<dict>
-				<key>AMAccepts</key>
-				<dict>
-					<key>Container</key>
-					<string>List</string>
-					<key>Optional</key>
-					<true/>
-					<key>Types</key>
-					<array>
 						<string>com.apple.cocoa.string</string>
 					</array>
 				</dict>
@@ -244,10 +59,8 @@
 				<key>ActionParameters</key>
 				<dict>
 					<key>COMMAND_STRING</key>
-					<string>output=$(bash -c "($@)")
-code=$?
-printf "%s\n" "$output"
-exit $code</string>
+					<string># export SSH_USER=duddu
+bash &lt;(curl -s https://raw.githubusercontent.com/duddu/podman-home-server-pod/main/scripts/home-server-deploy.sh) --machine-rm</string>
 					<key>CheckedForUserDefaultShell</key>
 					<true/>
 					<key>inputMethod</key>
@@ -271,10 +84,8 @@ exit $code</string>
 				</array>
 				<key>Class Name</key>
 				<string>RunShellScriptAction</string>
-				<key>Disabled</key>
-				<false/>
 				<key>InputUUID</key>
-				<string>250B8393-83ED-47A2-AD4F-264E53B5911B</string>
+				<string>66C7758D-C37E-4D0C-940A-9000B3F794DC</string>
 				<key>Keywords</key>
 				<array>
 					<string>Shell</string>
@@ -284,9 +95,9 @@ exit $code</string>
 					<string>Unix</string>
 				</array>
 				<key>OutputUUID</key>
-				<string>2D84A7D0-FA4A-4CDD-9058-1BB940FC5711</string>
+				<string>8AD22F52-5E5C-4C3C-BFD3-DF3BA0D1477B</string>
 				<key>UUID</key>
-				<string>A320DADA-4358-471D-A088-8714F5B942CE</string>
+				<string>A7A12F17-BD2E-4443-9CE6-18C8B1FC034A</string>
 				<key>UnlocalizedApplications</key>
 				<array>
 					<string>Automator</string>
@@ -359,10 +170,12 @@ exit $code</string>
 						<string>4</string>
 					</dict>
 				</dict>
+				<key>conversionLabel</key>
+				<integer>0</integer>
 				<key>isViewVisible</key>
 				<integer>1</integer>
 				<key>location</key>
-				<string>301.500000:757.000000</string>
+				<string>309.000000:432.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Run Shell Script.action/Contents/Resources/Base.lproj/main.nib</string>
 			</dict>
@@ -497,12 +310,10 @@ exit $code</string>
 						<string>2</string>
 					</dict>
 				</dict>
-				<key>conversionLabel</key>
-				<integer>0</integer>
 				<key>isViewVisible</key>
 				<integer>1</integer>
 				<key>location</key>
-				<string>301.500000:946.000000</string>
+				<string>309.000000:621.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Display Notification.action/Contents/Resources/Base.lproj/main.nib</string>
 			</dict>
@@ -512,26 +323,12 @@ exit $code</string>
 	</array>
 	<key>connectors</key>
 	<dict>
-		<key>15C83EBF-2A92-42FB-B88A-BB4555B514F2</key>
+		<key>5D969355-0B10-44D1-8619-77BBB5657708</key>
 		<dict>
 			<key>from</key>
-			<string>48347160-9181-442B-9ECD-87D3420709DB - 48347160-9181-442B-9ECD-87D3420709DB</string>
-			<key>to</key>
-			<string>2EA66900-A649-4DDF-859E-18AE59F0B85F - 2EA66900-A649-4DDF-859E-18AE59F0B85F</string>
-		</dict>
-		<key>93182E12-27F8-46E0-84D1-5FF8841C758E</key>
-		<dict>
-			<key>from</key>
-			<string>A320DADA-4358-471D-A088-8714F5B942CE - A320DADA-4358-471D-A088-8714F5B942CE</string>
+			<string>A7A12F17-BD2E-4443-9CE6-18C8B1FC034A - A7A12F17-BD2E-4443-9CE6-18C8B1FC034A</string>
 			<key>to</key>
 			<string>18EB5A20-4268-4549-BBCE-C0DB7A244662 - 18EB5A20-4268-4549-BBCE-C0DB7A244662</string>
-		</dict>
-		<key>B4B4D567-8CC6-407E-889D-0BA73E738552</key>
-		<dict>
-			<key>from</key>
-			<string>2EA66900-A649-4DDF-859E-18AE59F0B85F - 2EA66900-A649-4DDF-859E-18AE59F0B85F</string>
-			<key>to</key>
-			<string>A320DADA-4358-471D-A088-8714F5B942CE - A320DADA-4358-471D-A088-8714F5B942CE</string>
 		</dict>
 	</dict>
 	<key>variables</key>
