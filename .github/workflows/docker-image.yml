@@ -16,10 +16,13 @@ jobs:
     - uses: actions/checkout@v3
     - name: Build the Docker image
       run:
+        export TAG=$(cat ${{ env.PACKAGE_DIR }}/VERSION);
         docker buildx build
           -f ${{ env.PACKAGE_DIR }}/Dockerfile
           -t ${{ env.IMAGE }}:latest
-          -t ${{ env.IMAGE }}:$(cat ${{ env.PACKAGE_DIR }}/VERSION)
+          -t ${{ env.IMAGE }}:${TAG}
+          --build-arg TAG=${TAG}
+          --build-arg COMMIT="$(git log -n 1 --oneline)"
           --build-arg DOMAIN_NAME=${{ secrets.DOMAIN_NAME }}
           ${{ env.PACKAGE_DIR }}
     - name: Docker Login

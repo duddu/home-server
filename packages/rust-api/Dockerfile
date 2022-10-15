@@ -15,6 +15,16 @@ RUN cargo test --release
 FROM debian:11.5-slim as production
 ARG APP_DIR=/usr/src/app
 ARG APP_USER=rusty
+ARG TAG
+ARG COMMIT
+LABEL org.opencontainers.image.authors="Davide Doronzo"
+LABEL org.opencontainers.image.url="https://github.com/duddu/home-server/pkgs/container/home-server-rust-api"
+LABEL org.opencontainers.image.version="${TAG}"
+LABEL org.opencontainers.image.revision="${COMMIT}"
+LABEL org.opencontainers.image.vendor="duddu"
+LABEL org.opencontainers.image.licenses="Unlicense"
+LABEL org.opencontainers.image.title="rust-api"
+LABEL org.opencontainers.image.description="Home Server - Rust API"
 
 WORKDIR ${APP_DIR}
 

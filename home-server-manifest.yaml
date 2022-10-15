@@ -22,7 +22,7 @@ metadata:
   name: home-server
 spec:
   containers:
-  - image: ghcr.io/duddu/home-server-rust-api:0.9.0
+  - image: ghcr.io/duddu/home-server-rust-api:0.9.1
     name: rust-api
     imagePullPolicy: Always
     ports:
@@ -37,7 +37,7 @@ spec:
         - CAP_AUDIT_WRITE
     stdin: true
     tty: true
-  - image: ghcr.io/duddu/home-server-nginx-reverse-proxy:0.11.2
+  - image: ghcr.io/duddu/home-server-nginx-reverse-proxy:0.11.3
     name: nginx-reverse-proxy
     imagePullPolicy: Always
     ports:

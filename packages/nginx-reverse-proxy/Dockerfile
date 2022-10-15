@@ -1,7 +1,17 @@
 #syntax=docker/dockerfile:1.4
 
 FROM nginx:1.23-alpine
+ARG TAG
+ARG COMMIT
 ARG DOMAIN_NAME
+LABEL org.opencontainers.image.authors="Davide Doronzo"
+LABEL org.opencontainers.image.url="https://github.com/duddu/home-server/pkgs/container/home-server-nginx-reverse-proxy"
+LABEL org.opencontainers.image.version="${TAG}"
+LABEL org.opencontainers.image.revision="${COMMIT}"
+LABEL org.opencontainers.image.vendor="duddu"
+LABEL org.opencontainers.image.licenses="Unlicense"
+LABEL org.opencontainers.image.title="nginx-reverse-proxy"
+LABEL org.opencontainers.image.description="Home Server - Nginx reverse proxy"
 
 ENV TZ=Europe/London
 
