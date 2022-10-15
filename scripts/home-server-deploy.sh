@@ -14,8 +14,9 @@ git sparse-checkout set --no-cone \
     .gitattributes \
     home-server-manifest.yaml \
     packages/nginx-reverse-proxy/ssl \
-    'scripts/home-server-*.sh'
-git reset --hard "${COMMIT_SHA:-HEAD}"
+    'scripts/home-server-*.sh' \
+    1> /dev/null
+git reset --hard "${COMMIT_SHA:-HEAD}" 1> /dev/null
 git-crypt unlock
 
 if [ "$1" = "--machine-rm" ]
