@@ -10,6 +10,8 @@ const BYTES_IN_MB: u64 = 1048576;
 pub struct Stats {
     ram_free_mb: u64,
     ram_total_mb: u64,
+    disk_free_mb: u64,
+    disk_total_mb: u64,
     uptime_mins: u64,
 }
 
@@ -20,6 +22,8 @@ pub fn get_stats() -> Json<Stats> {
     Json(Stats {
         ram_free_mb: sys.memory().unwrap().free.as_u64() / BYTES_IN_MB,
         ram_total_mb: sys.memory().unwrap().total.as_u64() / BYTES_IN_MB,
+        disk_free_mb: sys.mount_at("/").unwrap().free.as_u64() / BYTES_IN_MB,
+        disk_total_mb: sys.mount_at("/").unwrap().total.as_u64() / BYTES_IN_MB,
         uptime_mins: sys.uptime().unwrap().as_secs() / 60,
     })
 }
