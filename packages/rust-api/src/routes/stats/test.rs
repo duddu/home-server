@@ -19,7 +19,6 @@ mod integration_test {
 
         assert_eq!(json.ram_free_mb.type_id(), TypeId::of::<u64>());
         assert_eq!(json.ram_total_mb.type_id(), TypeId::of::<u64>());
-        assert_eq!(json.boot_time_unix.type_id(), TypeId::of::<i64>());
         assert_eq!(json.uptime_mins.type_id(), TypeId::of::<u64>());
     }
 }
