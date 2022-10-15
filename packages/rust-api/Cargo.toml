@@ -1,12 +1,12 @@
 [package]
 name = "home-server-rust-api"
-version = "0.8.2"
+version = "0.9.0"
 edition = "2021"
 
 [dependencies]
 futures = "0.3"
 serde = "1.0.144"
-sysinfo = "0.26.4"
+systemstat = "0.2.1"
 
 [dependencies.rocket]
 version = "0.5.0-rc.2"
