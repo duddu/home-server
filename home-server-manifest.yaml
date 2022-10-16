@@ -37,7 +37,7 @@ spec:
         - CAP_AUDIT_WRITE
     stdin: true
     tty: true
-  - image: ghcr.io/duddu/home-server-nginx-reverse-proxy:0.12.0
+  - image: ghcr.io/duddu/home-server-nginx-reverse-proxy:0.12.1
     name: nginx-reverse-proxy
     imagePullPolicy: Always
     ports:
@@ -57,7 +57,7 @@ spec:
     stdin: true
     tty: true
     volumeMounts:
-    - mountPath: /usr/share/nginx/ssl
+    - mountPath: /usr/local/share
       name: nginx-reverse-proxy_ssl
       readOnly: true
   hostname: home-server

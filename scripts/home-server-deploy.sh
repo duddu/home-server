@@ -13,7 +13,8 @@ git sparse-checkout set --no-cone \
     .git-crypt \
     .gitattributes \
     home-server-manifest.yaml \
-    packages/nginx-reverse-proxy/ssl \
+    packages/nginx-reverse-proxy/ssl/certs \
+    packages/nginx-reverse-proxy/ssl/private \
     'scripts/home-server-*.sh' \
     1> /dev/null
 git reset --hard "${COMMIT_SHA:-HEAD}" 1> /dev/null

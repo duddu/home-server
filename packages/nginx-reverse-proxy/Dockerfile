@@ -1,11 +1,16 @@
 #syntax=docker/dockerfile:1.4
 
+ARG LOCAL_DIR=/usr/local
+
 FROM nginx:1.23-alpine as builder
 ARG DOMAIN_NAME=localhost
+ARG LOCAL_DIR
+
+WORKDIR ${LOCAL_DIR}
 
 ADD https://github.com/joewalnes/websocketd/releases/download/v0.4.1/websocketd-0.4.1-linux_amd64.zip ./
 
-COPY ssl/test /usr/share/nginx/ssl/
+COPY ssl/test share/
 COPY nginx.conf /etc/nginx/nginx.conf
 
 RUN sed -i "s/%DOMAIN_NAME%/${DOMAIN_NAME}/g" /etc/nginx/nginx.conf && \
@@ -20,11 +25,14 @@ FROM nginx:1.23-alpine as production
 ARG TAG
 ARG COMMIT
 ARG DOMAIN_NAME
+ARG LOCAL_DIR
+
+WORKDIR ${LOCAL_DIR}
 
 ENV TZ=Europe/London
 
-COPY --from=builder --chown=nginx:nginx websocketd ./
-COPY scripts/docker-entrypoint.sh /usr/share/nginx/docker-entrypoint.sh
+COPY --from=builder --chown=nginx:nginx ${LOCAL_DIR}/websocketd bin/
+COPY scripts/docker-entrypoint.sh ./
 COPY nginx.conf /etc/nginx/nginx.conf
 
 RUN sed -i "s/%DOMAIN_NAME%/${DOMAIN_NAME}/g" /etc/nginx/nginx.conf && \
@@ -33,12 +41,11 @@ RUN sed -i "s/%DOMAIN_NAME%/${DOMAIN_NAME}/g" /etc/nginx/nginx.conf && \
     chown nginx:nginx /var/run/nginx.pid && \
     chown -R nginx:nginx /var/cache/nginx && \
     chown -R nginx:nginx /var/log/nginx && \
-    chown -R nginx:nginx /usr/share/nginx && \
-    chown nginx:nginx websocketd
+    chown -R nginx:nginx /usr/share/nginx
 
 USER nginx
 
-ENTRYPOINT ["/usr/share/nginx/docker-entrypoint.sh"]
+ENTRYPOINT ["./docker-entrypoint.sh"]
 CMD ["nginx"]
 
 LABEL org.opencontainers.image.authors="Davide Doronzo"
