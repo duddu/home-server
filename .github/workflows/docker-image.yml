@@ -10,28 +10,53 @@ jobs:
     name: Image build and push
     runs-on: ubuntu-latest
     env:
-      IMAGE: ghcr.io/${{ github.repository_owner }}/home-server-${{ inputs.package }}
       PACKAGE_DIR: packages/${{ inputs.package }}
+      IMAGE: ghcr.io/${{ github.repository_owner }}/home-server-${{ inputs.package }}
+      WEBSOCKETD_URL: https://github.com/joewalnes/websocketd/releases/download/v0.4.1/websocketd-0.4.1-linux_amd64.zip
     steps:
-    - uses: actions/checkout@v3
-    - name: Build the Docker image
-      run:
-        export TAG=$(cat ${{ env.PACKAGE_DIR }}/VERSION);
-        docker buildx build
-          -f ${{ env.PACKAGE_DIR }}/Dockerfile
-          -t ${{ env.IMAGE }}:latest
-          -t ${{ env.IMAGE }}:${TAG}
-          --build-arg TAG=${TAG}
-          --build-arg COMMIT="$(git log -n 1 --oneline)"
-          --build-arg DOMAIN_NAME=${{ secrets.DOMAIN_NAME }}
-            --build-arg WEBSOCKETD_VERSION=0.4.1-linux_amd64
-            --add-host "home-server:127.0.0.1"
-            --add-host "tplinkwifi.net:127.0.0.1"
-          ${{ env.PACKAGE_DIR }}
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Set package environment variables
+      run: |
+        echo "TAG=$(cat ${{ env.PACKAGE_DIR }}/VERSION)" >> $GITHUB_ENV
+        echo "COMMIT=$(git log -n 1 --oneline)" >> $GITHUB_ENV
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
     - name: Docker Login
       run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
-    - name: Push the Docker image
-      run: docker push --all-tags ${{ env.IMAGE }}
+    - name: Build and push builder image
+      uses: docker/build-push-action@v3
+      with:
+        target: builder
+        context: ${{ env.PACKAGE_DIR }}
+        tags: ${{ env.IMAGE }}:builder
+        build-args: WEBSOCKETD_URL=${{ env.WEBSOCKETD_URL }}
+        add-hosts: |
+          home-server:127.0.0.1
+          tplinkwifi.net:127.0.0.1
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+        push: true
+    - name: Docker pull XXXXXXXXX
+      run: docker pull ${{ env.IMAGE }}:builder
+    - name: Build and push production image
+      uses: docker/build-push-action@v3
+      with:
+        target: production
+        context: ${{ env.PACKAGE_DIR }}
+        tags: |
+          ${{ env.IMAGE }}:latest
+          ${{ env.IMAGE }}:${{ env.TAG }}
+        build-args: |
+          TAG=${{ env.TAG }}
+          COMMIT=${{ env.COMMIT }}
+          DOMAIN_NAME=${{ secrets.DOMAIN_NAME }}
+          WEBSOCKETD_URL=${{ env.WEBSOCKETD_URL }}
+        cache-from: |
+          ${{ env.IMAGE }}:builder
+          type=gha
+        cache-to: type=gha,mode=max
+        push: true
   trigger-home-server-deploy:
     name: Trigger Home Server deploy
     needs: docker-build-and-push

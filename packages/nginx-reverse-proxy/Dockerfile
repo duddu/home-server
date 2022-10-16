@@ -8,40 +8,41 @@ ARG LOCAL_DIR
 
 WORKDIR ${LOCAL_DIR}
 
-ADD https://github.com/joewalnes/websocketd/releases/download/v0.4.1/websocketd-0.4.1-linux_amd64.zip ./
-
 COPY ssl/test share/
 COPY nginx.conf /etc/nginx/nginx.conf
 
-RUN sed -i "s/%DOMAIN_NAME%/${DOMAIN_NAME}/g" /etc/nginx/nginx.conf && \
-    touch /var/run/nginx.pid && \
+RUN touch /var/run/nginx.pid && \
     touch /var/log/nginx/nginx-reverse-proxy.log && \
-    unzip websocketd-0.4.1-linux_amd64.zip websocketd && \
-    rm websocketd-0.4.1-linux_amd64.zip
-
-RUN nginx -t
+    sed -i "s/%DOMAIN_NAME%/${DOMAIN_NAME}/g" /etc/nginx/nginx.conf && \
+    nginx -t
 
 FROM nginx:1.23-alpine as production
 ARG TAG
 ARG COMMIT
 ARG DOMAIN_NAME
 ARG LOCAL_DIR
+ARG WEBSOCKETD_URL
 
 WORKDIR ${LOCAL_DIR}
 
 ENV TZ=Europe/London
 
-COPY --from=builder --chown=nginx:nginx ${LOCAL_DIR}/websocketd bin/
-COPY scripts/docker-entrypoint.sh ./
-COPY nginx.conf /etc/nginx/nginx.conf
-
-RUN sed -i "s/%DOMAIN_NAME%/${DOMAIN_NAME}/g" /etc/nginx/nginx.conf && \
+RUN curl -sL ${WEBSOCKETD_URL} -o websocketd.zip && \
+    unzip websocketd.zip websocketd && \
+    rm websocketd.zip && \
+    mv websocketd bin && \
+    chown nginx:nginx bin/websocketd && \
     touch /var/run/nginx.pid && \
     touch /var/log/nginx/nginx-reverse-proxy.log && \
     chown nginx:nginx /var/run/nginx.pid && \
     chown -R nginx:nginx /var/cache/nginx && \
     chown -R nginx:nginx /var/log/nginx && \
     chown -R nginx:nginx /usr/share/nginx
+
+COPY scripts/docker-entrypoint.sh ./
+COPY nginx.conf /etc/nginx/nginx.conf
+
+RUN sed -i "s/%DOMAIN_NAME%/${DOMAIN_NAME}/g" /etc/nginx/nginx.conf
 
 USER nginx
 
