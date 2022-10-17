@@ -3,40 +3,41 @@
 ARG LOCAL_DIR=/usr/local
 
 FROM nginx:1.23-alpine as builder
-ARG TAG
-ARG COMMIT
+ARG WEBSOCKETD_URL=https://github.com/joewalnes/websocketd/releases/download/v0.4.1/websocketd-0.4.1-linux_amd64.zip
+ARG DOMAIN_NAME=localhost
 ARG LOCAL_DIR
-ARG DOMAIN_NAME
+ARG COMMIT
+ARG TAG
 
 WORKDIR ${LOCAL_DIR}
+
+RUN curl -sL ${WEBSOCKETD_URL} -o websocketd.zip && \
+    unzip websocketd.zip websocketd && \
+    rm websocketd.zip && \
+    touch /var/run/nginx.pid && \
+    touch /var/log/nginx/nginx-reverse-proxy.log
 
 COPY ssl/test share/
 COPY nginx.conf /etc/nginx/nginx.conf
 
-RUN touch /var/run/nginx.pid && \
-    touch /var/log/nginx/nginx-reverse-proxy.log && \
-    sed -i "s/%DOMAIN_NAME%/${DOMAIN_NAME}/g" /etc/nginx/nginx.conf && \
+RUN sed -i "s/%DOMAIN_NAME%/${DOMAIN_NAME}/g" /etc/nginx/nginx.conf && \
     nginx -t
 
 LABEL org.opencontainers.image.description="[builder] home server - nginx reverse proxy v${TAG} - ${COMMIT}"
 
 FROM nginx:1.23-alpine as production
-ARG TAG
-ARG COMMIT
-ARG LOCAL_DIR
 ARG DOMAIN_NAME
-ARG WEBSOCKETD_URL
+ARG LOCAL_DIR
+ARG COMMIT
+ARG TAG
 
 WORKDIR ${LOCAL_DIR}
 
+COPY --from=builder --chown=nginx:nginx ${LOCAL_DIR}/websocketd bin/
+
 ENV TZ=Europe/London
 
-RUN curl -sL ${WEBSOCKETD_URL} -o websocketd.zip && \
-    unzip websocketd.zip websocketd && \
-    rm websocketd.zip && \
-    mv websocketd bin && \
-    chown nginx:nginx bin/websocketd && \
-    touch /var/run/nginx.pid && \
+RUN touch /var/run/nginx.pid && \
     touch /var/log/nginx/nginx-reverse-proxy.log && \
     chown nginx:nginx /var/run/nginx.pid && \
     chown -R nginx:nginx /var/cache/nginx && \

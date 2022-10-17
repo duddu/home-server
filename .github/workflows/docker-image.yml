@@ -12,7 +12,6 @@ jobs:
     env:
       PACKAGE_DIR: packages/${{ inputs.package }}
       IMAGE: ghcr.io/${{ github.repository_owner }}/home-server-${{ inputs.package }}
-      WEBSOCKETD_URL: https://github.com/joewalnes/websocketd/releases/download/v0.4.1/websocketd-0.4.1-linux_amd64.zip
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -33,13 +32,11 @@ jobs:
         build-args: |
           TAG=${{ env.TAG }}
           COMMIT=${{ env.COMMIT }}
-          DOMAIN_NAME=localhost
-          WEBSOCKETD_URL=${{ env.WEBSOCKETD_URL }}
         add-hosts: |
           home-server:127.0.0.1
           tplinkwifi.net:127.0.0.1
-        cache-from: type=gha
-        cache-to: type=gha,mode=max
+        cache-from: type=registry,ref=${{ env.IMAGE }}:builder-cache
+        cache-to: type=registry,ref=${{ env.IMAGE }}:builder-cache,mode=max
         push: true
     - name: Build and push production image
       uses: docker/build-push-action@v3
@@ -53,11 +50,13 @@ jobs:
           TAG=${{ env.TAG }}
           COMMIT=${{ env.COMMIT }}
           DOMAIN_NAME=${{ secrets.DOMAIN_NAME }}
-          WEBSOCKETD_URL=${{ env.WEBSOCKETD_URL }}
+        add-hosts: |
+          home-server:127.0.0.1
+          tplinkwifi.net:127.0.0.1
         cache-from: |
-          ${{ env.IMAGE }}:builder
-          type=gha
-        cache-to: type=gha,mode=max
+          type=registry,ref=${{ env.IMAGE }}:builder-cache
+          type=registry,ref=${{ env.IMAGE }}:latest-cache
+        cache-to: type=registry,ref=${{ env.IMAGE }}:latest-cache,mode=max
         push: true
   trigger-home-server-deploy:
     name: Trigger Home Server deploy
