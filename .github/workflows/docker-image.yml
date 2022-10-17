@@ -50,9 +50,6 @@ jobs:
           TAG=${{ env.TAG }}
           COMMIT=${{ env.COMMIT }}
           DOMAIN_NAME=${{ secrets.DOMAIN_NAME }}
-        add-hosts: |
-          home-server:127.0.0.1
-          tplinkwifi.net:127.0.0.1
         cache-from: |
           type=registry,ref=${{ env.IMAGE }}:builder-cache
           type=registry,ref=${{ env.IMAGE }}:latest-cache
