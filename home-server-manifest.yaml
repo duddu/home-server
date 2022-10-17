@@ -44,7 +44,7 @@ spec:
       timeoutSeconds: 2
       periodSeconds: 60
       failureThreshold: 3
-  - image: ghcr.io/duddu/home-server-nginx-reverse-proxy:0.12.7
+  - image: ghcr.io/duddu/home-server-nginx-reverse-proxy:0.12.8
     name: nginx-reverse-proxy
     imagePullPolicy: Always
     ports:
@@ -64,13 +64,7 @@ spec:
     livenessProbe:
       exec:
         command:
-        - curl
-        - -s
-        - --fail
-        - http://localhost:8080/health
-        - "||"
-        - exit
-        - "1"
+        - healthcheck.sh
       initialDelaySeconds: 5
       timeoutSeconds: 2
       periodSeconds: 60

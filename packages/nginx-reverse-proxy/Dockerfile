@@ -40,7 +40,7 @@ RUN touch /var/run/nginx.pid && \
     chown -R nginx:nginx /usr/share/nginx
 
 COPY --from=builder --chown=nginx:nginx /usr/bin/websocketd bin/
-COPY scripts/docker-entrypoint.sh ./
+COPY scripts/docker-entrypoint.sh scripts/healthcheck.sh ./
 COPY nginx.conf ${NGINX_CONF}
 
 RUN sed -i "s/%DOMAIN_NAME%/${DOMAIN_NAME}/g" ${NGINX_CONF}

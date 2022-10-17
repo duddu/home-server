@@ -1,4 +1,5 @@
 *
 !nginx.conf
 !scripts/docker-entrypoint.sh
+!scripts/healthcheck.sh
 !ssl/test/
