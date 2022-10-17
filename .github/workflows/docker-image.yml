@@ -42,7 +42,6 @@ jobs:
           TAG=${{ env.TAG }}
           COMMIT=${{ env.COMMIT }}
           DOMAIN_NAME=${{ secrets.DOMAIN_NAME }}
-          WEBSOCKETD_URL=https://github.com/joewalnes/websocketd/releases/download/v0.4.1/websocketd-0.4.1-linux_amd64.zip
         add-hosts: ${{ inputs.add-hosts }}
         cache-from: type=registry,ref=${{ env.IMAGE }}:latest-cache
         cache-to: type=registry,ref=${{ env.IMAGE }}:latest-cache,mode=max

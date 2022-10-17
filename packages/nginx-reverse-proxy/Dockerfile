@@ -5,15 +5,13 @@ ARG LOCAL_DIR=/usr/local
 
 FROM nginx:1.23-alpine as builder
 ARG DOMAIN_NAME=localhost
-ARG WEBSOCKETD_URL
 ARG NGINX_CONF
 ARG LOCAL_DIR
 
 WORKDIR ${LOCAL_DIR}
 
-RUN curl -sL ${WEBSOCKETD_URL} -o websocketd.zip && \
-    unzip websocketd.zip websocketd && \
-    rm websocketd.zip && \
+RUN apk add websocketd && \
+    which websocketd && \
     touch /var/run/nginx.pid && \
     touch /var/log/nginx/nginx-reverse-proxy.log
 
@@ -41,7 +39,7 @@ RUN touch /var/run/nginx.pid && \
     chown -R nginx:nginx /var/log/nginx && \
     chown -R nginx:nginx /usr/share/nginx
 
-COPY --from=builder --chown=nginx:nginx ${LOCAL_DIR}/websocketd bin/
+COPY --from=builder --chown=nginx:nginx /usr/bin/websocketd bin/
 COPY scripts/docker-entrypoint.sh ./
 COPY nginx.conf ${NGINX_CONF}
 
