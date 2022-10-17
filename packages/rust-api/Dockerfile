@@ -7,12 +7,13 @@ ARG APP_DIR
 
 WORKDIR ${APP_DIR}
 
-RUN apt update && \
-    apt install -y pkg-config openssl libssl-dev websocketd
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    pkg-config=0.29.2-1 libssl-dev=1.1.1n-0+deb11u3 websocketd=0.4.1-1+b5
 
 COPY . ./
-RUN cargo test --release
-RUN cargo build --release
+RUN cargo test --release && \
+    cargo build --release
 
 FROM debian:11.5-slim as production
 ARG APP_USER=rusty
