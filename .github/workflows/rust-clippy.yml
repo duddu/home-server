@@ -1,4 +1,4 @@
-name: Rust code scanning
+name: Rust Clippy
 on:
   push:
     branches:
