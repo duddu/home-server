@@ -22,7 +22,7 @@ env:
   SCRIPTS_PATH: https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/scripts
 jobs:
   start-home-server-pod:
-    name: Start Home Server pod
+    name: Restart pod
     runs-on: ubuntu-latest
     steps:
       - name: Install SSH Key

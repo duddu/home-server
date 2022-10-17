@@ -6,8 +6,8 @@ on:
     paths:
       - 'packages/rust-api/**'
 jobs:
-  trigger-docker-image-ci:
-    name: Trigger Docker image CI
+  trigger-image-ci:
+    name: Trigger image CI
     uses: ./.github/workflows/docker-image.yml
     secrets: inherit
     with:

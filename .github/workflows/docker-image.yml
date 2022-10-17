@@ -46,6 +46,13 @@ jobs:
         cache-from: type=registry,ref=${{ env.IMAGE }}:latest-cache
         cache-to: type=registry,ref=${{ env.IMAGE }}:latest-cache,mode=max
         push: true
+  trigger-snyk-container:
+    name: Trigger Snyk
+    needs: docker-build-and-push
+    uses: ./.github/workflows/snyk-container.yml
+    secrets: inherit
+    with:
+      package: ${{ inputs.package }}
   trigger-home-server-deploy:
     name: Trigger Home Server deploy
     needs: docker-build-and-push
