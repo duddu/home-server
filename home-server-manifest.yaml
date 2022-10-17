@@ -28,7 +28,6 @@ spec:
     ports:
     - containerPort: 8889
       hostPort: 8889
-    resources: {}
     securityContext:
       capabilities:
         drop:
@@ -37,7 +36,7 @@ spec:
         - CAP_AUDIT_WRITE
     stdin: true
     tty: true
-  - image: ghcr.io/duddu/home-server-nginx-reverse-proxy:0.12.6
+  - image: ghcr.io/duddu/home-server-nginx-reverse-proxy:0.12.7
     name: nginx-reverse-proxy
     imagePullPolicy: Always
     ports:
@@ -47,7 +46,6 @@ spec:
       hostPort: 8080
     - containerPort: 8888
       hostPort: 8888
-    resources: {}
     securityContext:
       capabilities:
         drop:
@@ -60,6 +58,19 @@ spec:
     - mountPath: /usr/local/share
       name: nginx-reverse-proxy_ssl
       readOnly: true
+    livenessProbe:
+      exec:
+        command:
+        - curl
+        - --fail
+        - http://localhost:8080/health
+        - "||"
+        - exit
+        - "1"
+      initialDelaySeconds: 5
+      timeoutSeconds: 2
+      periodSeconds: 30
+      failureThreshold: 3
   hostname: home-server
   restartPolicy: Always
   volumes:
