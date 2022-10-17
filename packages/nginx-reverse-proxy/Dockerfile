@@ -3,8 +3,10 @@
 ARG LOCAL_DIR=/usr/local
 
 FROM nginx:1.23-alpine as builder
-ARG DOMAIN_NAME=localhost
+ARG TAG
+ARG COMMIT
 ARG LOCAL_DIR
+ARG DOMAIN_NAME
 
 WORKDIR ${LOCAL_DIR}
 
@@ -16,11 +18,13 @@ RUN touch /var/run/nginx.pid && \
     sed -i "s/%DOMAIN_NAME%/${DOMAIN_NAME}/g" /etc/nginx/nginx.conf && \
     nginx -t
 
+LABEL org.opencontainers.image.description="[builder] home server - nginx reverse proxy v${TAG} - ${COMMIT}"
+
 FROM nginx:1.23-alpine as production
 ARG TAG
 ARG COMMIT
-ARG DOMAIN_NAME
 ARG LOCAL_DIR
+ARG DOMAIN_NAME
 ARG WEBSOCKETD_URL
 
 WORKDIR ${LOCAL_DIR}
@@ -56,4 +60,4 @@ LABEL org.opencontainers.image.revision="${COMMIT}"
 LABEL org.opencontainers.image.vendor="duddu"
 LABEL org.opencontainers.image.licenses="Unlicense"
 LABEL org.opencontainers.image.title="nginx-reverse-proxy"
-LABEL org.opencontainers.image.description="Home Server - Nginx reverse proxy"
+LABEL org.opencontainers.image.description="[Production] home server - nginx reverse proxy v${TAG} - ${COMMIT}"

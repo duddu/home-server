@@ -30,15 +30,17 @@ jobs:
         target: builder
         context: ${{ env.PACKAGE_DIR }}
         tags: ${{ env.IMAGE }}:builder
-        build-args: WEBSOCKETD_URL=${{ env.WEBSOCKETD_URL }}
+        build-args: |
+          TAG=${{ env.TAG }}
+          COMMIT=${{ env.COMMIT }}
+          DOMAIN_NAME=localhost
+          WEBSOCKETD_URL=${{ env.WEBSOCKETD_URL }}
         add-hosts: |
           home-server:127.0.0.1
           tplinkwifi.net:127.0.0.1
         cache-from: type=gha
         cache-to: type=gha,mode=max
         push: true
-    - name: Docker pull XXXXXXXXX
-      run: docker pull ${{ env.IMAGE }}:builder
     - name: Build and push production image
       uses: docker/build-push-action@v3
       with:
