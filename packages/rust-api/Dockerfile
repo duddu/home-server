@@ -2,16 +2,13 @@
 
 ARG APP_DIR=/usr/local/src
 
-FROM rust:1.64-bullseye as builder
+FROM rust:1.64-slim-bullseye as builder
 ARG APP_DIR
-ARG WEBSOCKETD_URL
 
 WORKDIR ${APP_DIR}
 
-RUN apt-get install curl && \
-    curl -sL ${WEBSOCKETD_URL} -o websocketd.zip && \
-    unzip websocketd.zip websocketd && \
-    rm websocketd.zip
+RUN apt update && \
+    apt install -y curl websocketd
 
 COPY . ./
 RUN cargo test --release
@@ -20,8 +17,6 @@ RUN cargo build --release
 FROM debian:11.5-slim as production
 ARG APP_USER=rusty
 ARG APP_DIR
-ARG TAG
-ARG COMMIT
 ARG DOMAIN_NAME
 
 WORKDIR ${APP_DIR}
@@ -34,7 +29,7 @@ RUN groupadd ${APP_USER} && \
     chown ${APP_USER}:${APP_USER} rust-api.log
 
 COPY --from=builder --chown=${APP_USER}:${APP_USER} ${APP_DIR}/Rocket.toml ${APP_DIR}/scripts/docker-entrypoint.sh ./
-COPY --from=builder --chown=${APP_USER}:${APP_USER} ${APP_DIR}/target/release/home-server-rust-api ${APP_DIR}/websocketd /usr/local/bin/
+COPY --from=builder --chown=${APP_USER}:${APP_USER} ${APP_DIR}/target/release/home-server-rust-api /usr/bin/websocketd /usr/local/bin/
 
 ENV TZ=Europe/London \
     ROCKET_DOMAIN_NAME=${DOMAIN_NAME}
@@ -43,6 +38,8 @@ USER ${APP_USER}
 
 ENTRYPOINT ["./docker-entrypoint.sh"]
 
+ARG TAG
+ARG COMMIT
 LABEL org.opencontainers.image.authors="Davide Doronzo"
 LABEL org.opencontainers.image.url="https://github.com/duddu/home-server/pkgs/container/home-server-rust-api"
 LABEL org.opencontainers.image.version="${TAG}"
@@ -50,4 +47,4 @@ LABEL org.opencontainers.image.revision="${COMMIT}"
 LABEL org.opencontainers.image.vendor="duddu"
 LABEL org.opencontainers.image.licenses="Unlicense"
 LABEL org.opencontainers.image.title="rust-api"
-LABEL org.opencontainers.image.description="Home Server - Rust API"
+LABEL org.opencontainers.image.description="home server - rust api v${TAG} - ${COMMIT}"
