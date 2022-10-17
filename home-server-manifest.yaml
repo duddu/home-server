@@ -22,13 +22,13 @@ metadata:
   name: home-server
 spec:
   containers:
-  - image: ghcr.io/duddu/home-server-rust-api:0.12.3
+  - image: ghcr.io/duddu/home-server-rust-api:0.12.5
     name: rust-api
     imagePullPolicy: Always
     ports:
     - containerPort: 8889
       hostPort: 8889
-    securityContext:
+    securityContext: &securityContext
       capabilities:
         drop:
         - CAP_MKNOD
@@ -36,6 +36,14 @@ spec:
         - CAP_AUDIT_WRITE
     stdin: true
     tty: true
+    livenessProbe:
+      exec:
+        command:
+        - home-server-rust-api-healthcheck
+      initialDelaySeconds: 5
+      timeoutSeconds: 2
+      periodSeconds: 60
+      failureThreshold: 3
   - image: ghcr.io/duddu/home-server-nginx-reverse-proxy:0.12.7
     name: nginx-reverse-proxy
     imagePullPolicy: Always
@@ -46,12 +54,7 @@ spec:
       hostPort: 8080
     - containerPort: 8888
       hostPort: 8888
-    securityContext:
-      capabilities:
-        drop:
-        - CAP_MKNOD
-        - CAP_NET_RAW
-        - CAP_AUDIT_WRITE
+    securityContext: *securityContext
     stdin: true
     tty: true
     volumeMounts:
@@ -62,6 +65,7 @@ spec:
       exec:
         command:
         - curl
+        - -s
         - --fail
         - http://localhost:8080/health
         - "||"
@@ -69,7 +73,7 @@ spec:
         - "1"
       initialDelaySeconds: 5
       timeoutSeconds: 2
-      periodSeconds: 30
+      periodSeconds: 60
       failureThreshold: 3
   hostname: home-server
   restartPolicy: Always

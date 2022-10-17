@@ -8,7 +8,7 @@ ARG APP_DIR
 WORKDIR ${APP_DIR}
 
 RUN apt update && \
-    apt install -y curl websocketd
+    apt install -y pkg-config openssl libssl-dev websocketd
 
 COPY . ./
 RUN cargo test --release
@@ -21,15 +21,20 @@ ARG DOMAIN_NAME
 
 WORKDIR ${APP_DIR}
 
-HEALTHCHECK CMD curl --fail http://localhost:8000/health || exit 1
-
 RUN groupadd ${APP_USER} && \
     useradd -g ${APP_USER} ${APP_USER} && \
     touch rust-api.log && \
     chown ${APP_USER}:${APP_USER} rust-api.log
 
-COPY --from=builder --chown=${APP_USER}:${APP_USER} ${APP_DIR}/Rocket.toml ${APP_DIR}/scripts/docker-entrypoint.sh ./
-COPY --from=builder --chown=${APP_USER}:${APP_USER} ${APP_DIR}/target/release/home-server-rust-api /usr/bin/websocketd /usr/local/bin/
+COPY --from=builder --chown=${APP_USER}:${APP_USER} \
+    ${APP_DIR}/Rocket.toml \
+    ${APP_DIR}/scripts/docker-entrypoint.sh \
+    ./
+COPY --from=builder --chown=${APP_USER}:${APP_USER} \
+    ${APP_DIR}/target/release/home-server-rust-api \
+    ${APP_DIR}/target/release/home-server-rust-api-healthcheck \
+    /usr/bin/websocketd \
+    /usr/local/bin/
 
 ENV TZ=Europe/London \
     ROCKET_DOMAIN_NAME=${DOMAIN_NAME}
