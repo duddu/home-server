@@ -5,6 +5,9 @@ on:
       package:
         required: true
         type: string
+      add-hosts:
+        required: false
+        type: string
 jobs:
   docker-build-and-push:
     name: Image build and push
@@ -19,25 +22,14 @@ jobs:
       run: |
         echo "TAG=$(cat ${{ env.PACKAGE_DIR }}/VERSION)" >> $GITHUB_ENV
         echo "COMMIT=$(git log -n 1 --oneline)" >> $GITHUB_ENV
-    - name: Set up Docker Buildx
+    - name: Setup Docker Buildx
       uses: docker/setup-buildx-action@v2
-    - name: Docker Login
-      run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
-    - name: Build and push builder image
-      uses: docker/build-push-action@v3
+    - name: Login to GitHub Container Registry
+      uses: docker/login-action@v2
       with:
-        target: builder
-        context: ${{ env.PACKAGE_DIR }}
-        tags: ${{ env.IMAGE }}:builder
-        build-args: |
-          TAG=${{ env.TAG }}
-          COMMIT=${{ env.COMMIT }}
-        add-hosts: |
-          home-server:127.0.0.1
-          tplinkwifi.net:127.0.0.1
-        cache-from: type=registry,ref=${{ env.IMAGE }}:builder-cache
-        cache-to: type=registry,ref=${{ env.IMAGE }}:builder-cache,mode=max
-        push: true
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
     - name: Build and push production image
       uses: docker/build-push-action@v3
       with:
@@ -50,9 +42,9 @@ jobs:
           TAG=${{ env.TAG }}
           COMMIT=${{ env.COMMIT }}
           DOMAIN_NAME=${{ secrets.DOMAIN_NAME }}
-        cache-from: |
-          type=registry,ref=${{ env.IMAGE }}:builder-cache
-          type=registry,ref=${{ env.IMAGE }}:latest-cache
+          WEBSOCKETD_URL=https://github.com/joewalnes/websocketd/releases/download/v0.4.1/websocketd-0.4.1-linux_amd64.zip
+        add-hosts: ${{ inputs.add-hosts }}
+        cache-from: type=registry,ref=${{ env.IMAGE }}:latest-cache
         cache-to: type=registry,ref=${{ env.IMAGE }}:latest-cache,mode=max
         push: true
   trigger-home-server-deploy:
