@@ -21,7 +21,7 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
           image: ghcr.io/${{ github.repository_owner }}/home-server-${{ inputs.package }}:${{ env.TAG }}
-          args: 
+          args:
             --file=packages/${{ inputs.package }}/Dockerfile
             --severity-threshold=medium
       - name: Upload scan result to GitHub
