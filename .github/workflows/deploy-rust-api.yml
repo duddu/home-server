@@ -6,6 +6,9 @@ on:
     paths:
       - 'packages/rust-api/**'
 jobs:
+  trigger-clippy:
+    name: Trigger Clippy
+    uses: ./.github/workflows/rust-clippy.yml
   trigger-image-ci:
     name: Trigger image CI
     uses: ./.github/workflows/docker-image.yml
