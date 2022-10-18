@@ -1,62 +1,47 @@
 name: Hadolint
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - '**/Dockerfile'
-  pull_request:
-    branches:
-      - main
-    paths:
-      - '**/Dockerfile'
+  workflow_call:
+    inputs:
+      package:
+        required: true
+        type: string
 permissions:
   contents: read
 jobs:
-  changed-dockerfiles:
-    name: Detect changed Dockerfiles
+  hadolint:
+    name: Lint Dockerfile
     runs-on: ubuntu-latest
-    outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    env:
+      dockerfile: packages/${{ inputs.package }}/Dockerfile
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
     steps:
       - name: Checkout
         uses: actions/checkout@v3
         with:
           fetch-depth: 2
-      - name: Detect changes
+      - name: Detect changes in Dockerfile
         uses: tj-actions/changed-files@v32.1.2
-        id: changed-dockerfiles
+        id: changed-dockerfile
         with:
-          files: |
-            **/Dockerfile
-          json: true
-      - name: Set dockerfiles matrix
-        id: set-matrix
-        run: echo "matrix={\"dockerfile\":${{ steps.changed-dockerfiles.outputs.all_changed_files }}}" >> "$GITHUB_OUTPUT"
-  hadolint:
-    name: Run hadolint scanning
-    runs-on: ubuntu-latest
-    needs:
-      - changed-dockerfiles
-    permissions:
-      contents: read
-      security-events: write
-      actions: read
-    strategy:
-      fail-fast: false
-      matrix: ${{ fromJSON(needs.changed-dockerfiles.outputs.matrix) }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+          files: ${{ env.dockerfile }}
+      - name: Determine whether to continue
+        if: ${{ steps.changed-dockerfile.outputs.any_changed == 'true' }}
+        run: echo "do_lint=true" >> $GITHUB_ENV
       - name: Run hadolint
         uses: hadolint/hadolint-action@v2.1.0
+        id: hadolint
+        if: env.do_lint
         with:
-          dockerfile: ${{ matrix.dockerfile }}
+          dockerfile: ${{ env.dockerfile }}
           format: sarif
           output-file: hadolint-results.sarif
           no-fail: true
       - name: Upload analysis results to GitHub
         uses: github/codeql-action/upload-sarif@v2
+        if: env.do_lint
         with:
           sarif_file: hadolint-results.sarif
           wait-for-processing: true

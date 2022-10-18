@@ -9,6 +9,11 @@ on:
         required: false
         type: string
 jobs:
+  trigger-hadolint:
+    name: Trigger Hadolint
+    uses: ./.github/workflows/hadolint.yml
+    with:
+      package: ${{ inputs.package }}
   docker-build-and-push:
     name: Image build and push
     runs-on: ubuntu-latest
