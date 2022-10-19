@@ -8,7 +8,7 @@ CLONE_DIR="${HOME}/.home-server"
 
 rm -rf $CLONE_DIR/{*,.git*}
 cd $CLONE_DIR
-git clone -q --no-checkout --depth=20 --filter=blob:none git@github.com:duddu/home-server.git .
+git clone -q --no-checkout --depth=1 --filter=blob:none git@github.com:duddu/home-server.git .
 git sparse-checkout set --no-cone \
     .git-crypt \
     .gitattributes \
