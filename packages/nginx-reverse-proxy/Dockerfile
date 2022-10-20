@@ -11,16 +11,16 @@ ARG LOCAL_DIR
 WORKDIR ${LOCAL_DIR}
 
 RUN apk add websocketd && \
-    which websocketd && \
     touch /var/run/nginx.pid && \
     touch /var/log/nginx/nginx-reverse-proxy.log
 
 COPY ssl/test share/
 COPY nginx.conf ${NGINX_CONF}
 
-RUN sed -i "s/%DOMAIN_NAME%/${DOMAIN_NAME}/g" ${NGINX_CONF} && \
-    sed -i "s/server home-server/server test.home-server/g" ${NGINX_CONF} && \
-    sed -i "s/server tplinkwifi.net/server test.tplinkwifi.net/g" ${NGINX_CONF} && \
+RUN sed -e "s/%DOMAIN_NAME%/${DOMAIN_NAME}/g" \
+        -e "s/server home-server/server test.home-server/g" \
+        -e "s/server tplinkwifi.net/server test.tplinkwifi.net/g" \
+        -i ${NGINX_CONF} && \
     nginx -t
 
 FROM nginx:1.23-alpine as production
@@ -37,7 +37,8 @@ RUN touch /var/run/nginx.pid && \
     chown nginx:nginx /var/run/nginx.pid && \
     chown -R nginx:nginx /var/cache/nginx && \
     chown -R nginx:nginx /var/log/nginx && \
-    chown -R nginx:nginx /usr/share/nginx
+    chown -R nginx:nginx /usr/share/nginx && \
+    chmod -R 400 /usr/share/nginx
 
 COPY --from=builder --chown=nginx:nginx /usr/bin/websocketd bin/
 COPY scripts/docker-entrypoint.sh scripts/healthcheck.sh ./

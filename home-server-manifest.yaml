@@ -44,7 +44,7 @@ spec:
       timeoutSeconds: 2
       periodSeconds: 60
       failureThreshold: 3
-  - image: ghcr.io/duddu/home-server-nginx-reverse-proxy:0.12.9
+  - image: ghcr.io/duddu/home-server-nginx-reverse-proxy:0.13.0
     name: nginx-reverse-proxy
     imagePullPolicy: Always
     ports:
