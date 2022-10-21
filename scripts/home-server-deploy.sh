@@ -1,9 +1,14 @@
 #!/bin/bash
 
 set -e
+set -u
+: "${USER:?Variable not set or empty}"
+: "${COMMIT_SHA:?Variable not set or empty}"
+: "${DOMAIN_NAME:?Variable not set or empty}"
 
 export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 export HOME="/Users/${USER}"
+export DOMAIN_NAME
 CLONE_DIR="${HOME}/.home-server"
 
 mkdir -p $CLONE_DIR
@@ -14,14 +19,13 @@ git sparse-checkout set --no-cone \
   .git-crypt \
   .gitattributes \
   home-server-manifest.yaml \
-  packages/nginx-reverse-proxy/ssl/certs \
-  packages/nginx-reverse-proxy/ssl/private \
+  'packages/nginx-reverse-proxy/ssl/*.pem' \
   'scripts/home-server-*.sh' \
   1> /dev/null
 git reset --hard "${COMMIT_SHA:-HEAD}" 1> /dev/null
 git-crypt unlock
 
-if [ "$1" = "--machine-rm" ]
+if [ "${1:-}" = "--restart-vm" ]
 then
   bash ./scripts/home-server-machine-rm.sh
 fi

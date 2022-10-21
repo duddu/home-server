@@ -1,0 +1,18 @@
+name: Home Server healthcheck
+on:
+  workflow_call:
+  workflow_dispatch:
+env:
+  SCRIPTS_PATH: https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/scripts
+jobs:
+  health-check:
+    name: Run e2e health checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Prepare SSL client certificate
+        run: echo "${{ secrets.SSL_CLIENT_CERTIFICATE }}" > ${{ runner.temp }}/client.pem
+      - name: Execute health check script
+        run:
+          DOMAIN_NAME=${{ secrets.DOMAIN_NAME }}
+          SSL_CLIENT_CERT_PATH=${{ runner.temp }}/client.pem
+          bash <(curl -s ${{ env.SCRIPTS_PATH }}/home-server-health-check.sh)

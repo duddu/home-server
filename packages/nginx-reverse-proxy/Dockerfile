@@ -4,7 +4,6 @@ ARG NGINX_CONF=/etc/nginx/nginx.conf
 ARG LOCAL_DIR=/usr/local
 
 FROM nginx:1.23-alpine as builder
-ARG DOMAIN_NAME=localhost
 ARG NGINX_CONF
 ARG LOCAL_DIR
 
@@ -14,13 +13,12 @@ RUN apk add websocketd && \
     touch /var/run/nginx.pid && \
     touch /var/log/nginx/nginx-reverse-proxy.log
 
-COPY ssl/test share/
+COPY ssl/test share/ssl
 COPY nginx.conf ${NGINX_CONF}
 
-RUN sed -e "s/%DOMAIN_NAME%/${DOMAIN_NAME}/g" \
+RUN sed -e "s/\$DOMAIN_NAME/localhost/g" \
         -e "s/server home-server/server test.home-server/g" \
-        -e "s/server tplinkwifi.net/server test.tplinkwifi.net/g" \
-        -i ${NGINX_CONF} && \
+        -e "s/server tplinkwifi.net/server test.tplinkwifi.net/g" -i ${NGINX_CONF} && \
     nginx -t
 
 FROM nginx:1.23-alpine as production
@@ -44,7 +42,7 @@ COPY --from=builder --chown=nginx:nginx /usr/bin/websocketd bin/
 COPY scripts/docker-entrypoint.sh scripts/healthcheck.sh ./
 COPY nginx.conf ${NGINX_CONF}
 
-RUN sed -i "s/%DOMAIN_NAME%/${DOMAIN_NAME}/g" ${NGINX_CONF}
+RUN sed -e "s/\$DOMAIN_NAME/${DOMAIN_NAME}/g" -i ${NGINX_CONF}
 
 USER nginx
 

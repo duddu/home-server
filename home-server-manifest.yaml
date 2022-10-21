@@ -44,7 +44,7 @@ spec:
       timeoutSeconds: 2
       periodSeconds: 60
       failureThreshold: 3
-  - image: ghcr.io/duddu/home-server-nginx-reverse-proxy:0.13.0
+  - image: ghcr.io/duddu/home-server-nginx-reverse-proxy:0.14.0
     name: nginx-reverse-proxy
     imagePullPolicy: Always
     ports:
@@ -58,8 +58,17 @@ spec:
     stdin: true
     tty: true
     volumeMounts:
-    - mountPath: /usr/local/share
-      name: nginx-reverse-proxy_ssl
+    - mountPath: /usr/local/share/ssl/ca.pem
+      name: nginx-reverse-proxy_ssl-ca
+      readOnly: true
+    - mountPath: /usr/local/share/ssl/dhparam.pem
+      name: nginx-reverse-proxy_ssl-dhparam
+      readOnly: true
+    - mountPath: /usr/local/share/ssl/fullchain.pem
+      name: nginx-reverse-proxy_ssl-certificate
+      readOnly: true
+    - mountPath: /usr/local/share/ssl/private.key
+      name: nginx-reverse-proxy_ssl-key
       readOnly: true
     livenessProbe:
       exec:
@@ -73,6 +82,18 @@ spec:
   restartPolicy: Always
   volumes:
   - hostPath:
-      path: /var/home/core/.home-server/packages/nginx-reverse-proxy/ssl
-      type: Directory
-    name: nginx-reverse-proxy_ssl
+      path: /var/home/core/.home-server/packages/nginx-reverse-proxy/ssl/ca.pem
+      type: File
+    name: nginx-reverse-proxy_ssl-ca
+  - hostPath:
+      path: /var/home/core/.home-server/packages/nginx-reverse-proxy/ssl/dhparam.pem
+      type: File
+    name: nginx-reverse-proxy_ssl-dhparam
+  - hostPath:
+      path: /var/home/core/.letsencrypt/${DOMAIN_NAME}/install/nginx/fullchain.pem
+      type: File
+    name: nginx-reverse-proxy_ssl-certificate
+  - hostPath:
+      path: /var/home/core/.letsencrypt/${DOMAIN_NAME}/install/nginx/private.key
+      type: File
+    name: nginx-reverse-proxy_ssl-key

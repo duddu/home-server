@@ -11,39 +11,23 @@ on:
   workflow_call:
   workflow_dispatch:
     inputs:
-      restartVM:
+      restart-vm:
         description: 'Restart podman virtual machine before restarting the pod'
         required: true
         default: false 
         type: boolean
 concurrency:
   group: ${{ github.workflow }}
-env:
-  SCRIPTS_PATH: https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/scripts
 jobs:
   start-home-server-pod:
     name: Restart pod
-    runs-on: ubuntu-latest
-    steps:
-      - name: Install SSH Key
-        uses: benoitchantre/setup-ssh-authentication-action@1.0.0
-        with:
-          private-key: ${{ secrets.SSH_KEY }}
-          known-hosts: ${{ secrets.KNOWN_HOSTS }}
-      - name: Start home-server over SSH
-        run:
-          if [ "${{ inputs.restartVM }}" = "true" ]; then ARGS=--machine-rm; fi;
-          ssh ${{ secrets.SSH_USER }}@${{ secrets.DOMAIN_NAME }}
-          "USER=${{ secrets.SSH_USER }} COMMIT_SHA=${{ github.sha }} bash <(curl -s ${{ env.SCRIPTS_PATH }}/home-server-deploy.sh) $ARGS"
-  e2e-health-check:
-    name: Run e2e health checks
-    runs-on: ubuntu-latest
+    uses: ./.github/workflows/run-over-ssh.yml
+    secrets: inherit
+    with:
+      deploy-script-name: home-server-deploy
+      deploy-script-argument: ${{ inputs.restart-vm && '--restart-vm' || '' }}
+  trigger-health-check:
+    name: Trigger health check
+    uses: ./.github/workflows/healthcheck.yml
     needs: start-home-server-pod
-    steps:
-      - name: Prepare SSL client certificate
-        run: echo "${{ secrets.SSL_CLIENT_CERTIFICATE }}" > ${{ runner.temp }}/client.pem
-      - name: Execute health check script
-        run:
-          DOMAIN_NAME=${{ secrets.DOMAIN_NAME }}
-          SSL_CLIENT_CERT_PATH=${{ runner.temp }}/client.pem
-          bash <(curl -s ${{ env.SCRIPTS_PATH }}/home-server-health-check.sh)
+    secrets: inherit

@@ -1,0 +1,27 @@
+name: Let's Encrypt
+on:
+  workflow_dispatch:
+    inputs:
+      acme-command:
+        type: choice
+        description: Whether to issue new ssl certificates or just renew existing ones
+        required: true
+        default: renew
+        options: 
+          - issue
+          - renew
+concurrency:
+  group: ${{ github.workflow }}
+jobs:
+  certs-maintainance:
+    name: TSL certificates maintainance
+    uses: ./.github/workflows/run-over-ssh.yml
+    secrets: inherit
+    with:
+      deploy-script-name: home-server-letsencrypt
+      deploy-script-argument: --${{ inputs.acme-command }}
+  trigger-health-check:
+    name: Trigger health check
+    uses: ./.github/workflows/healthcheck.yml
+    needs: certs-maintainance
+    secrets: inherit
