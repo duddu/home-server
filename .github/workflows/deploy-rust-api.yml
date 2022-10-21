@@ -5,6 +5,9 @@ on:
       - main
     paths:
       - 'packages/rust-api/**'
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
 jobs:
   trigger-clippy:
     name: Trigger Clippy

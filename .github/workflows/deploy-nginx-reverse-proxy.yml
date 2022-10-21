@@ -5,6 +5,9 @@ on:
       - main
     paths:
       - 'packages/nginx-reverse-proxy/**'
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
 jobs:
   trigger-image-ci:
     name: Trigger image CI
