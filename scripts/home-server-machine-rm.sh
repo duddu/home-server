@@ -2,9 +2,6 @@
 
 set -e
 
-cd "${0%/*}"
-cd ..
-
 VM=home-server-vm
 
 (podman machine list | grep -q $VM &&
