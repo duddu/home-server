@@ -5,5 +5,7 @@
     ],
     "rust-analyzer.linkedProjects": [
         "packages/rust-api/Cargo.toml"
-    ]
+    ],
+    "editor.tabSize": 2,
+    "editor.detectIndentation": true
 }
