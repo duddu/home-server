@@ -58,17 +58,8 @@ spec:
     stdin: true
     tty: true
     volumeMounts:
-    - mountPath: /usr/local/share/ssl/ca.pem
-      name: nginx-reverse-proxy_ssl-ca
-      readOnly: true
-    - mountPath: /usr/local/share/ssl/dhparam.pem
-      name: nginx-reverse-proxy_ssl-dhparam
-      readOnly: true
-    - mountPath: /usr/local/share/ssl/fullchain.pem
-      name: nginx-reverse-proxy_ssl-certificate
-      readOnly: true
-    - mountPath: /usr/local/share/ssl/private.key
-      name: nginx-reverse-proxy_ssl-key
+    - mountPath: /usr/local/share/ssl
+      name: nginx-reverse-proxy_ssl
       readOnly: true
     livenessProbe:
       exec:
@@ -82,18 +73,6 @@ spec:
   restartPolicy: Always
   volumes:
   - hostPath:
-      path: /var/home/core/.home-server/packages/nginx-reverse-proxy/ssl/ca.pem
-      type: File
-    name: nginx-reverse-proxy_ssl-ca
-  - hostPath:
-      path: /var/home/core/.home-server/packages/nginx-reverse-proxy/ssl/dhparam.pem
-      type: File
-    name: nginx-reverse-proxy_ssl-dhparam
-  - hostPath:
-      path: /var/home/core/.letsencrypt/${DOMAIN_NAME}/install/nginx/fullchain.pem
-      type: File
-    name: nginx-reverse-proxy_ssl-certificate
-  - hostPath:
-      path: /var/home/core/.letsencrypt/${DOMAIN_NAME}/install/nginx/private.key
-      type: File
-    name: nginx-reverse-proxy_ssl-key
+      path: /var/home/core/.podman_volumes/ssl
+      type: Directory
+    name: nginx-reverse-proxy_ssl
