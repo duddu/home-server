@@ -3,7 +3,6 @@
 set -e
 set -u
 : "${HOME:?Variable not set or empty}"
-: "${DOMAIN_NAME:?Variable not set or empty}"
 
 VM=home-server-vm
 VM_CPUS=1
@@ -18,7 +17,7 @@ MANIFEST=$HOME/.home-server/home-server-manifest.yaml
       --cpus=$VM_CPUS \
       --memory=$VM_RAM \
       -v $HOME/.config/containers/podman/machine:$VM_HOME/.config/containers/podman/machine:ro \
-      -v $HOME/.home-server/packages/nginx-reverse-proxy/ssl:$VM_HOME/.home-server/packages/nginx-reverse-proxy/ssl:ro \
+      -v $HOME/.home-server:$VM_HOME/.home-server:ro \
       -v $HOME/.letsencrypt:$VM_HOME/.letsencrypt \
       -v $HOME/.local/share/containers/podman/machine:$VM_HOME/.local/share/containers/podman/machine \
       1> /dev/null &&
