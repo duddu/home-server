@@ -51,6 +51,7 @@ jobs:
           TAG=${{ env.TAG }}
           COMMIT=${{ env.COMMIT }}
           DOMAIN_NAME=${{ secrets.DOMAIN_NAME }}
+          DOMAIN_EMAIL=${{ secrets.DOMAIN_EMAIL }}
         add-hosts: ${{ inputs.add-hosts }}
         cache-from: type=registry,ref=${{ env.IMAGE }}:latest-cache
         cache-to: type=registry,ref=${{ env.IMAGE }}:latest-cache,mode=max

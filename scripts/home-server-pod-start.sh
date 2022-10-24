@@ -16,6 +16,7 @@ MANIFEST=$HOME/.home-server/home-server-manifest.yaml
     podman machine init $VM \
       --cpus=$VM_CPUS \
       --memory=$VM_RAM \
+      -v $HOME/.config/containers/.gnupg:$VM_HOME/.gnupg \
       -v $HOME/.config/containers/podman/machine:$VM_HOME/.config/containers/podman/machine:ro \
       -v $HOME/.podman_volumes/ssl:$VM_HOME/.podman_volumes/ssl:ro \
       -v $HOME/.letsencrypt:$VM_HOME/.letsencrypt \

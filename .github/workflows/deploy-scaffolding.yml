@@ -15,4 +15,4 @@ jobs:
     secrets: inherit
     with:
       package: scaffolding
-      context: ../..
+      context: "."

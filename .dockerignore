@@ -5,4 +5,5 @@
 !home-server-manifest.yaml
 !packages/nginx-reverse-proxy/ssl/
 packages/nginx-reverse-proxy/ssl/test/
+!packages/scaffolding/scripts/docker-entrypoint.sh
 !scripts/
