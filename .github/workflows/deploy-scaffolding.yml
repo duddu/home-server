@@ -1,0 +1,18 @@
+name: Deploy Scaffolding
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'packages/scaffolding/**'
+concurrency:
+  group: deploy-scaffolding
+  cancel-in-progress: true
+jobs:
+  trigger-image-ci:
+    name: Trigger image CI
+    uses: ./.github/workflows/docker-image.yml
+    secrets: inherit
+    with:
+      package: scaffolding
+      context: ../..

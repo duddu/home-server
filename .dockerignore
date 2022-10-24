@@ -1,0 +1,8 @@
+*
+!.git/
+!.git-crypt/
+!.gitattributes
+!home-server-manifest.yaml
+!packages/nginx-reverse-proxy/ssl/
+packages/nginx-reverse-proxy/ssl/test/
+!scripts/

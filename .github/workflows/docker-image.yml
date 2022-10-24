@@ -5,6 +5,9 @@ on:
       package:
         required: true
         type: string
+      context:
+        required: false
+        type: string
       add-hosts:
         required: false
         type: string
@@ -39,7 +42,8 @@ jobs:
       uses: docker/build-push-action@v3
       with:
         target: production
-        context: ${{ env.PACKAGE_DIR }}
+        file: ${{ env.PACKAGE_DIR }}/Dockerfile
+        context: ${{ inputs.context || env.PACKAGE_DIR }}
         tags: |
           ${{ env.IMAGE }}:latest
           ${{ env.IMAGE }}:${{ env.TAG }}
