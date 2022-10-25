@@ -6,7 +6,7 @@ on:
     paths:
       - 'packages/rust-api/**'
 concurrency:
-  group: ${{ github.workflow }}
+  group: deploy-rust-api
   cancel-in-progress: true
 jobs:
   trigger-clippy:

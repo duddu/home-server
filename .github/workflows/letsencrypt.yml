@@ -11,7 +11,8 @@ on:
           - issue
           - renew
 concurrency:
-  group: ${{ github.workflow }}
+  group: letsencrypt
+  cancel-in-progress: true
 jobs:
   certs-maintainance:
     name: TSL certificates maintainance

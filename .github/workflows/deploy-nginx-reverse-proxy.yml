@@ -6,7 +6,7 @@ on:
     paths:
       - 'packages/nginx-reverse-proxy/**'
 concurrency:
-  group: ${{ github.workflow }}
+  group: deploy-nginx-reverse-proxy
   cancel-in-progress: true
 jobs:
   trigger-image-ci:
