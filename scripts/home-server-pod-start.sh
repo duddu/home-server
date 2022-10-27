@@ -11,27 +11,25 @@ VM_HOME=/var/home/core
 MANIFEST=$HOME/.home-server/home-server-manifest.yaml
 
 (podman machine list | grep -q $VM &&
-  echo "⏭ Virtual machine ${VM} already exists") ||
+  echo "⏭ Virtual machine ${VM} exists") ||
   (echo "⏳ Creating virtual machine ${VM}..." &&
-    podman machine init $VM \
+    podman machine init $VM --now \
       --cpus=$VM_CPUS \
       --memory=$VM_RAM \
-      -v $HOME/.config/containers/.gnupg:$VM_HOME/.gnupg \
       -v $HOME/.config/containers/podman/machine:$VM_HOME/.config/containers/podman/machine:ro \
-      -v $HOME/.podman_volumes/ssl:$VM_HOME/.podman_volumes/ssl:ro \
-      -v $HOME/.letsencrypt:$VM_HOME/.letsencrypt \
       -v $HOME/.local/share/containers/podman/machine:$VM_HOME/.local/share/containers/podman/machine \
+      -v $HOME/.podman_volumes:$VM_HOME/.podman_volumes \
       1> /dev/null &&
     echo "✨ Virtual machine ${VM} created successfully")
 
 (podman machine inspect $VM | grep -q '"State": "running"' &&
-  echo "⏭ Virtual machine ${VM} is already running") ||
+  echo "⏭ Virtual machine ${VM} is running") ||
   (echo "⏳ Starting virtual machine ${VM}..." &&
     podman machine start $VM 1> /dev/null &&
     echo "🎬 Virtual machine ${VM} started successfully")
 
-echo "⏳ Tearing down pod home-server if running..."
-(podman play kube -q --down $MANIFEST &> /dev/null &&
+echo "⏳ Tearing down pod home-server..."
+(podman play kube --down $MANIFEST &> /dev/null &&
   echo "🗑 Torn down pod home-server") ||
   echo "⏭ Pod home-server is not running"
 
@@ -43,5 +41,5 @@ then
 fi
 
 echo "⏳ Starting pod home-server..."
-podman play kube -q $MANIFEST 1> /dev/null &&
-  echo "🚀 Pod home-server started successfully"
+podman play kube $MANIFEST 1> /dev/null &&
+  echo "🚀 Pod home-server is running"

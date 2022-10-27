@@ -2,6 +2,6 @@
 
 set -e
 
-HEALTHCHECK_URL=http://localhost:8081/health
+HEALTHCHECK_URL=http://localhost:8080/health
 
 [ "$(curl -s --fail $HEALTHCHECK_URL)" = "OK" ]

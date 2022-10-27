@@ -2,18 +2,25 @@ apiVersion: v1
 kind: Pod
 metadata:
   annotations:
+    io.kubernetes.cri-o.ContainerType/scaffolding: container
     io.kubernetes.cri-o.ContainerType/nginx-reverse-proxy: container
     io.kubernetes.cri-o.ContainerType/rust-api: container
+    io.kubernetes.cri-o.SandboxID/scaffolding: baa86e67b0c9f5f902e8801d48d73f04b3742cf18ba378185ed06866070cfe3
     io.kubernetes.cri-o.SandboxID/nginx-reverse-proxy: baa86e67b0c9f5f902e8801d48d73f04b3742cf18ba378185ed06866070cfe3
     io.kubernetes.cri-o.SandboxID/rust-api: baa86e67b0c9f5f902e8801d48d73f04b3742cf18ba378185ed06866070cfe3
+    io.kubernetes.cri-o.TTY/scaffolding: "true"
     io.kubernetes.cri-o.TTY/nginx-reverse-proxy: "true"
     io.kubernetes.cri-o.TTY/rust-api: "true"
+    io.podman.annotations.autoremove/scaffolding: "TRUE"
     io.podman.annotations.autoremove/nginx-reverse-proxy: "TRUE"
     io.podman.annotations.autoremove/rust-api: "TRUE"
+    io.podman.annotations.init/scaffolding: "FALSE"
     io.podman.annotations.init/nginx-reverse-proxy: "FALSE"
     io.podman.annotations.init/rust-api: "FALSE"
+    io.podman.annotations.privileged/scaffolding: "FALSE"
     io.podman.annotations.privileged/nginx-reverse-proxy: "FALSE"
     io.podman.annotations.privileged/rust-api: "FALSE"
+    io.podman.annotations.publish-all/scaffolding: "FALSE"
     io.podman.annotations.publish-all/nginx-reverse-proxy: "FALSE"
     io.podman.annotations.publish-all/rust-api: "FALSE"
   creationTimestamp: "2022-09-06T02:43:42Z"
@@ -22,12 +29,12 @@ metadata:
   name: home-server
 spec:
   containers:
-  - image: ghcr.io/duddu/home-server-rust-api:0.12.7
-    name: rust-api
+  - image: ghcr.io/duddu/home-server-scaffolding:0.2.0
+    name: scaffolding
     imagePullPolicy: Always
     ports:
-    - containerPort: 8889
-      hostPort: 8889
+    - containerPort: 8080
+      hostPort: 8080
     securityContext: &securityContext
       capabilities:
         drop:
@@ -36,22 +43,29 @@ spec:
         - CAP_AUDIT_WRITE
     stdin: true
     tty: true
+    volumeMounts:
+    - mountPath: /root/.acme.sh
+      name: scaffolding_acme
+    - mountPath: /root/.gnupg
+      name: scaffolding_gnupg
+    - mountPath: /usr/local/home-server/packages/nginx-reverse-proxy/ssl
+      name: nginx-reverse-proxy_ssl
     livenessProbe:
       exec:
         command:
-        - home-server-rust-api-healthcheck
+        - healthcheck.sh
       initialDelaySeconds: 5
       timeoutSeconds: 2
       periodSeconds: 60
       failureThreshold: 3
-  - image: ghcr.io/duddu/home-server-nginx-reverse-proxy:0.14.0
+  - image: ghcr.io/duddu/home-server-nginx-reverse-proxy:0.15.0
     name: nginx-reverse-proxy
     imagePullPolicy: Always
     ports:
     - containerPort: 8443
       hostPort: 8443
-    - containerPort: 8080
-      hostPort: 8080
+    - containerPort: 8081
+      hostPort: 8081
     - containerPort: 8888
       hostPort: 8888
     securityContext: *securityContext
@@ -69,9 +83,34 @@ spec:
       timeoutSeconds: 2
       periodSeconds: 60
       failureThreshold: 3
+  - image: ghcr.io/duddu/home-server-rust-api:0.12.7
+    name: rust-api
+    imagePullPolicy: Always
+    ports:
+    - containerPort: 8889
+      hostPort: 8889
+    securityContext: *securityContext
+    stdin: true
+    tty: true
+    livenessProbe:
+      exec:
+        command:
+        - home-server-rust-api-healthcheck
+      initialDelaySeconds: 5
+      timeoutSeconds: 2
+      periodSeconds: 60
+      failureThreshold: 3
   hostname: home-server
   restartPolicy: Always
   volumes:
+  - hostPath:
+      path: /var/home/core/.podman_volumes/.acme.sh
+      type: Directory
+    name: scaffolding_acme
+  - hostPath:
+      path: /var/home/core/.podman_volumes/.gnupg
+      type: Directory
+    name: scaffolding_gnupg
   - hostPath:
       path: /var/home/core/.podman_volumes/ssl
       type: Directory
