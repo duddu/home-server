@@ -3,8 +3,8 @@
 !.git-crypt/
 !.gitattributes
 !home-server-manifest.yaml
+!home-server-nfsvolume-manifest.yaml
 !packages/nginx-reverse-proxy/ssl/
 packages/nginx-reverse-proxy/ssl/test/
 !packages/scaffolding/nginx.conf
-!packages/scaffolding/scripts/docker-entrypoint.sh
 !scripts/

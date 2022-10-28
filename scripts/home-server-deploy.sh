@@ -24,6 +24,7 @@ clone_sparse_checkout () {
       .git-crypt \
       .gitattributes \
       home-server-manifest.yaml \
+      home-server-nfsvolume-manifest.yaml \
       'packages/nginx-reverse-proxy/ssl/*.pem' \
       'scripts/*.sh' \
     1> /dev/null
@@ -39,8 +40,8 @@ cd $CLONE_DIR
 clone_sparse_checkout
 git-crypt unlock
 
-mkdir -p $SSL_EXPORT_DIR
-cp packages/nginx-reverse-proxy/ssl/*.pem $SSL_EXPORT_DIR
+# mkdir -p $SSL_EXPORT_DIR
+# cp packages/nginx-reverse-proxy/ssl/*.pem $SSL_EXPORT_DIR
 
 if [ "${1:-}" = "--restart-vm" ]
 then

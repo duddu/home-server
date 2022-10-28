@@ -5,21 +5,13 @@ set -u
 : "${HOME:?Variable not set or empty}"
 
 VM=home-server-vm
-VM_CPUS=1
-VM_RAM=1024
-VM_HOME=/var/home/core
 MANIFEST=$HOME/.home-server/home-server-manifest.yaml
+NFSVOLUME_MANIFEST=$HOME/.home-server/home-server-nfsvolume-manifest.yaml
 
 (podman machine list | grep -q $VM &&
   echo "⏭ Virtual machine ${VM} exists") ||
   (echo "⏳ Creating virtual machine ${VM}..." &&
-    podman machine init $VM --now \
-      --cpus=$VM_CPUS \
-      --memory=$VM_RAM \
-      -v $HOME/.config/containers/podman/machine:$VM_HOME/.config/containers/podman/machine:ro \
-      -v $HOME/.local/share/containers/podman/machine:$VM_HOME/.local/share/containers/podman/machine \
-      -v $HOME/.podman_volumes:$VM_HOME/.podman_volumes \
-      1> /dev/null &&
+    podman machine init $VM --rootful --now 1> /dev/null &&
     echo "✨ Virtual machine ${VM} created successfully")
 
 (podman machine inspect $VM | grep -q '"State": "running"' &&
@@ -29,7 +21,8 @@ MANIFEST=$HOME/.home-server/home-server-manifest.yaml
     echo "🎬 Virtual machine ${VM} started successfully")
 
 echo "⏳ Tearing down pod home-server..."
-(podman play kube --down $MANIFEST &> /dev/null &&
+( (podman play kube --down $MANIFEST &> /dev/null ;
+    podman volume prune -f &> /dev/null) &&
   echo "🗑 Torn down pod home-server") ||
   echo "⏭ Pod home-server is not running"
 
@@ -41,5 +34,6 @@ then
 fi
 
 echo "⏳ Starting pod home-server..."
+podman play kube $NFSVOLUME_MANIFEST 1> /dev/null &&
 podman play kube $MANIFEST 1> /dev/null &&
   echo "🚀 Pod home-server is running"
