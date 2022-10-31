@@ -65,7 +65,7 @@ spec:
       timeoutSeconds: 2
       periodSeconds: 60
       failureThreshold: 3
-  - image: ghcr.io/duddu/home-server-nginx-reverse-proxy:0.15.0
+  - image: ghcr.io/duddu/home-server-nginx-reverse-proxy:0.16.0
     name: nginx-reverse-proxy
     imagePullPolicy: Always
     ports:
@@ -73,8 +73,8 @@ spec:
       hostPort: 8443
     - containerPort: 8081
       hostPort: 8081
-    - containerPort: 8888
-      hostPort: 8888
+    - containerPort: 9091
+      hostPort: 9091
     securityContext: *securityContext
     stdin: true
     tty: true
@@ -93,8 +93,8 @@ spec:
     name: rust-api
     imagePullPolicy: Always
     ports:
-    - containerPort: 8889
-      hostPort: 8889
+    - containerPort: 9092
+      hostPort: 9092
     securityContext: *securityContext
     stdin: true
     tty: true
