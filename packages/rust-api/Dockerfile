@@ -43,6 +43,7 @@ ENV TZ=Europe/London \
 USER ${APP_USER}
 
 ENTRYPOINT ["./docker-entrypoint.sh"]
+CMD ["home-server-rust-api"]
 
 ARG TAG
 ARG COMMIT

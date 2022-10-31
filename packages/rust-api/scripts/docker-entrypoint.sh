@@ -2,5 +2,7 @@
 
 set -e
 
-(websocketd --port=8889 --devconsole tail -f rust-api.log) & 
-script -fq -c home-server-rust-api rust-api.log
+LOG_FILE=rust-api.log
+
+(websocketd --port=9092 --devconsole tail -f $LOG_FILE) & 
+script -fq -c "$@" $LOG_FILE
