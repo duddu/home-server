@@ -8,12 +8,14 @@ set -u
 TIMEOUT=10
 
 perform_health_check () {
-  [ "$(curl -s --fail -m $TIMEOUT --cert $SSL_CLIENT_CERT_PATH https://$DOMAIN_NAME$1)" = "OK" ] 1> /dev/null
+  [ "$(curl -s --fail -m $TIMEOUT --cert $SSL_CLIENT_CERT_PATH $1)" = "OK" ] 1> /dev/null
 }
 
-(echo "⏳ Running nginx e2e health check..." &&
-  perform_health_check /health &&
-    echo "⏳ Running api e2e health check..." &&
-      perform_health_check /api/health &&
+(echo "⏳ Running http nginx e2e health check..." &&
+  perform_health_check http://$DOMAIN_NAME/health &&
+    echo "⏳ Running https nginx e2e health check..." &&
+    perform_health_check https://$DOMAIN_NAME/health &&
+      echo "⏳ Running api e2e health check..." &&
+        perform_health_check https://$DOMAIN_NAME/api/health &&
   echo "🏥 Health checks completed") ||
   exit 1
