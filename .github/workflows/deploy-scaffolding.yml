@@ -4,7 +4,14 @@ on:
     branches:
       - main
     paths:
+      - .dockerignore
+      - '.git-crypt/**'
+      - .gitattributes
+      - home-server-manifest.yaml
+      - home-server-nfsvolume-manifest.yaml
       - 'packages/scaffolding/**'
+      - 'packages/nginx-reverse-proxy/ssl/*'
+      - 'scripts/**'
 concurrency:
   group: deploy-scaffolding
   cancel-in-progress: true
