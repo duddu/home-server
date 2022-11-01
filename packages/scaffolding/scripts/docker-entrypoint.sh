@@ -28,6 +28,5 @@ echo "acme.sh --renew --force $ACME_COMMON_ARGS" > /usr/local/bin/acme-renew
 echo "acme.sh --install-cert --key-file $SSL_INSTALL_PATH/private.key --fullchain-file $SSL_INSTALL_PATH/fullchain.pem --reloadcmd 'exit 0' $ACME_COMMON_ARGS" > /usr/local/bin/acme-install
 chmod +x /usr/local/bin/acme-*
 acme-install
-# chmod 644 $SSL_INSTALL_PATH/*
 
 /docker-entrypoint.sh "$@"

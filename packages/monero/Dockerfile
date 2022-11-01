@@ -1,6 +1,6 @@
 #syntax=docker/dockerfile:1.4
 
-FROM debian:11.5-slim as builder
+FROM debian:11.5-slim as production
 
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -10,7 +10,8 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     ca-certificates=20210119 \
     curl=7.74.0-1.3+deb11u3 \
-    bzip2=1.0.8-4 && \
+    bzip2=1.0.8-4 \
+    websocketd=0.4.1-1+b5 && \
     curl -L -O https://downloads.getmonero.org/cli/linux64 && \
     curl -L -O https://www.getmonero.org/downloads/hashes.txt && \
     grep -qe $(sha256sum linux64) hashes.txt && \
@@ -18,16 +19,15 @@ RUN apt-get update && \
     mv monero-x86_64-linux-gnu-*/monero* /usr/local/bin && \
     rm -rf /tmp/monero
 
-FROM builder as production
-
 WORKDIR /root/monero
 
 ENV TZ=Europe/London
 
-COPY scripts/healthcheck.sh /usr/local/bin/
+COPY scripts/healthcheck.sh scripts/docker-entrypoint.sh /usr/local/bin/
 COPY monerod.conf /etc/monerod.conf
 
-CMD ["monerod", "--non-interactive", "--config-file", "/etc/monerod.conf"]
+ENTRYPOINT ["docker-entrypoint.sh"]
+CMD ["monerod"]
 
 ARG COMMIT
 ARG TAG

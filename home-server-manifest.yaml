@@ -65,7 +65,7 @@ spec:
       timeoutSeconds: 2
       periodSeconds: 60
       failureThreshold: 3
-  - image: ghcr.io/duddu/home-server-nginx-reverse-proxy:0.16.0
+  - image: ghcr.io/duddu/home-server-nginx-reverse-proxy:0.17.0
     name: nginx-reverse-proxy
     imagePullPolicy: Always
     ports:
@@ -106,9 +106,12 @@ spec:
       timeoutSeconds: 2
       periodSeconds: 60
       failureThreshold: 3
-  - image: ghcr.io/duddu/home-server-monero:0.1.0
+  - image: ghcr.io/duddu/home-server-monero:0.2.0
     name: monero
     imagePullPolicy: Always
+    ports:
+    - containerPort: 9093
+      hostPort: 9093
     securityContext: *securityContext
     stdin: true
     tty: true

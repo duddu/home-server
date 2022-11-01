@@ -2,10 +2,11 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata: &metadata
   annotations: &annotations
-    volume.podman.io/device: 192.168.0.100:/System/Volumes/Data/Users/Shared/.podman_volumes/.acme.sh
+    volume.podman.io/device: host.containers.internal:/System/Volumes/Data/Users/Shared/.podman_volumes/.acme.sh
     volume.podman.io/driver: local
     volume.podman.io/mount-options: async
     volume.podman.io/type: nfs
+    volume.podman.io/uid: 4294967294
   creationTimestamp: "2022-10-30T02:09:17Z"
   name: nfs_acme
 spec: &spec
@@ -21,7 +22,7 @@ metadata:
   <<: *metadata
   annotations:
     <<: *annotations
-    volume.podman.io/device: 192.168.0.100:/System/Volumes/Data/Users/Shared/.podman_volumes/.gnupg
+    volume.podman.io/device: host.containers.internal:/System/Volumes/Data/Users/Shared/.podman_volumes/.gnupg
   name: nfs_gnupg
 spec: *spec
 ---
@@ -31,7 +32,7 @@ metadata:
   <<: *metadata
   annotations:
     <<: *annotations
-    volume.podman.io/device: 192.168.0.100:/System/Volumes/Data/Users/Shared/.podman_volumes/monero
+    volume.podman.io/device: host.containers.internal:/System/Volumes/Data/Users/Shared/.podman_volumes/monero
   name: nfs_monero
 spec:
   <<: *spec
@@ -46,6 +47,6 @@ metadata:
   <<: *metadata
   annotations:
     <<: *annotations
-    volume.podman.io/device: 192.168.0.100:/System/Volumes/Data/Users/Shared/.podman_volumes/ssl
+    volume.podman.io/device: host.containers.internal:/System/Volumes/Data/Users/Shared/.podman_volumes/ssl
   name: nfs_ssl
 spec: *spec
