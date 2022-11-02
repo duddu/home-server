@@ -39,14 +39,14 @@ RUN touch /var/run/nginx.pid && \
     chmod -R 400 /usr/share/nginx
 
 COPY --from=builder --chown=nginx:nginx /usr/bin/websocketd bin/
-COPY scripts/docker-entrypoint.sh scripts/healthcheck.sh ./
+COPY scripts/docker-entrypoint.sh scripts/healthcheck.sh bin/
 COPY nginx.conf ${NGINX_CONF}
 
 RUN sed -e "s/\$DOMAIN_NAME/${DOMAIN_NAME}/g" -i ${NGINX_CONF}
 
 USER nginx
 
-ENTRYPOINT ["./docker-entrypoint.sh"]
+ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["nginx"]
 
 ARG COMMIT

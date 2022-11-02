@@ -28,11 +28,12 @@ ENV DOMAIN_NAME=${DOMAIN_NAME} \
 WORKDIR ${WORKDIR}
 
 COPY . ./
+COPY packages/scaffolding/scripts/docker-entrypoint.sh packages/scaffolding/scripts/healthcheck.sh /usr/local/bin
+COPY packages/scaffolding/nginx.conf ${NGINX_CONF}
 
-RUN cp packages/scaffolding/nginx.conf ${NGINX_CONF} && \
-    sed -e "s/\$DOMAIN_NAME/${DOMAIN_NAME}/g" -i ${NGINX_CONF}
+RUN sed -e "s/\$DOMAIN_NAME/${DOMAIN_NAME}/g" -i ${NGINX_CONF}
 
-ENTRYPOINT ["./packages/scaffolding/scripts/docker-entrypoint.sh"]
+ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["nginx"]
 
 ARG COMMIT

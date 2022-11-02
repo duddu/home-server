@@ -2,4 +2,6 @@
 
 set -e
 
-[ "$(pidof monerod)" = "1" ]
+pidof monerod &&
+  echo "monero daemon running" ||
+  echo "monero daemon not running"

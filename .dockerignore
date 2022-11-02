@@ -9,4 +9,5 @@ packages/nginx-reverse-proxy/ssl/test/
 !packages/scaffolding/nginx.conf
 !packages/scaffolding/containers.conf
 !packages/scaffolding/scripts/docker-entrypoint.sh
+!packages/scaffolding/scripts/healthcheck.sh
 !scripts/

@@ -15,8 +15,6 @@ if [ -e /tmp/entrypoint-run ]; then
 fi
 touch /tmp/entrypoint-run
 
-ls -la
-ls -la $SSL_INSTALL_PATH
 git stash -q
 git-crypt unlock 1> /dev/null
 git stash pop -q

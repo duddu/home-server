@@ -36,7 +36,7 @@ metadata:
   name: home-server
 spec:
   containers:
-  - image: ghcr.io/duddu/home-server-scaffolding:0.3.0
+  - image: ghcr.io/duddu/home-server-scaffolding:0.3.1
     name: scaffolding
     imagePullPolicy: Always
     ports:
@@ -65,7 +65,7 @@ spec:
       timeoutSeconds: 2
       periodSeconds: 60
       failureThreshold: 3
-  - image: ghcr.io/duddu/home-server-nginx-reverse-proxy:0.17.0
+  - image: ghcr.io/duddu/home-server-nginx-reverse-proxy:0.17.1
     name: nginx-reverse-proxy
     imagePullPolicy: Always
     ports:
@@ -106,7 +106,7 @@ spec:
       timeoutSeconds: 2
       periodSeconds: 60
       failureThreshold: 3
-  - image: ghcr.io/duddu/home-server-monero:0.2.0
+  - image: ghcr.io/duddu/home-server-monero:0.2.1
     name: monero
     imagePullPolicy: Always
     ports:
