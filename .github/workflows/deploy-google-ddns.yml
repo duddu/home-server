@@ -1,0 +1,17 @@
+name: Deploy Google DDNS
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'packages/google-ddns/**'
+concurrency:
+  group: deploy-google-ddns
+  cancel-in-progress: true
+jobs:
+  trigger-image-ci:
+    name: Trigger image CI
+    uses: ./.github/workflows/docker-image.yml
+    secrets: inherit
+    with:
+      package: google-ddns
