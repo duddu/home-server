@@ -2,6 +2,6 @@
 
 set -e
 
-pidof monerod &&
+monerod status | grep -q "uptime" &&
   echo "monero daemon running" ||
   echo "monero daemon not running"
