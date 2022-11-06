@@ -15,4 +15,4 @@ jobs:
     secrets: inherit
     with:
       package: nginx-reverse-proxy
-      add-hosts: test.home-server:127.0.0.1,test.tplinkwifi.net:127.0.0.1
+      add-hosts: test.home-server:127.0.0.1,test.home-server-daemons:127.0.0.1,test.tplinkwifi.net:127.0.0.1

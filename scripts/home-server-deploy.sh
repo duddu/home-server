@@ -1,50 +1,44 @@
-#!/bin/bash
+#!/bin/zsh
 
 set -e
 set -u
 : "${USER:?Variable not set or empty}"
-: "${COMMIT_SHA:?Variable not set or empty}"
 
 export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
-export HOME="/Users/${USER}"
-CLONE_DIR="${HOME}/.home-server"
-SSL_CERTS='packages/nginx-reverse-proxy/ssl/*.pem'
-SSL_EXPORT_DIR="${HOME}/.podman_volumes/ssl"
+export HOME=/Users/$USER
+export USER
 
-clone_sparse_checkout () {
-  git clone \
-    -q --depth=1 \
-    --no-checkout \
-    --filter=blob:none \
-    git@github.com:duddu/home-server.git \
-    . \
-    1> /dev/null
-  git sparse-checkout \
-    set --no-cone \
-      .git-crypt \
-      .gitattributes \
-      home-server-manifest.yaml \
-      home-server-nfsvolume-manifest.yaml \
-      'packages/nginx-reverse-proxy/ssl/*.pem' \
-      'scripts/*.sh' \
-    1> /dev/null
-  git reset \
-    --hard \
-    $COMMIT_SHA \
-    1> /dev/null
-}
+SCAFFOLDING_DIR=/Users/Shared/.podman_volumes/scaffolding
 
-rm -rf $CLONE_DIR
-mkdir -p $CLONE_DIR
-cd $CLONE_DIR
-clone_sparse_checkout
-git-crypt unlock
+cd $SCAFFOLDING_DIR
 
-# mkdir -p $SSL_EXPORT_DIR
-# cp packages/nginx-reverse-proxy/ssl/*.pem $SSL_EXPORT_DIR
+zsh ./scripts/podman/machine-start.sh
+zsh ./scripts/kind/cluster-create.sh
+
+echo "⏳ Preparing home-server-scaffolding job..."
+kubectl apply -f ./config/k8s/namespaces
+kubectl config set-context --current --namespace=home-server
+kubectl apply -f ./config/k8s/volumes
+kubectl apply -f ./config/k8s/jobs
+echo "⏳ Waiting for home-server-scaffolding job to complete..."
+kubectl wait --for=condition=complete --timeout=180s job/home-server-scaffolding
+echo "🚀 Job home-server-scaffolding completed"
 
 if [ "${1:-}" = "--restart-vm" ]
 then
-  bash ./scripts/home-server-machine-rm.sh
+  echo "⏳ Recreating virtual machine and cluster..."
+  zsh ./scripts/kind/cluster-delete.sh
+  zsh ./scripts/podman/machine-rm.sh
+  zsh ./scripts/podman/machine-start.sh
+  zsh ./scripts/kind/cluster-create.sh
 fi
-bash ./scripts/home-server-pod-start.sh
+
+echo "⏳ Preparing deployments..."
+kubectl apply -f ./config/k8s/namespaces
+kubectl apply -f ./config/k8s/volumes
+kubectl apply -f ./config/k8s/secrets
+kubectl apply -f ./config/k8s/deployments
+kubectl wait --for=condition=Ready --timeout=180s pods -l app=home-server-daemons
+kubectl wait --for=condition=Ready --timeout=180s pods -l app=home-server
+kubectl apply -f ./config/k8s/services
+echo "🚀 Deployments ready"

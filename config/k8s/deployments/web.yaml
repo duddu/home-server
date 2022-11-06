@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: home-server
+  name: home-server-web
+  namespace: home-server
+spec:
+  progressDeadlineSeconds: 300
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: home-server
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: home-server
+    spec:
+      containers:
+        - image: ghcr.io/duddu/home-server-nginx-reverse-proxy:0.18.0
+          imagePullPolicy: Always
+          name: nginx-reverse-proxy
+          ports:
+            - containerPort: 8080
+              hostPort: 8080
+              protocol: TCP
+            - containerPort: 8443
+              hostPort: 8443
+              protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /usr/local/share/.acme.sh
+              name: nfs-acme-pvc
+            - mountPath: /usr/local/share/ssl
+              name: nfs-ssl-pvc
+          livenessProbe:
+            exec:
+              command:
+                - nginx-healthcheck.sh
+            initialDelaySeconds: 5
+            timeoutSeconds: 2
+            periodSeconds: 60
+            failureThreshold: 3
+        - image: ghcr.io/duddu/home-server-rust-api:0.14.0
+          imagePullPolicy: Always
+          name: rust-api
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          livenessProbe:
+            exec:
+              command:
+                - home-server-rust-api-healthcheck
+            initialDelaySeconds: 5
+            timeoutSeconds: 2
+            periodSeconds: 60
+            failureThreshold: 3
+      dnsPolicy: ClusterFirst
+      hostname: home-server
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+        - name: nfs-acme-pvc
+          persistentVolumeClaim:
+            claimName: nfs-acme
+        - name: nfs-ssl-pvc
+          persistentVolumeClaim:
+            claimName: nfs-ssl

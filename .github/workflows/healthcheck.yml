@@ -15,4 +15,4 @@ jobs:
         run:
           DOMAIN_NAME=${{ secrets.DOMAIN_NAME }}
           SSL_CLIENT_CERT_PATH=${{ runner.temp }}/client.pem
-          bash <(curl -s ${{ env.SCRIPTS_PATH }}/home-server-health-check.sh)
+          bash <(curl -s ${{ env.SCRIPTS_PATH }}/home-server-healthcheck.sh)

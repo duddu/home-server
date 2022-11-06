@@ -7,10 +7,10 @@ on:
       - .dockerignore
       - '.git-crypt/**'
       - .gitattributes
-      - home-server-manifest.yaml
-      - home-server-nfsvolume-manifest.yaml
+      - 'config/**'
+      - packages/nginx-reverse-proxy/ssl/ca.pem
+      - packages/nginx-reverse-proxy/ssl/dhparam.pem
       - 'packages/scaffolding/**'
-      - 'packages/nginx-reverse-proxy/ssl/*'
       - 'scripts/**'
 concurrency:
   group: deploy-scaffolding

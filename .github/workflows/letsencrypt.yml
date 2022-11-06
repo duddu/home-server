@@ -19,8 +19,8 @@ jobs:
     uses: ./.github/workflows/run-over-ssh.yml
     secrets: inherit
     with:
-      deploy-script-name: home-server-letsencrypt
-      deploy-script-argument: --${{ inputs.acme-command }}
+      script-name: letsencrypt
+      script-argument: --${{ inputs.acme-command }}
   trigger-health-check:
     name: Trigger health check
     uses: ./.github/workflows/healthcheck.yml

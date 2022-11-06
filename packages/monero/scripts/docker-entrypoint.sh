@@ -2,7 +2,7 @@
 
 set -e
 
-(websocketd --port=9093 --devconsole tail -f /root/monero/chain/log/monero.log) & 
+(websocketd --port=9092 --devconsole tail -f /root/monero/chain/log/monero.log) & 
 
 case "$@" in
   monerod)

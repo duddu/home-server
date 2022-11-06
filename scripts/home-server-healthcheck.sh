@@ -5,7 +5,7 @@ set -u
 : "${SSL_CLIENT_CERT_PATH:?Variable not set or empty}"
 : "${DOMAIN_NAME:?Variable not set or empty}"
 
-TIMEOUT=10
+TIMEOUT=30
 
 perform_health_check () {
   [ "$(curl -s --fail -m $TIMEOUT --cert $SSL_CLIENT_CERT_PATH $1)" = "OK" ] 1> /dev/null

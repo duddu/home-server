@@ -2,14 +2,14 @@ name: Run script over ssh
 on:
   workflow_call:
     inputs:
-      deploy-script-name:
+      script-name:
         required: true
         type: string
-      deploy-script-argument:
+      script-argument:
         required: true
         type: string
 env:
-  SCRIPTS_PATH: https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/scripts
+  RAW_GITHUB_PATH: https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}
 jobs:
   run-on-home-server:
     name: Run script over ssh
@@ -20,11 +20,7 @@ jobs:
         with:
           key: ${{ secrets.SSH_KEY }}
           known_hosts: ${{ secrets.KNOWN_HOSTS }}
-      - name: Run ${{ inputs.deploy-script-name }}.sh over ssh
+      - name: Run ${{ inputs.script-name }}.sh over ssh
         run:
-          ssh ${{ secrets.SSH_USER }}@${{ secrets.DOMAIN_NAME }} "
-            USER=${{ secrets.SSH_USER }}
-            COMMIT_SHA=${{ github.sha }}
-            DOMAIN_NAME=${{ secrets.DOMAIN_NAME }}
-            bash <(curl -s ${{ env.SCRIPTS_PATH }}/${{ inputs.deploy-script-name }}.sh)
-              ${{ inputs.deploy-script-argument }}"
+          ssh ${{ secrets.SSH_USER }}@${{ secrets.DOMAIN_NAME }} 
+            "zsh <(curl -s ${{ env.RAW_GITHUB_PATH }}/scripts/${{ inputs.script-name }}.sh) ${{ inputs.script-argument }}"

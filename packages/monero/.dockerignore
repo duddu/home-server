@@ -1,4 +1,4 @@
 *
 !monerod.conf
 !scripts/docker-entrypoint.sh
-!scripts/healthcheck.sh
+!scripts/monero-healthcheck.sh

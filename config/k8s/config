@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Config
+contexts:
+  - context:
+      cluster: kind-home-server
+      namespace: home-server
+      user: kind-home-server
+    name: kind-home-server
+current-context: kind-home-server
+preferences: {}

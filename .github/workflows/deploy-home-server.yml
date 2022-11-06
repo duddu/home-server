@@ -1,13 +1,5 @@
 name: Deploy Home Server
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - '.git-crypt/**'
-      - '.github/workflows/deploy-home-server.yml'
-      - 'scripts/**'
-      - '.gitattributes'
   workflow_call:
   workflow_dispatch:
     inputs:
@@ -20,15 +12,15 @@ concurrency:
   group: deploy-home-server
   cancel-in-progress: true
 jobs:
-  start-home-server-pod:
-    name: Restart pod
+  start-home-server-pods:
+    name: Restart pods
     uses: ./.github/workflows/run-over-ssh.yml
     secrets: inherit
     with:
-      deploy-script-name: home-server-deploy
-      deploy-script-argument: ${{ inputs.restart-vm && '--restart-vm' || '' }}
+      script-name: home-server-deploy
+      script-argument: ${{ inputs.restart-vm && '--restart-vm' || '' }}
   trigger-health-check:
     name: Trigger health check
     uses: ./.github/workflows/healthcheck.yml
-    needs: start-home-server-pod
+    needs: start-home-server-pods
     secrets: inherit
