@@ -42,6 +42,7 @@ ENV TZ=Europe/London \
 
 USER ${APP_USER}
 
+HEALTHCHECK ["home-server-rust-api-healthcheck"]
 ENTRYPOINT ["./docker-entrypoint.sh"]
 CMD ["home-server-rust-api"]
 

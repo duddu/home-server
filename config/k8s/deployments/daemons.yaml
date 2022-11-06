@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: home-server-daemons
+  name: home-server-daemons
+  namespace: home-server
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: home-server-daemons
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: home-server-daemons
+    spec:
+      containers:
+        - image: ghcr.io/duddu/home-server-google-ddns:0.2.0
+          imagePullPolicy: Always
+          name: google-ddns
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          livenessProbe:
+            exec:
+              command:
+                - google-ddns-healthcheck.sh
+            initialDelaySeconds: 60
+            timeoutSeconds: 20
+            periodSeconds: 1800
+            failureThreshold: 3
+        - image: ghcr.io/duddu/home-server-monero:0.3.0
+          imagePullPolicy: Always
+          name: monero
+          ports:
+            - containerPort: 18080
+              hostPort: 18080
+              protocol: TCP
+            - containerPort: 18081
+              hostPort: 18081
+              protocol: TCP
+            - containerPort: 53
+              hostPort: 53
+              protocol: UDP
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "1024Mi"
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /root/monero
+              name: nfs-monero-pvc
+          livenessProbe:
+            exec:
+              command:
+                - monero-healthcheck.sh
+            initialDelaySeconds: 5
+            timeoutSeconds: 2
+            periodSeconds: 60
+            failureThreshold: 3
+      dnsPolicy: ClusterFirst
+      hostname: home-server
+      restartPolicy: Always
+      schedulerName: home-server-daemons-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 60
+      volumes:
+        - name: nfs-monero-pvc
+          persistentVolumeClaim:
+            claimName: nfs-monero

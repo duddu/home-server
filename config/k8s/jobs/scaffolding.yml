@@ -1,0 +1,34 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: home-server-scaffolding
+  namespace: home-server
+spec:
+  ttlSecondsAfterFinished: 120
+  template:
+    spec:
+      containers:
+        - image: ghcr.io/duddu/home-server-scaffolding:0.3.1
+          imagePullPolicy: Always
+          name: scaffolding
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /root/.gnupg
+              name: nfs-gnupg-pvc
+            - mountPath: /usr/local/home-server
+              name: nfs-scaffolding-pvc
+            - mountPath: /usr/local/home-server/packages/nginx-reverse-proxy/ssl
+              name: nfs-ssl-pvc
+      restartPolicy: Never
+      volumes:
+        - name: nfs-gnupg-pvc
+          persistentVolumeClaim:
+            claimName: nfs-gnupg
+        - name: nfs-scaffolding-pvc
+          persistentVolumeClaim:
+            claimName: nfs-scaffolding
+        - name: nfs-ssl-pvc
+          persistentVolumeClaim:
+            claimName: nfs-ssl

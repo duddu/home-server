@@ -23,9 +23,10 @@ WORKDIR /root/monero
 
 ENV TZ=Europe/London
 
-COPY scripts/healthcheck.sh scripts/docker-entrypoint.sh /usr/local/bin/
+COPY scripts/docker-entrypoint.sh scripts/monero-healthcheck.sh /usr/local/bin/
 COPY monerod.conf /etc/monerod.conf
 
+HEALTHCHECK ["monero-healthcheck.sh"]
 ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["monerod"]
 

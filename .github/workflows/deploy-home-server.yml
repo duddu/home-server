@@ -1,13 +1,13 @@
 name: Deploy Home Server
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - '.git-crypt/**'
-      - '.github/workflows/deploy-home-server.yml'
-      - 'scripts/**'
-      - '.gitattributes'
+  # push:
+  #   branches:
+  #     - main
+  #   paths:
+  #     - '.git-crypt/**'
+  #     - '.github/workflows/deploy-home-server.yml'
+  #     - 'scripts/**'
+  #     - '.gitattributes'
   workflow_call:
   workflow_dispatch:
     inputs:

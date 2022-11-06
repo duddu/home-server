@@ -1,0 +1,69 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-scaffolding
+  namespace: home-server
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: ""
+  resources:
+    requests:
+      storage: 100Mi
+  volumeName: nfs-scaffolding
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-acme
+  namespace: home-server
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: ""
+  resources:
+    requests:
+      storage: 100Mi
+  volumeName: nfs-acme
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-gnupg
+  namespace: home-server
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: ""
+  resources:
+    requests:
+      storage: 100Mi
+  volumeName: nfs-gnupg
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-monero
+  namespace: home-server
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: ""
+  resources:
+    requests:
+      storage: 64Gi
+  volumeName: nfs-monero
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-ssl
+  namespace: home-server
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: ""
+  resources:
+    requests:
+      storage: 100Mi
+  volumeName: nfs-ssl
