@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: home-server-daemons
+  name: home-server-daemons
+  namespace: home-server
+spec:
+  ports:
+    - name: xmr-rpc-restricted
+      port: 18082
+      protocol: TCP
+      targetPort: 18082
+  selector:
+    app: home-server-daemons
+  sessionAffinity: None

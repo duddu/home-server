@@ -8,10 +8,9 @@ WORKDIR /tmp/monero
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-    ca-certificates=20210119 \
-    curl=7.74.0-1.3+deb11u3 \
-    bzip2=1.0.8-4 \
-    websocketd=0.4.1-1+b5 && \
+        ca-certificates=20210119 \
+        curl=7.74.0-1.3+deb11u3 \
+        bzip2=1.0.8-4 && \
     curl -L -O https://downloads.getmonero.org/cli/linux64 && \
     curl -L -O https://www.getmonero.org/downloads/hashes.txt && \
     grep -qe $(sha256sum linux64) hashes.txt && \
@@ -24,7 +23,7 @@ WORKDIR /root/monero
 ENV TZ=Europe/London
 
 COPY scripts/docker-entrypoint.sh scripts/monero-healthcheck.sh /usr/local/bin/
-COPY monerod.conf /etc/monerod.conf
+COPY monerod.conf monero-wallet-cli.conf /etc/
 
 ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["monerod"]

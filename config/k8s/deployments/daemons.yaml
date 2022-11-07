@@ -46,19 +46,13 @@ spec:
             timeoutSeconds: 30
             periodSeconds: 1200
             failureThreshold: 3
-        - image: ghcr.io/duddu/home-server-monero:0.3.0
+        - image: ghcr.io/duddu/home-server-monero:0.4.0
           imagePullPolicy: Always
           name: monero
           ports:
-            - containerPort: 18080
-              hostPort: 18080
+            - containerPort: 18082
+              hostPort: 18082
               protocol: TCP
-            - containerPort: 18081
-              hostPort: 18081
-              protocol: TCP
-            - containerPort: 53
-              hostPort: 53
-              protocol: UDP
           resources:
             requests:
               cpu: "500m"
@@ -72,16 +66,16 @@ spec:
             exec:
               command:
                 - monero-healthcheck.sh
-            initialDelaySeconds: 300
+            initialDelaySeconds: 600
             timeoutSeconds: 60
-            periodSeconds: 600
+            periodSeconds: 300
             failureThreshold: 3
       dnsPolicy: ClusterFirst
       hostname: home-server-daemons
       restartPolicy: Always
       schedulerName: default-scheduler
       securityContext: {}
-      terminationGracePeriodSeconds: 120
+      terminationGracePeriodSeconds: 30
       volumes:
         - name: nfs-monero-pvc
           persistentVolumeClaim:

@@ -1,8 +1,6 @@
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 name: home-server
-# featureGates:
-#   NodeSwap: true
 nodes:
   - role: control-plane
     extraPortMappings:
@@ -14,8 +12,7 @@ nodes:
         hostPort: 8443
         listenAddress: "0.0.0.0"
         protocol: tcp
-    # kubeadmConfigPatches:
-    #   - |
-    #     kind: KubeletConfiguration
-    #     memorySwap:
-    #       swapBehavior: UnlimitedSwap
+      - containerPort: 18082
+        hostPort: 18082
+        listenAddress: "0.0.0.0"
+        protocol: tcp

@@ -38,6 +38,7 @@ kubectl apply -f ./config/k8s/namespaces
 kubectl apply -f ./config/k8s/volumes
 kubectl apply -f ./config/k8s/secrets
 kubectl apply -f ./config/k8s/deployments
+echo "⏳ Waiting for deployments to be ready..."
 kubectl wait --for=condition=Ready --timeout=180s pods -l app=home-server-daemons
 kubectl wait --for=condition=Ready --timeout=180s pods -l app=home-server
 kubectl apply -f ./config/k8s/services
