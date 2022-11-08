@@ -1,9 +1,11 @@
 #!/bin/sh
 
 set -e
+set -u
+: "${MONERO_RPC_LOGIN:?Variable not set or empty}"
 
-MONEROD_HOST=http://127.0.0.1:18081
+CMD=$(monerod status --rpc-login $MONERO_RPC_LOGIN)
 
-curl -s $MONEROD_HOST &&
+echo $CMD | grep -q 'uptime' &&
   echo "monero daemon running" ||
-  curl -v $MONEROD_HOST
+  echo $CMD

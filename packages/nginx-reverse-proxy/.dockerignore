@@ -1,5 +1,6 @@
 *
 !nginx.conf
 !scripts/docker-entrypoint.sh
+!scripts/letsencrypt.sh
 !scripts/nginx-healthcheck.sh
 !ssl/test/

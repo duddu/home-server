@@ -1,3 +1,2 @@
-config/k8s/secrets/google-ddns-credentials.yaml filter=git-crypt diff=git-crypt
-packages/nginx-reverse-proxy/ssl/ca.pem filter=git-crypt diff=git-crypt
-packages/nginx-reverse-proxy/ssl/dhparam.pem filter=git-crypt diff=git-crypt
+config/k8s/secrets/*.yaml filter=git-crypt diff=git-crypt
+packages/nginx-reverse-proxy/ssl/*.pem filter=git-crypt diff=git-crypt
