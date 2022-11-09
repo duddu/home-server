@@ -4,6 +4,14 @@ name: home-server
 nodes:
   - role: control-plane
     extraPortMappings:
+      - containerPort: 4444
+        hostPort: 4444
+        listenAddress: "0.0.0.0"
+        protocol: tcp
+      - containerPort: 7657
+        hostPort: 7657
+        listenAddress: "0.0.0.0"
+        protocol: tcp
       - containerPort: 8080
         hostPort: 8080
         listenAddress: "0.0.0.0"

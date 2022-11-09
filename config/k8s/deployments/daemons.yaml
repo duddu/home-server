@@ -46,7 +46,30 @@ spec:
             timeoutSeconds: 30
             periodSeconds: 1200
             failureThreshold: 3
-        - image: ghcr.io/duddu/home-server-monero:0.5.0
+        - image: ghcr.io/duddu/home-server-i2p:0.1.0
+          imagePullPolicy: Always
+          name: i2p
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          ports:
+            - containerPort: 4444
+              hostPort: 4444
+              protocol: TCP
+            - containerPort: 7657
+              hostPort: 7657
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /i2p/.i2p
+              name: nfs-i2p-pvc
+          livenessProbe:
+            exec:
+              command:
+                - i2p-healthcheck.sh
+            initialDelaySeconds: 60
+            timeoutSeconds: 20
+            periodSeconds: 120
+            failureThreshold: 3
+        - image: ghcr.io/duddu/home-server-monero:0.5.1
           imagePullPolicy: Always
           name: monero
           ports:
@@ -59,6 +82,18 @@ spec:
                 secretKeyRef:
                   name: monero-rpc-login
                   key: login
+                  optional: false
+            - name: MONERO_ANONYMOUS_INBOUND
+              valueFrom:
+                secretKeyRef:
+                  name: monero-i2p-addresses
+                  key: inbound
+                  optional: false
+            - name: MONERO_PEERS
+              valueFrom:
+                secretKeyRef:
+                  name: monero-i2p-addresses
+                  key: peers
                   optional: false
           resources:
             requests:
@@ -76,8 +111,8 @@ spec:
               command:
                 - monero-healthcheck.sh
             initialDelaySeconds: 600
-            timeoutSeconds: 60
-            periodSeconds: 300
+            timeoutSeconds: 120
+            periodSeconds: 600
             failureThreshold: 3
       dnsPolicy: ClusterFirst
       hostname: home-server-daemons
@@ -86,6 +121,9 @@ spec:
       securityContext: {}
       terminationGracePeriodSeconds: 30
       volumes:
+        - name: nfs-i2p-pvc
+          persistentVolumeClaim:
+            claimName: nfs-i2p
         - name: nfs-monero-pvc
           persistentVolumeClaim:
             claimName: nfs-monero

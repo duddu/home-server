@@ -1,0 +1,17 @@
+name: Deploy i2p
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'packages/i2p/**'
+concurrency:
+  group: deploy-i2p
+  cancel-in-progress: true
+jobs:
+  trigger-image-ci:
+    name: Trigger image CI
+    uses: ./.github/workflows/docker-image.yml
+    secrets: inherit
+    with:
+      package: i2p
