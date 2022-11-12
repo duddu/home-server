@@ -1,2 +1,2 @@
 *
-!scripts/google-ddns-healthcheck.sh
+!scripts/docker-entrypoint.sh

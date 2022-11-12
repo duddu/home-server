@@ -2,7 +2,7 @@
 
 FROM curlimages/curl:7.86.0 as production
 
-COPY scripts/google-ddns-healthcheck.sh /usr/local/bin/
+COPY scripts/docker-entrypoint.sh /usr/local/bin/
 
 ARG DOMAIN_NAME
 ARG COMMIT
@@ -12,7 +12,7 @@ ENV TZ=Europe/London \
     TAG=${TAG} \
     GOOGLE_DDNS_HOSTNAME=${DOMAIN_NAME}
 
-CMD ["sleep", "infinity"]
+ENTRYPOINT ["docker-entrypoint.sh"]
 
 LABEL org.opencontainers.image.authors="Davide Doronzo"
 LABEL org.opencontainers.image.url="https://github.com/duddu/home-server/pkgs/container/home-server-google-ddns"

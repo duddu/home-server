@@ -15,14 +15,14 @@ cd $SCAFFOLDING_DIR
 zsh ./scripts/podman/machine-start.sh
 zsh ./scripts/kind/cluster-create.sh
 
-echo "⏳ Preparing home-server-scaffolding job..."
+echo "⏳ Preparing scaffolding job..."
 kubectl apply -f ./config/k8s/namespaces
 kubectl config set-context --current --namespace=home-server
 kubectl apply -f ./config/k8s/volumes
-kubectl apply -f ./config/k8s/jobs
-echo "⏳ Waiting for home-server-scaffolding job to complete..."
-kubectl wait --for=condition=complete --timeout=180s job/home-server-scaffolding
-echo "🚀 Job home-server-scaffolding completed"
+kubectl apply -f ./config/k8s/jobs/scaffolding.yaml
+echo "⏳ Waiting for scaffolding job to complete..."
+kubectl wait --for=condition=complete --timeout=180s job home-server-scaffolding
+echo "🚀 Scaffolding job completed"
 
 if [ "${1:-}" = "--restart-vm" ]
 then
@@ -37,9 +37,13 @@ echo "⏳ Preparing deployments..."
 kubectl apply -f ./config/k8s/namespaces
 kubectl apply -f ./config/k8s/volumes
 kubectl apply -f ./config/k8s/secrets
+kubectl apply -f ./config/k8s/cronjobs
 kubectl apply -f ./config/k8s/deployments
-echo "⏳ Waiting for deployments to be ready..."
-kubectl wait --for=condition=Ready --timeout=180s pods -l app=home-server-daemons
-kubectl wait --for=condition=Ready --timeout=180s pods -l app=home-server
+echo "⏳ Waiting for deployments..."
+sleep 5
+kubectl wait --for=condition=ContainersReady --timeout=180s pod -l app=home-server-daemons ||
+  kubectl describe pod -l app=home-server-daemons
+kubectl wait --for=condition=ContainersReady --timeout=180s pod -l app=home-server ||
+  kubectl describe pod -l app=home-server
 kubectl apply -f ./config/k8s/services
 echo "🚀 Deployments ready"

@@ -20,32 +20,6 @@ spec:
         app: home-server-daemons
     spec:
       containers:
-        - image: ghcr.io/duddu/home-server-google-ddns:0.2.0
-          imagePullPolicy: Always
-          name: google-ddns
-          terminationMessagePath: /dev/termination-log
-          terminationMessagePolicy: File
-          env:
-            - name: GOOGLE_DDNS_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: google-ddns-credentials
-                  key: username
-                  optional: false
-            - name: GOOGLE_DDNS_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: google-ddns-credentials
-                  key: password
-                  optional: false
-          livenessProbe:
-            exec:
-              command:
-                - google-ddns-healthcheck.sh
-            initialDelaySeconds: 120
-            timeoutSeconds: 30
-            periodSeconds: 1200
-            failureThreshold: 3
         - image: ghcr.io/duddu/home-server-i2p:0.1.0
           imagePullPolicy: Always
           name: i2p

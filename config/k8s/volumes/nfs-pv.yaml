@@ -65,6 +65,22 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
+  name: nfs-public-ip
+  namespace: home-server
+spec:
+  capacity:
+    storage: 1M
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+    server: host.containers.internal
+    path: "/System/Volumes/Data/Users/Shared/.podman_volumes/public-ip"
+  mountOptions:
+    - async
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
   name: nfs-scaffolding
   namespace: home-server
 spec:
