@@ -12,6 +12,7 @@ on:
       - packages/nginx-reverse-proxy/ssl/dhparam.pem
       - 'packages/scaffolding/**'
       - 'scripts/**'
+  workflow_dispatch:
 concurrency:
   group: deploy-scaffolding
   cancel-in-progress: true
