@@ -43,7 +43,7 @@ spec:
             timeoutSeconds: 20
             periodSeconds: 120
             failureThreshold: 3
-        - image: ghcr.io/duddu/home-server-monero:0.5.1
+        - image: ghcr.io/duddu/home-server-monero:0.5.2
           imagePullPolicy: Always
           name: monero
           ports:
