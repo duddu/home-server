@@ -12,11 +12,6 @@ on:
         required: false
         type: string
 jobs:
-  trigger-hadolint:
-    name: Trigger Hadolint
-    uses: ./.github/workflows/hadolint.yml
-    with:
-      package: ${{ inputs.package }}
   docker-build-and-push:
     name: Image build and push
     runs-on: ubuntu-latest
@@ -56,15 +51,15 @@ jobs:
         cache-from: type=registry,ref=${{ env.IMAGE }}:latest-cache
         cache-to: type=registry,ref=${{ env.IMAGE }}:latest-cache,mode=max
         push: true
-  trigger-snyk-container:
-    name: Trigger Snyk
-    needs: docker-build-and-push
-    uses: ./.github/workflows/snyk-container.yml
-    secrets: inherit
+    - name: Push tag to repository
+      env:
+        GIT_TAG: ${{ inputs.package }}_v${{ env.TAG }}
+      run: |
+        git push --delete origin ${{ env.GIT_TAG }} || true
+        git tag -f ${{ env.GIT_TAG }} ${{ github.sha }}
+        git push -f origin ${{ env.GIT_TAG }}
+  trigger-hadolint:
+    name: Trigger Hadolint
+    uses: ./.github/workflows/hadolint.yml
     with:
       package: ${{ inputs.package }}
-  trigger-home-server-deploy:
-    name: Trigger Home Server deploy
-    needs: docker-build-and-push
-    uses: ./.github/workflows/deploy-home-server.yml
-    secrets: inherit

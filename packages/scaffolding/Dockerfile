@@ -1,27 +1,30 @@
 #syntax=docker/dockerfile:1.4
 
-FROM alpine:3.16 as builder
+FROM alpine:3.16 as production
+ARG USER=mason
 
 RUN apk update && apk upgrade && \
     apk add --no-cache \
         gnupg=2.2.35-r4 \
         git=2.36.3-r0 \
         git-crypt=0.6.0-r2 \
-        tzdata=2022f-r1
+        tzdata=2022f-r1 && \
+    addgroup ${USER} && \
+    adduser -G ${USER} -D ${USER}
 
-FROM builder as production
+WORKDIR /home/${USER}
+
+USER ${USER}
 
 ENV TZ=Europe/London
 
-WORKDIR /usr/local/home-server
-
-COPY . ./
-COPY ./packages/scaffolding/scripts/docker-entrypoint.sh /usr/local/bin/
+COPY --chown=${USER}:${USER} ./packages/scaffolding/scripts/docker-entrypoint.sh /usr/local/bin/
+COPY --chown=${USER}:${USER} . ./
 
 ENTRYPOINT ["docker-entrypoint.sh"]
 
-ARG COMMIT
 ARG TAG
+ARG COMMIT
 LABEL org.opencontainers.image.authors="Davide Doronzo"
 LABEL org.opencontainers.image.url="https://github.com/duddu/home-server/pkgs/container/home-server-scaffolding"
 LABEL org.opencontainers.image.version="${TAG}"

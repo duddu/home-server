@@ -1,15 +1,21 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
+  labels:
+    job: home-server-google-ddns
   name: home-server-google-ddns
+  namespace: home-server
 spec:
-  schedule: "*/15 * * * *"
+  schedule: "*/20 * * * *"
   concurrencyPolicy: Replace
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 1
   jobTemplate:
     spec:
       template:
+        metadata:
+          labels:
+            job: home-server-google-ddns
         spec:
           containers:
             - image: ghcr.io/duddu/home-server-google-ddns:0.3.0

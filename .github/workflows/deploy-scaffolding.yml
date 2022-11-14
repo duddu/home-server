@@ -1,5 +1,17 @@
 name: Deploy Scaffolding
 on:
+  workflow_dispatch:
+  workflow_run:
+    branches:
+      - main
+    workflows:
+      - Deploy Google DDNS
+      - Deploy i2p
+      - Deploy Monero
+      - Deploy Reverse Proxy
+      - Deploy API
+    types:
+      - completed
   push:
     branches:
       - main
@@ -8,19 +20,25 @@ on:
       - '.git-crypt/**'
       - .gitattributes
       - 'config/**'
+      - '!packages/**'
       - packages/nginx-reverse-proxy/ssl/ca.pem
       - packages/nginx-reverse-proxy/ssl/dhparam.pem
       - 'packages/scaffolding/**'
       - 'scripts/**'
-  workflow_dispatch:
 concurrency:
   group: deploy-scaffolding
   cancel-in-progress: true
 jobs:
   trigger-image-ci:
+    if: ${{ github.event_name == 'push' || github.event.workflow_run.conclusion == 'success' }}
     name: Trigger image CI
     uses: ./.github/workflows/docker-image.yml
     secrets: inherit
     with:
       package: scaffolding
       context: "."
+  trigger-home-server-deploy:
+    name: Trigger Home Server deploy
+    needs: trigger-image-ci
+    uses: ./.github/workflows/deploy-home-server.yml
+    secrets: inherit

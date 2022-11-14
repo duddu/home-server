@@ -1,10 +1,8 @@
-name: Snyk Container
+name: Snyk image scan
 on:
-  workflow_call:
-    inputs:
-      package:
-        required: true
-        type: string
+  push:
+    tags:
+      - '*'
 jobs:
   snyk:
     name: Run vulnerability scan
@@ -12,17 +10,22 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Set tag environment variable
-        run: echo "TAG=$(cat packages/${{ inputs.package }}/VERSION)" >> $GITHUB_ENV
+      - name: asdf
+        run: echo $(echo '${{ github.event.ref }}' | cut -d / -f 3 | cut -d _ -f 1)
+      - name: Set tag environment variables
+        run: |
+          PACKAGE=$(echo '${{ github.event.ref }}' | cut -d / -f 3 | cut -d _ -f 1)
+          echo "PACKAGE=$PACKAGE" >> $GITHUB_ENV
+          echo "TAG=$(cat packages/$PACKAGE/VERSION)" >> $GITHUB_ENV
       - name: Run Snyk vulnerability scan
-        uses: snyk/actions/docker@ff5c02a0e3adc5c52e2c9e7558edf2b46d69ac1f
+        uses: snyk/actions/docker@master
         continue-on-error: true
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          image: ghcr.io/${{ github.repository_owner }}/home-server-${{ inputs.package }}:${{ env.TAG }}
+          image: ghcr.io/${{ github.repository_owner }}/home-server-${{ env.PACKAGE }}:${{ env.TAG }}
           args:
-            --file=packages/${{ inputs.package }}/Dockerfile
+            --file=packages/${{ env.PACKAGE }}/Dockerfile
             --severity-threshold=medium
       - name: Upload scan result to GitHub
         uses: github/codeql-action/upload-sarif@v2
