@@ -21,6 +21,8 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v3
+      with:
+        token: ${{ secrets.PAT }}
     - name: Set package environment variables
       run: |
         echo "TAG=$(cat ${{ env.PACKAGE_DIR }}/VERSION)" >> $GITHUB_ENV
@@ -32,7 +34,7 @@ jobs:
       with:
         registry: ghcr.io
         username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
+        password: ${{ secrets.PAT }}
     - name: Build and push production image
       uses: docker/build-push-action@v3
       with:
