@@ -1,22 +1,20 @@
 name: Snyk image scan
 on:
-  push:
-    tags:
-      - '*'
+  registry_package:
+    types:
+      - published
+      - updated
 jobs:
   snyk:
     name: Run vulnerability scan
     runs-on: ubuntu-latest
+    env:
+      PACKAGE: ${{ github.event.registry_package.package_version.container_metadata.labels.all_labels['org.opencontainers.image.title'] }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: asdf
-        run: echo $(echo '${{ github.event.ref }}' | cut -d / -f 3 | cut -d _ -f 1)
       - name: Set tag environment variables
-        run: |
-          PACKAGE=$(echo '${{ github.event.ref }}' | cut -d / -f 3 | cut -d _ -f 1)
-          echo "PACKAGE=$PACKAGE" >> $GITHUB_ENV
-          echo "TAG=$(cat packages/$PACKAGE/VERSION)" >> $GITHUB_ENV
+        run: echo "TAG=$(cat packages/${{ env.PACKAGE }}/VERSION)" >> $GITHUB_ENV
       - name: Run Snyk vulnerability scan
         uses: snyk/actions/docker@master
         continue-on-error: true
