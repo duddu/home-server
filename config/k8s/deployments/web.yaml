@@ -20,7 +20,7 @@ spec:
         app: home-server
     spec:
       containers:
-        - image: ghcr.io/duddu/home-server-nginx-reverse-proxy:0.20.0
+        - image: ghcr.io/duddu/home-server-nginx-reverse-proxy:0.21.0
           imagePullPolicy: Always
           name: nginx-reverse-proxy
           ports:
