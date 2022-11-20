@@ -23,8 +23,12 @@ case "$1" in
     ;;
   
   install)
-    RELOAD_CMD=$([ "$2" = "--no-postinstall-reload" ] && echo "exit 0" || echo "nginx -s reload")
-    acme.sh --install-cert --key-file $SSL_INSTALL_PATH/private.key --fullchain-file $SSL_INSTALL_PATH/fullchain.pem --reloadcmd \'$RELOAD_CMD\' $ACME_COMMON_ARGS
+    INSTALL_ARGS="--install-cert --key-file $SSL_INSTALL_PATH/private.key --fullchain-file $SSL_INSTALL_PATH/fullchain.pem $ACME_COMMON_ARGS"
+    if [ "${2:-}" = "--no-postinstall-reload" ]; then
+      acme.sh $INSTALL_ARGS --reloadcmd 'exit 0'
+    else
+      acme.sh $INSTALL_ARGS --reloadcmd 'nginx -s reload'
+    fi
     ;;
 
   *)
