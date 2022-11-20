@@ -23,11 +23,12 @@ case "$1" in
     ;;
   
   install)
-    acme.sh --install-cert --key-file $SSL_INSTALL_PATH/private.key --fullchain-file $SSL_INSTALL_PATH/fullchain.pem --reloadcmd 'exit 0' $ACME_COMMON_ARGS
+    RELOAD_CMD=$([ "$2" = "--no-postinstall-reload" ] && echo "exit 0" || echo "nginx -s reload")
+    acme.sh --install-cert --key-file $SSL_INSTALL_PATH/private.key --fullchain-file $SSL_INSTALL_PATH/fullchain.pem --reloadcmd \'$RELOAD_CMD\' $ACME_COMMON_ARGS
     ;;
 
   *)
-    echo "Operation argument must be one of: (issue, renew, install)"
+    echo "Command argument must be one of: (issue, renew, install)"
     exit 1
     ;;
 esac
