@@ -20,7 +20,7 @@ spec:
         app: home-server-daemons
     spec:
       containers:
-        - image: ghcr.io/duddu/home-server-i2p:0.1.0
+        - image: ghcr.io/duddu/home-server-i2p
           imagePullPolicy: Always
           name: i2p
           terminationMessagePath: /dev/termination-log
@@ -43,7 +43,7 @@ spec:
             timeoutSeconds: 20
             periodSeconds: 120
             failureThreshold: 3
-        - image: ghcr.io/duddu/home-server-monero:0.5.2
+        - image: ghcr.io/duddu/home-server-monero
           imagePullPolicy: Always
           name: monero
           ports:
@@ -54,20 +54,20 @@ spec:
             - name: MONERO_RPC_LOGIN
               valueFrom:
                 secretKeyRef:
-                  name: monero-rpc-login
-                  key: login
+                  name: monero
+                  key: rpc_login
                   optional: false
             - name: MONERO_ANONYMOUS_INBOUND
               valueFrom:
                 secretKeyRef:
-                  name: monero-i2p-addresses
-                  key: inbound
+                  name: monero
+                  key: i2p_inbound
                   optional: false
             - name: MONERO_PEERS
               valueFrom:
                 secretKeyRef:
-                  name: monero-i2p-addresses
-                  key: peers
+                  name: monero
+                  key: i2p_peers
                   optional: false
           resources:
             requests:
@@ -78,8 +78,6 @@ spec:
           volumeMounts:
             - mountPath: /root/monero
               name: nfs-monero-pvc
-            - mountPath: /usr/local/share/ssl
-              name: nfs-ssl-pvc
           livenessProbe:
             exec:
               command:
@@ -101,6 +99,3 @@ spec:
         - name: nfs-monero-pvc
           persistentVolumeClaim:
             claimName: nfs-monero
-        - name: nfs-ssl-pvc
-          persistentVolumeClaim:
-            claimName: nfs-ssl

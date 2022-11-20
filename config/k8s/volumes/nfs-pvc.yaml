@@ -15,20 +15,6 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: nfs-gnupg
-  namespace: home-server
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: ""
-  resources:
-    requests:
-      storage: 10M
-  volumeName: nfs-gnupg
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
   name: nfs-i2p
   namespace: home-server
 spec:
@@ -67,31 +53,3 @@ spec:
     requests:
       storage: 1M
   volumeName: nfs-public-ip
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: nfs-scaffolding
-  namespace: home-server
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: ""
-  resources:
-    requests:
-      storage: 10M
-  volumeName: nfs-scaffolding
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: nfs-ssl
-  namespace: home-server
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: ""
-  resources:
-    requests:
-      storage: 10M
-  volumeName: nfs-ssl

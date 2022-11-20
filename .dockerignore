@@ -1,9 +1,0 @@
-*
-!.git/
-!.git-crypt/
-!.gitattributes
-!config/
-!packages/nginx-reverse-proxy/ssl/ca.pem
-!packages/nginx-reverse-proxy/ssl/dhparam.pem
-!packages/scaffolding/scripts/docker-entrypoint.sh
-!scripts/

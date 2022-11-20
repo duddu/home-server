@@ -18,21 +18,15 @@ spec:
             job: home-server-google-ddns
         spec:
           containers:
-            - image: ghcr.io/duddu/home-server-google-ddns:0.3.0
+            - image: ghcr.io/duddu/home-server-google-ddns
               imagePullPolicy: Always
               name: google-ddns
               env:
-                - name: GOOGLE_DDNS_USERNAME
+                - name: GOOGLE_DDNS_LOGIN
                   valueFrom:
                     secretKeyRef:
-                      name: google-ddns-credentials
-                      key: username
-                      optional: false
-                - name: GOOGLE_DDNS_PASSWORD
-                  valueFrom:
-                    secretKeyRef:
-                      name: google-ddns-credentials
-                      key: password
+                      name: google-ddns
+                      key: login
                       optional: false
               volumeMounts:
                 - mountPath: /var/public-ip

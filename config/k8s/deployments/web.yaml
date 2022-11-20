@@ -20,7 +20,7 @@ spec:
         app: home-server
     spec:
       containers:
-        - image: ghcr.io/duddu/home-server-nginx-reverse-proxy:0.21.0
+        - image: ghcr.io/duddu/home-server-nginx-reverse-proxy
           imagePullPolicy: Always
           name: nginx-reverse-proxy
           ports:
@@ -37,7 +37,8 @@ spec:
             - mountPath: /usr/local/share/.acme.sh
               name: nfs-acme-pvc
             - mountPath: /usr/local/share/ssl
-              name: nfs-ssl-pvc
+              name: ssl-secrets
+              readOnly: true
           livenessProbe:
             exec:
               command:
@@ -46,7 +47,7 @@ spec:
             timeoutSeconds: 2
             periodSeconds: 60
             failureThreshold: 3
-        - image: ghcr.io/duddu/home-server-rust-api:0.14.0
+        - image: ghcr.io/duddu/home-server-rust-api
           imagePullPolicy: Always
           name: rust-api
           resources: {}
@@ -70,6 +71,11 @@ spec:
         - name: nfs-acme-pvc
           persistentVolumeClaim:
             claimName: nfs-acme
-        - name: nfs-ssl-pvc
-          persistentVolumeClaim:
-            claimName: nfs-ssl
+        - name: ssl-secrets
+          secret:
+            secretName: ssl
+            items:
+              - key: ca_pem
+                path: ca.pem
+              - key: dhparam_pem
+                path: dhparam.pem

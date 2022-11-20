@@ -13,7 +13,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   start-home-server-pods:
-    name: Restart pods
+    name: Apply k8s resources
     uses: ./.github/workflows/run-over-ssh.yml
     secrets: inherit
     with:

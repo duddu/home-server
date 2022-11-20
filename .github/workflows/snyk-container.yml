@@ -1,29 +1,28 @@
 name: Snyk image scan
 on:
-  registry_package:
-    types:
-      - published
-      - updated
+  workflow_call:
+    inputs:
+      package:
+        required: true
+        type: string
 jobs:
   snyk:
     name: Run vulnerability scan
     runs-on: ubuntu-latest
-    env:
-      PACKAGE: ${{ github.event.registry_package.package_version.container_metadata.labels.all_labels['org.opencontainers.image.title'] }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Set tag environment variables
-        run: echo "TAG=$(cat packages/${{ env.PACKAGE }}/VERSION)" >> $GITHUB_ENV
+      - name: Set tag environment variable
+        run: echo "TAG=$(cat packages/${{ inputs.package }}/VERSION)" >> $GITHUB_ENV
       - name: Run Snyk vulnerability scan
         uses: snyk/actions/docker@master
         continue-on-error: true
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          image: ghcr.io/${{ github.repository_owner }}/home-server-${{ env.PACKAGE }}:${{ env.TAG }}
+          image: ghcr.io/${{ github.repository_owner }}/home-server-${{ inputs.package }}:${{ env.TAG }}
           args:
-            --file=packages/${{ env.PACKAGE }}/Dockerfile
+            --file=packages/${{ inputs.package }}/Dockerfile
             --severity-threshold=medium
       - name: Upload scan result to GitHub
         uses: github/codeql-action/upload-sarif@v2

@@ -9,7 +9,7 @@ on:
         required: true
         type: string
 env:
-  RAW_GITHUB_PATH: https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}
+  REMOTE_SCRIPTS_PATH: https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/scripts
 jobs:
   run-on-home-server:
     name: Run script over ssh
@@ -22,5 +22,8 @@ jobs:
           known_hosts: ${{ secrets.KNOWN_HOSTS }}
       - name: Run ${{ inputs.script-name }}.sh over ssh
         run:
-          ssh ${{ secrets.SSH_USER }}@${{ secrets.DOMAIN_NAME }} 
-            "RAW_GITHUB_PATH=${{ env.RAW_GITHUB_PATH }} zsh <(curl -s ${{ env.RAW_GITHUB_PATH }}/scripts/${{ inputs.script-name }}.sh) ${{ inputs.script-argument }}"
+          ssh ${{ secrets.SSH_USER }}@${{ secrets.DOMAIN_NAME }} "
+            GIT_REF=${{ github.sha }} 
+            USER=${{ secrets.SSH_USER }} 
+            zsh <(curl -s ${{ env.REMOTE_SCRIPTS_PATH }}/${{ inputs.script-name }}.sh)
+              ${{ inputs.script-argument }}"

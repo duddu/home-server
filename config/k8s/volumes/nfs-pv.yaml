@@ -17,22 +17,6 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: nfs-gnupg
-  namespace: home-server
-spec:
-  capacity:
-    storage: 10M
-  accessModes:
-    - ReadWriteOnce
-  nfs:
-    server: host.containers.internal
-    path: "/System/Volumes/Data/Users/Shared/.podman_volumes/.gnupg"
-  mountOptions:
-    - async
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
   name: nfs-i2p
   namespace: home-server
 spec:
@@ -75,37 +59,5 @@ spec:
   nfs:
     server: host.containers.internal
     path: "/System/Volumes/Data/Users/Shared/.podman_volumes/public-ip"
-  mountOptions:
-    - async
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: nfs-scaffolding
-  namespace: home-server
-spec:
-  capacity:
-    storage: 10M
-  accessModes:
-    - ReadWriteOnce
-  nfs:
-    server: host.containers.internal
-    path: "/System/Volumes/Data/Users/Shared/.podman_volumes/scaffolding"
-  mountOptions:
-    - async
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: nfs-ssl
-  namespace: home-server
-spec:
-  capacity:
-    storage: 10M
-  accessModes:
-    - ReadWriteOnce
-  nfs:
-    server: host.containers.internal
-    path: "/System/Volumes/Data/Users/Shared/.podman_volumes/ssl"
   mountOptions:
     - async

@@ -29,7 +29,7 @@ WORKDIR ${LOCAL_DIR}
 ENV TZ=Europe/London \
     ACME_HOME=${ACME_HOME} \
     DOMAIN_NAME=${DOMAIN_NAME} \
-    SSL_INSTALL_PATH=${LOCAL_DIR}/share/ssl
+    SSL_INSTALL_PATH=${LOCAL_DIR}/ssl
 
 RUN apk update && apk upgrade && \
     apk add --no-cache \
@@ -47,12 +47,14 @@ RUN apk update && apk upgrade && \
     touch /var/log/nginx/nginx-reverse-proxy.log && \
     mkdir -p share/.acme.sh && \
     mkdir -p share/www/.well-known/acme-challenge && \
+    mkdir -p ${SSL_INSTALL_PATH} && \
     chown nginx:nginx /var/run/nginx.pid && \
     chown -R nginx:nginx /var/cache/nginx && \
     chown -R nginx:nginx /var/log/nginx && \
     chown -R nginx:nginx bin && \
     chown -R nginx:nginx share/.acme.sh && \
-    chown -R nginx:nginx share/www
+    chown -R nginx:nginx share/www && \
+    chown -R nginx:nginx ${SSL_INSTALL_PATH}
 
 COPY scripts/docker-entrypoint.sh scripts/nginx-healthcheck.sh scripts/letsencrypt.sh bin/
 COPY nginx.conf ${NGINX_CONF}

@@ -1,0 +1,40 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+metadata:
+  name: home-server
+  namespace: home-server
+commonAnnotations:
+  commitSha: $COMMIT_SHA
+resources:
+  - namespaces/home-server.yaml
+  - volumes/nfs-pv.yaml
+  - volumes/nfs-pvc.yaml
+  - cronjobs/google-ddns.yaml
+  - deployments/daemons.yaml
+  - deployments/web.yaml
+images:
+  - name: ghcr.io/duddu/home-server-google-ddns
+    newTag: $GOOGLE_DDNS_VERSION
+  - name: ghcr.io/duddu/home-server-i2p
+    newTag: $I2P_VERSION
+  - name: ghcr.io/duddu/home-server-monero
+    newTag: $MONERO_VERSION
+  - name: ghcr.io/duddu/home-server-nginx-reverse-proxy
+    newTag: $NGINX_REVERSE_PROXY_VERSION
+  - name: ghcr.io/duddu/home-server-rust-api
+    newTag: $RUST_API_VERSION
+secretGenerator:
+  - name: google-ddns
+    files:
+      - secrets/google-ddns/login
+  - name: monero
+    files:
+      - secrets/monero/i2p_inbound
+      - secrets/monero/i2p_peers
+      - secrets/monero/rpc_login
+  - name: ssl
+    files:
+      - secrets/ssl/ca_pem
+      - secrets/ssl/dhparam_pem
+generatorOptions:
+  disableNameSuffixHash: true
