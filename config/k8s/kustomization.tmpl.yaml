@@ -3,8 +3,6 @@ kind: Kustomization
 metadata:
   name: home-server
   namespace: home-server
-commonAnnotations:
-  commitSha: $COMMIT_SHA
 resources:
   - namespaces/home-server.yaml
   - volumes/nfs-pv.yaml
