@@ -8,11 +8,20 @@ on:
         required: true
         default: false 
         type: boolean
+  push:
+    branches:
+      - main
+    paths:
+      - '.git-crypt/**'
+      - '.gitattributes'
+      - '.github/workflows/deploy-home-server.yml'
+      - 'config/**'
+      - 'scripts/**'
 concurrency:
   group: deploy-home-server
   cancel-in-progress: true
 jobs:
-  start-home-server-pods:
+  apply-k8s-resources:
     name: Apply k8s resources
     uses: ./.github/workflows/run-over-ssh.yml
     secrets: inherit
@@ -22,5 +31,5 @@ jobs:
   trigger-health-check:
     name: Trigger health check
     uses: ./.github/workflows/healthcheck.yml
-    needs: start-home-server-pods
+    needs: apply-k8s-resources
     secrets: inherit
