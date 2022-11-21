@@ -50,6 +50,11 @@ for version in ./packages/**/VERSION(.); do
   export declare ${package}_VERSION=$(cat $version)
 done
 
+wait_for_pod () {
+  kubectl wait --for=condition=ContainersReady --timeout=240s pod -l app=$1 ||
+    (kubectl get deployments ; kubectl describe pod -l app=$1 ; exit 1)
+}
+
 echo "⏳ Preparing resources..."
 cd ./config/k8s
 envsubst < kustomization.tmpl.yaml > kustomization.yaml
@@ -57,6 +62,6 @@ kubectl apply -k .
 kubectl config set-context --current --namespace=home-server
 echo "⏳ Waiting for pods..."
 sleep 5
-kubectl wait --for=condition=ContainersReady --timeout=240s pods --all ||
-  (kubectl get deployments ; kubectl describe pods ; exit 1)
+wait_for_pod home-server
+wait_for_pod home-server-daemons
 echo "🚀 Pods ready"
