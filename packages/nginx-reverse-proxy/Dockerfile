@@ -31,13 +31,15 @@ ENV TZ=Europe/London \
     DOMAIN_NAME=${DOMAIN_NAME} \
     SSL_INSTALL_PATH=${LOCAL_DIR}/ssl
 
+SHELL ["/bin/ash", "-c"]
+
 RUN apk update && apk upgrade && \
     apk add --no-cache \
+        libxml2=2.9.14-r2 \
         openssl=1.1.1s-r0 \
         socat=1.7.4.3-r0 \
         websocketd=0.4.1-r10 \
         tzdata=2022f-r1 && \
-    set -o pipefail && \
     curl https://raw.githubusercontent.com/acmesh-official/acme.sh/master/acme.sh | sh -s -- \
         --install-online \
         --accountemail ${DOMAIN_EMAIL} \
