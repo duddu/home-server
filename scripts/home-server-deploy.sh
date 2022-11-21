@@ -10,7 +10,7 @@ export HOME="/Users/$USER"
 export GIT_REF
 
 clone_sparse_checkout () {
-  git clone -q --depth=1 --no-checkout --filter=blob:none git@github.com:duddu/home-server.git . 1> /dev/null
+  git clone -q --depth=1 --no-checkout --filter=blob:none git@github.com:duddu/home-server.git . > /dev/null
   git sparse-checkout set --no-cone \
     .git-crypt \
     .gitattributes \
@@ -56,10 +56,10 @@ wait_for_pod () {
 }
 
 echo "⏳ Preparing resources..."
+kubectl config set-context --current --namespace=home-server
 cd ./config/k8s
 envsubst < kustomization.tmpl.yaml > kustomization.yaml
 kubectl apply -k .
-kubectl config set-context --current --namespace=home-server
 echo "⏳ Waiting for pods..."
 sleep 5
 wait_for_pod home-server

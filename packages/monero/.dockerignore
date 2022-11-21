@@ -1,5 +1,6 @@
 *
 !monerod.conf
 !monero-wallet-cli.conf
+!torrc
 !scripts/docker-entrypoint.sh
 !scripts/monero-healthcheck.sh

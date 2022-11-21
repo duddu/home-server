@@ -27,9 +27,8 @@ secretGenerator:
       - secrets/google-ddns/login
   - name: monero
     files:
-      - secrets/monero/i2p_inbound
-      - secrets/monero/i2p_peers
       - secrets/monero/rpc_login
+      - secrets/monero/tor_peers
   - name: ssl
     files:
       - secrets/ssl/ca_pem
