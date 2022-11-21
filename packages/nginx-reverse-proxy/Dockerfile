@@ -12,7 +12,8 @@ WORKDIR ${LOCAL_DIR}
 COPY ssl/test share/ssl
 COPY nginx.conf ${NGINX_CONF}
 
-RUN sed -e "s/\$DOMAIN_NAME/localhost/g" \
+RUN apk update && apk add --no-cache libxml2=2.9.14-r2 && \
+    sed -e "s/\$DOMAIN_NAME/localhost/g" \
         -e "s/server home-server/server test.home-server/g" \
         -e "s/server tplinkwifi.net/server test.tplinkwifi.net/g" -i ${NGINX_CONF} && \
     nginx -t
@@ -30,8 +31,6 @@ ENV TZ=Europe/London \
     ACME_HOME=${ACME_HOME} \
     DOMAIN_NAME=${DOMAIN_NAME} \
     SSL_INSTALL_PATH=${LOCAL_DIR}/ssl
-
-SHELL ["/bin/ash", "-c"]
 
 RUN apk update && apk upgrade && \
     apk add --no-cache \
