@@ -24,6 +24,7 @@ curl -X POST -v $NIC_UPDATE_URL \
   -H "Authorisation: Basic base64-encoded-auth-string" \
   -H "User-Agent: home-server/google-ddns/$TAG"
 
+rm -f $PUBLIC_IP_DIR/*
 touch $PUBLIC_IP_DIR/$PUBLIC_IP
 
 echo "✅ Dynamic DNS updated successfully."
