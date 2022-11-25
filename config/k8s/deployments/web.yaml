@@ -20,9 +20,9 @@ spec:
         app: home-server
     spec:
       containers:
-        - image: ghcr.io/duddu/home-server-nginx-reverse-proxy
+        - name: nginx-reverse-proxy
+          image: ghcr.io/duddu/home-server-nginx-reverse-proxy
           imagePullPolicy: Always
-          name: nginx-reverse-proxy
           ports:
             - containerPort: 8080
               hostPort: 8080
@@ -31,8 +31,6 @@ spec:
               hostPort: 8443
               protocol: TCP
           resources: {}
-          terminationMessagePath: /dev/termination-log
-          terminationMessagePolicy: File
           volumeMounts:
             - mountPath: /usr/local/share/.acme.sh
               name: nfs-acme-pvc
@@ -47,12 +45,10 @@ spec:
             timeoutSeconds: 2
             periodSeconds: 60
             failureThreshold: 3
-        - image: ghcr.io/duddu/home-server-rust-api
+        - name: rust-api
+          image: ghcr.io/duddu/home-server-rust-api
           imagePullPolicy: Always
-          name: rust-api
           resources: {}
-          terminationMessagePath: /dev/termination-log
-          terminationMessagePolicy: File
           livenessProbe:
             exec:
               command:

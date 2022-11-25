@@ -20,11 +20,9 @@ spec:
         app: home-server-daemons
     spec:
       containers:
-        - image: ghcr.io/duddu/home-server-i2p
+        - name: i2p
+          image: ghcr.io/duddu/home-server-i2p
           imagePullPolicy: Always
-          name: i2p
-          terminationMessagePath: /dev/termination-log
-          terminationMessagePolicy: File
           ports:
             - containerPort: 4444
               hostPort: 4444
@@ -43,9 +41,9 @@ spec:
             timeoutSeconds: 20
             periodSeconds: 120
             failureThreshold: 3
-        - image: ghcr.io/duddu/home-server-monero
+        - name: monero
+          image: ghcr.io/duddu/home-server-monero
           imagePullPolicy: Always
-          name: monero
           ports:
             - containerPort: 18082
               hostPort: 18082
