@@ -10,4 +10,5 @@ cd "${0%/*}"
   echo "⏭ Cluster ${CLUSTER} already exists") ||
   (echo "⏳ Creating cluster ${CLUSTER}..." &&
     kind create cluster --config ../../config/kind/cluster.yaml &&
+    kubectl cluster-info --context kind-home-server &&
     echo "✨ Cluster ${CLUSTER} created successfully")
