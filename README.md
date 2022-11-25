@@ -1,6 +1,6 @@
 # Home Server
 
-[![Deploy Home Server](https://github.com/duddu/home-server/actions/workflows/deploy-home-server.yml/badge.svg)](https://github.com/duddu/home-server/actions/workflows/deploy-home-server.yml)
+[![Deploy Home Server](https://github.com/duddu/home-server/actions/workflows/deploy-home-server.yml/badge.svg)](https://github.com/duddu/home-server/actions/workflows/deploy-home-server.yml) [![Let's Encrypt](https://github.com/duddu/home-server/actions/workflows/letsencrypt.yml/badge.svg)](https://github.com/duddu/home-server/actions/workflows/letsencrypt.yml)
 | Component | Status |
 | :--- | :--- |
 | google-ddns | [![Deploy Google DDNS](https://github.com/duddu/home-server/actions/workflows/deploy-google-ddns.yml/badge.svg)](https://github.com/duddu/home-server/actions/workflows/deploy-google-ddns.yml) |

@@ -10,6 +10,7 @@ on:
         options: 
           - issue
           - renew
+          - install
 concurrency:
   group: letsencrypt
   cancel-in-progress: true
@@ -20,7 +21,7 @@ jobs:
     secrets: inherit
     with:
       script-name: letsencrypt
-      script-argument: --${{ inputs.acme-command }}
+      script-argument: ${{ inputs.acme-command }}
   trigger-health-check:
     name: Trigger health check
     uses: ./.github/workflows/healthcheck.yml
