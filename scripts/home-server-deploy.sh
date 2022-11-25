@@ -56,8 +56,8 @@ wait_for_pod () {
 }
 
 echo "⏳ Preparing resources..."
-kubectl config set-context --current --namespace=home-server
 cd ./config/k8s
+kubectl config set-context --current --namespace=home-server
 envsubst < kustomization.tmpl.yaml > kustomization.yaml
 kubectl apply -k .
 echo "⏳ Waiting for pods..."
