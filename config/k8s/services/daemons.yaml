@@ -19,14 +19,6 @@ spec:
       port: 18082
       protocol: TCP
       targetPort: 18082
-    - name: i2p-xmr-proxy
-      port: 48060
-      protocol: TCP
-      targetPort: 48060
-    - name: i2p-xmr-inbound
-      port: 48061
-      protocol: TCP
-      targetPort: 48061
   selector:
     app: home-server-daemons
   sessionAffinity: None
