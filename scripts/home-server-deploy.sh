@@ -40,9 +40,9 @@ if [ "${1:-}" = "--restart-vm" ]
 then
   echo "⏳ Recreating virtual machine and cluster..."
   run_script kind/cluster-delete
-  run_script podman/machine-rm
+  run_script docker/stop
 fi
-run_script podman/machine-start
+run_script docker/start
 run_script kind/cluster-create
 
 for version in ./packages/**/VERSION(.); do
