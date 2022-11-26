@@ -10,6 +10,8 @@ resources:
   - cronjobs/google-ddns.yaml
   - deployments/daemons.yaml
   - deployments/web.yaml
+  - services/daemons.yaml
+  - services/web.yaml
 images:
   - name: ghcr.io/duddu/home-server-google-ddns
     newTag: $GOOGLE_DDNS_VERSION
