@@ -16,6 +16,6 @@ perform_health_check () {
     echo "⏳ Running https nginx e2e health check..." &&
     perform_health_check https://$DOMAIN_NAME/health &&
       echo "⏳ Running api e2e health check..." &&
-        perform_health_check https://$DOMAIN_NAME/api/health &&
+        perform_health_check https://api.$DOMAIN_NAME/health &&
   echo "🏥 Health checks completed") ||
   exit 1
