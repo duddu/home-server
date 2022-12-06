@@ -28,7 +28,7 @@ RUN set -o pipefail && \
     cp i2p-archive-keyring.gpg /usr/share/keyrings && \
     apt-get update && \
     apt-get install -y --no-install-recommends \
-        i2p=2.0.0-1ubuntu1 \
+        i2p=2.0.0-2ubuntu1 \
         i2p-keyring=2021.09.10 && \
     apt-get purge -y python3.9 apt-transport-https lsb-release gnupg && \
     rm -rf /var/lib/apt/lists/* && \
