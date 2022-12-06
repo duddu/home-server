@@ -60,7 +60,8 @@ apply_k8s_resources () {
   echo "⏳ Waiting for pods..."
   sleep 3
   kubectl wait --for=condition=Available --timeout=240s deployments --all &&
-    kubectl wait --for=condition=ContainersReady --field-selector=spec.restartPolicy=Always --timeout=120s pods ||
+    kubectl wait --for=condition=ContainersReady --field-selector=spec.restartPolicy=Always --timeout=120s pods &&
+    kubectl wait --for=condition=PodScheduled --field-selector=spec.restartPolicy=OnFailure --timeout=120s pods ||
     (kubectl get deployments ; kubectl describe pods ; exit 1)
   echo "🚀 Pods ready"
 }
