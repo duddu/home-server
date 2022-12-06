@@ -1,3 +1,2 @@
 *
-!scripts/docker-entrypoint.sh
 !scripts/i2p-healthcheck.sh

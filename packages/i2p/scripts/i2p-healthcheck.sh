@@ -2,4 +2,6 @@
 
 set -e
 
-curl -s --fail http://localhost:7657/viewhistory
+[ "$(i2prouter status | grep -o STARTED | wc -l)" = 2 ] &&
+  exit 0 ||
+  (i2prouter status ; exit 1)
