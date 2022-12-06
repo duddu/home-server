@@ -31,17 +31,17 @@ jobs:
         if: ${{ steps.changed-dockerfile.outputs.any_changed == 'true' }}
         run: echo "do_lint=true" >> $GITHUB_ENV
       - name: Run hadolint
-        uses: hadolint/hadolint-action@v2.1.0
-        id: hadolint
-        if: env.do_lint
+        uses: hadolint/hadolint-action@v3.0.0
+        if: ${{ env.do_lint == 'true' }}
         with:
           dockerfile: ${{ env.dockerfile }}
           format: sarif
           output-file: hadolint-results.sarif
           no-fail: true
+          verbose: true
       - name: Upload analysis results to GitHub
         uses: github/codeql-action/upload-sarif@v2
-        if: env.do_lint
+        if: ${{ env.do_lint == 'true' }}
         with:
           sarif_file: hadolint-results.sarif
           wait-for-processing: true
