@@ -6,7 +6,7 @@ metadata:
   name: home-server-google-ddns
   namespace: home-server
 spec:
-  schedule: "*/20 * * * *"
+  schedule: "*/30 * * * *"
   concurrencyPolicy: Replace
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 1
