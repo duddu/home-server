@@ -15,7 +15,7 @@ COPY . ./
 RUN cargo test --release && \
     cargo build --release
 
-FROM debian:11.5-slim as production
+FROM debian:bullseye-20230109-slim as production
 ARG APP_USER=rusty
 ARG APP_DIR
 ARG DOMAIN_NAME
