@@ -1,6 +1,6 @@
 #syntax=docker/dockerfile:1.4
 
-FROM debian:11.5-slim as production
+FROM debian:11.6-slim as production
 
 ARG DEBIAN_FRONTEND=noninteractive
 ARG I2P_PUB_KEY=/usr/share/keyrings/i2p-archive-keyring.gpg

@@ -2,7 +2,7 @@
 
 ARG DEBIAN_FRONTEND=noninteractive
 
-FROM debian:11.5-slim as builder
+FROM debian:11.6-slim as builder
 ARG DEBIAN_FRONTEND
 
 WORKDIR /tmp/monero
@@ -20,7 +20,7 @@ RUN apt-get update && \
     rm -rf /tmp/monero && \
     rm -rf /var/lib/apt/lists/*
 
-FROM debian:11.5-slim as production
+FROM debian:11.6-slim as production
 ARG DEBIAN_FRONTEND
 
 RUN apt-get update && \
