@@ -32,7 +32,7 @@ RUN set -o pipefail && \
         i2p=2.0.0-2ubuntu1 \
         i2p-keyring=2021.09.10 && \
     apt-get purge -y python3.9 apt-transport-https curl gnupg lsb-release && \
-    apt autoremove -y && \
+    apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/* && \
     rm -rf /etc/apt/sources.list.d/* && \
     rm -f ${I2P_PUB_KEY} && \
