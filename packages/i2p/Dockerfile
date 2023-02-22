@@ -28,7 +28,9 @@ RUN set -o pipefail && \
     gpg --keyid-format long --import --import-options show-only --with-fingerprint ${I2P_PUB_KEY} \
         | grep -q '7840 E761 0F28 B904 7535  49D7 67EC E560 5BCF 1346' && \
     apt-get update && \
-    apt-get install -y --no-install-recommends i2p i2p-keyring && \
+    apt-get install -y --no-install-recommends \
+        i2p=2.1.0-1ubuntu1 \
+        i2p-keyring=2021.09.10 && \
     apt-get purge -y python3.9 apt-transport-https curl gnupg lsb-release && \
     apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/* && \
