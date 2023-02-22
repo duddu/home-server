@@ -1,6 +1,6 @@
 #syntax=docker/dockerfile:1.4
 
-FROM debian:11.5-slim as production
+FROM debian:11.6-slim as production
 
 ARG DEBIAN_FRONTEND=noninteractive
 ARG I2P_PUB_KEY=/usr/share/keyrings/i2p-archive-keyring.gpg
@@ -18,7 +18,7 @@ RUN set -o pipefail && \
     apt-get install -y --no-install-recommends \
         apt-transport-https=2.2.4 \
         lsb-release=11.1.0 \
-        curl=7.74.0-1.3+deb11u3 \
+        curl=7.74.0-1.3+deb11u5 \
         ca-certificates=20210119 \
         gnupg=2.2.27-2+deb11u2 \
         procps=2:3.3.17-5 && \
@@ -28,11 +28,9 @@ RUN set -o pipefail && \
     gpg --keyid-format long --import --import-options show-only --with-fingerprint ${I2P_PUB_KEY} \
         | grep -q '7840 E761 0F28 B904 7535  49D7 67EC E560 5BCF 1346' && \
     apt-get update && \
-    apt-get install -y --no-install-recommends \
-        i2p=2.0.0-2ubuntu1 \
-        i2p-keyring=2021.09.10 && \
+    apt-get install -y --no-install-recommends i2p i2p-keyring && \
     apt-get purge -y python3.9 apt-transport-https curl gnupg lsb-release && \
-    apt autoremove -y && \
+    apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/* && \
     rm -rf /etc/apt/sources.list.d/* && \
     rm -f ${I2P_PUB_KEY} && \
