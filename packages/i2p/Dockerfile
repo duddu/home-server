@@ -18,7 +18,7 @@ RUN set -o pipefail && \
     apt-get install -y --no-install-recommends \
         apt-transport-https=2.2.4 \
         lsb-release=11.1.0 \
-        curl=7.74.0-1.3+deb11u3 \
+        curl=7.74.0-1.3+deb11u5 \
         ca-certificates=20210119 \
         gnupg=2.2.27-2+deb11u2 \
         procps=2:3.3.17-5 && \

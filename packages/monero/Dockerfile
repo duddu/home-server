@@ -10,7 +10,7 @@ WORKDIR /tmp/monero
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         ca-certificates=20210119 \
-        curl=7.74.0-1.3+deb11u3 \
+        curl=7.74.0-1.3+deb11u5 \
         bzip2=1.0.8-4 && \
     curl -L -O https://downloads.getmonero.org/cli/linux64 && \
     curl -L -O https://www.getmonero.org/downloads/hashes.txt && \
