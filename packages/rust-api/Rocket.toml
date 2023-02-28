@@ -1,7 +1,7 @@
 [default]
 address = "0.0.0.0"
 port = 8000
-ident = "home-server-rust-api/0.14.2"
+ident = "home-server-rust-api/0.15.0"
 domain_name = "localhost"
 
 [debug]
