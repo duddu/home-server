@@ -41,41 +41,41 @@ spec:
             timeoutSeconds: 20
             periodSeconds: 120
             failureThreshold: 3
-        - name: monero
-          image: ghcr.io/duddu/home-server-monero
-          imagePullPolicy: Always
-          ports:
-            - containerPort: 18082
-              hostPort: 18082
-              protocol: TCP
-          env:
-            - name: MONERO_RPC_LOGIN
-              valueFrom:
-                secretKeyRef:
-                  name: monero
-                  key: rpc_login
-                  optional: false
-            - name: MONERO_PEERS
-              valueFrom:
-                secretKeyRef:
-                  name: monero
-                  key: tor_peers
-                  optional: false
-          resources:
-            requests:
-              cpu: "1000m"
-              memory: "2048Mi"
-          volumeMounts:
-            - mountPath: /root/monero
-              name: nfs-monero-pvc
-          livenessProbe:
-            exec:
-              command:
-                - monero-healthcheck.sh
-            initialDelaySeconds: 600
-            timeoutSeconds: 120
-            periodSeconds: 600
-            failureThreshold: 3
+#         - name: monero
+#           image: ghcr.io/duddu/home-server-monero
+#           imagePullPolicy: Always
+#           ports:
+#             - containerPort: 18082
+#               hostPort: 18082
+#               protocol: TCP
+#           env:
+#             - name: MONERO_RPC_LOGIN
+#               valueFrom:
+#                 secretKeyRef:
+#                   name: monero
+#                   key: rpc_login
+#                   optional: false
+#             - name: MONERO_PEERS
+#               valueFrom:
+#                 secretKeyRef:
+#                   name: monero
+#                   key: tor_peers
+#                   optional: false
+#           resources:
+#             requests:
+#               cpu: "1000m"
+#               memory: "2048Mi"
+#           volumeMounts:
+#             - mountPath: /root/monero
+#               name: nfs-monero-pvc
+#           livenessProbe:
+#             exec:
+#               command:
+#                 - monero-healthcheck.sh
+#             initialDelaySeconds: 600
+#             timeoutSeconds: 120
+#             periodSeconds: 600
+#             failureThreshold: 3
       dnsPolicy: ClusterFirst
       hostname: home-server-daemons
       restartPolicy: Always
@@ -86,6 +86,6 @@ spec:
         - name: nfs-i2p-pvc
           persistentVolumeClaim:
             claimName: nfs-i2p
-        - name: nfs-monero-pvc
-          persistentVolumeClaim:
-            claimName: nfs-monero
+#         - name: nfs-monero-pvc
+#           persistentVolumeClaim:
+#             claimName: nfs-monero
