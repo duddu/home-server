@@ -61,8 +61,8 @@ apply_k8s_resources () {
   sleep 5
   kubectl wait --for=condition=Available --timeout=300s deployments --all &&
     kubectl wait --for=condition=ContainersReady --field-selector=spec.restartPolicy=Always --timeout=180s pods &&
-    kubectl wait --for=condition=PodScheduled --field-selector=spec.restartPolicy=OnFailure --timeout=180s pods ||
-    (kubectl get deployments ; kubectl describe pods ; exit 1)
+    kubectl get -f $CLONE_DIR/config/k8s/cronjobs ||
+    (kubectl describe pods ; kubectl describe cronjobs.batch ; exit 1)
   echo "🚀 Pods ready"
 }
 
