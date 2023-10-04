@@ -3,7 +3,7 @@
 ARG NGINX_CONF=/etc/nginx/nginx.conf
 ARG LOCAL_DIR=/usr/local
 
-FROM 1.25.2-alpine as builder
+FROM nginx:1.25.2-alpine as builder
 ARG NGINX_CONF
 ARG LOCAL_DIR
 
@@ -18,7 +18,7 @@ RUN apk update && apk add --no-cache libxml2=2.9.14-r2 && \
         -e "s/server tplinkwifi.net/server test.tplinkwifi.net/g" -i ${NGINX_CONF} && \
     nginx -t
 
-FROM 1.25.2-alpine as production
+FROM nginx:1.25.2-alpine as production
 ARG DOMAIN_NAME
 ARG DOMAIN_EMAIL
 ARG NGINX_CONF
@@ -34,11 +34,11 @@ ENV TZ=Europe/London \
 
 RUN apk update && apk upgrade && \
     apk add --no-cache \
-        libxml2-2.10.4-r0 \
-        openssl-3.0.11-r0 \
-        socat-1.7.4.4-r0 \
-        websocketd=0.4.1-r15 \
-        tzdata-2023c-r0 && \
+        libxml2=2.11.4-r0 \
+        openssl=3.1.3-r0 \
+        socat==1.7.4.4-r1 \
+        tzdata=2023c-r1 \
+        websocketd=0.4.1-r18 && \
     curl https://raw.githubusercontent.com/acmesh-official/acme.sh/master/acme.sh | sh -s -- \
         --install-online \
         --accountemail ${DOMAIN_EMAIL} \
