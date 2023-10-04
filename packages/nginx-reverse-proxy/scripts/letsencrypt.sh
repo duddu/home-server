@@ -7,7 +7,7 @@ set -u
 : "${SSL_INSTALL_PATH:?Variable not set or empty}"
 : "${1:?Command argument not set or empty}"
 
-SUBJ_ALT_NAMES="api modem plex xmr"
+SUBJ_ALT_NAMES="api modem plex sourdoc xmr"
 WWW_ROOT="/usr/local/share/www"
 ACME_COMMON_ARGS="--home $ACME_HOME -w $WWW_ROOT --server letsencrypt -d $DOMAIN_NAME -d $(echo "$SUBJ_ALT_NAMES" | sed "s/ /\.$DOMAIN_NAME -d /g").$DOMAIN_NAME"
 
