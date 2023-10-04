@@ -34,11 +34,11 @@ ENV TZ=Europe/London \
 
 RUN apk update && apk upgrade && \
     apk add --no-cache \
-        libxml2=2.9.14-r2 \
-        openssl=1.1.1s-r0 \
-        socat=1.7.4.3-r0 \
-        websocketd=0.4.1-r10 \
-        tzdata=2022f-r1 && \
+        libxml2-2.10.4-r0 \
+        openssl-3.0.11-r0 \
+        socat-1.7.4.4-r0 \
+        websocketd=0.4.1-r15 \
+        tzdata-2023c-r0 && \
     curl https://raw.githubusercontent.com/acmesh-official/acme.sh/master/acme.sh | sh -s -- \
         --install-online \
         --accountemail ${DOMAIN_EMAIL} \
