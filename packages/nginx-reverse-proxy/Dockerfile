@@ -3,7 +3,7 @@
 ARG NGINX_CONF=/etc/nginx/nginx.conf
 ARG LOCAL_DIR=/usr/local
 
-FROM nginx:1.25.2-alpine as builder
+FROM nginx:1.25.4-alpine as builder
 ARG NGINX_CONF
 ARG LOCAL_DIR
 
@@ -18,7 +18,7 @@ RUN apk update && apk add --no-cache libxml2=2.9.14-r2 && \
         -e "s/server tplinkwifi.net/server test.tplinkwifi.net/g" -i ${NGINX_CONF} && \
     nginx -t
 
-FROM nginx:1.25.2-alpine as production
+FROM nginx:1.25.4-alpine as production
 ARG DOMAIN_NAME
 ARG DOMAIN_EMAIL
 ARG NGINX_CONF
